@@ -1,0 +1,12 @@
+TODO list
+
+Size of name in submodels
+
+Block interactivity of modules in submodels (is : no selection, no move...)
+
+preferences:
+Two parts: 
+
+ * model properties (exec speed, time advance mode, zoom factor, etc...)
+
+ * application preferences (control editor properties, ...)

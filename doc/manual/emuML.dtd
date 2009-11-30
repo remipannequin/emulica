@@ -1,0 +1,33 @@
+<!ELEMENT emulationModel (interface+,modules+)>
+<!ELEMENT interface (input*)>
+<!ELEMENT input EMPTY>
+<!ELEMENT modules (module*,submodel*)>
+<!ELEMENT module (property*)>
+<!ELEMENT property (value|reference|value-list|program-table|change-table|setup-table)>
+<!ELEMENT value (#PCDATA)>
+<!ELEMENT reference (#PCDATA)>
+<!ELEMENT value-list (value|reference|value-list)>
+<!ELEMENT program-table (program*)>
+<!ELEMENT program (transform*)>
+<!ELEMENT transform (value|reference|value-list|change-table)>
+<!ELEMENT setup-table (setup*)>
+<!ELEMENT setup EMPTY>
+<!ELEMENT change-table (change*)>
+<!ELEMENT change (value|reference|value-list)>
+
+<!ATTLIST input name ID #REQUIRED
+                module CDATA #REQUIRED
+                property CDATA #REQUIRED>
+<!ATTLIST module name ID #REQUIRED
+                 type CDATA #REQUIRED>
+<!ATTLIST property name CDATA #REQUIRED>
+<!ATTLIST program-table schema CDATA #IMPLIED>
+<!ATTLIST program name CDATA #REQUIRED
+                  delay CDATA #REQUIRED>
+<!ATTLIST transform name CDATA #REQUIRED>
+<!ATTLIST setup-table default_delay CDATA "0">
+<!ATTLIST setup initial CDATA #REQUIRED
+                final CDATA #REQUIRED
+                delay CDATA "0">
+<!ATTLIST change property CDATA #REQUIRED>
+

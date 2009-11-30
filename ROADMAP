@@ -1,0 +1,82 @@
+==================bêta=================
+undefined future:
+    * use simpy 2 object-oriented features (when its deb package is released)
+
+milestone 7:
+    * inspection modules (i.e. observation of product physical properties)
+    * associate resources to each programs
+    * apply failure on resources
+    * introduce resource management ?
+    * add a product-data observer
+    * gui integration in server mode
+    * model printing (as pdf) (with selectable categories: model graphics, properties, control code, results, etc...)
+    * logging facility for the control system
+
+
+milestone 6 (version 0.6):
+    * break gsemeapp into 4 parts : main, modelling, execution and results : OK
+    * generalized properties support: OK
+    * transition to xmlbuilder: OK
+    * use 'format' instead of %: OK
+    * Failure: degradated mode: OK
+    * windows port/installer: OK
+    * integration of Failure module in gsemeapp: OK
+    * model/submodel interface: OK
+    * DTD for emulation models and for reports and requests: OK
+    * modelling tutorial: on-going
+    * rename as 'emulica': OK
+    
+=================alpha=================
+
+milestone 5 (version 0.5):
+    * handle simulation errors in gseme : get errors and display message: OK
+    * better status bar management : display useful messages, progress bar for simulation runs : OK
+    * control editor preferences... OK
+    * composite modeling (ability to include models in models, as modules): OK...
+    * undo/redo for the whole application (ie control buffer + emulation model) : OK for create & delete, todo for some module properties...
+    * graphical properties in model (move all selected modules, zoom): OK... some bug to fixe in selection handling...
+    * fixe figure sizes, add colormap in preference: OK
+    * result export: OK
+    * web site: OK
+    
+milestone 4 (version 0.4):
+    * multiple simulation run : OK
+    * code snipets in control : OK
+    * new result plots : queue utilisation and product life-cycle diagram: OK
+    * selection/configuration of results: OK
+    * usability of control panel (sourceview settings, highlight syntax error, include a compile button somewhere): OK
+    * cup/copy/paste and undo/redo in the control tab: OK
+    * make cup copy paste depend on context (control buffer, emulation model): OK
+    * modelling tutorial: on-going...
+    
+milestone 3 (version 0.3):
+    * better MVC architecture for module state changes and properties changes : OK
+    * locale management in setup.py : OK
+    * physical properties of products : OK
+    * debian package : OK
+    * preference window : OK
+    * cup/copy/paste in emulation : OK
+    * simulation menu : ff (ie des time management, no animation) : OK
+    * multiple selection (CTRL key): OK
+    * module contextual menu: OK
+    * warn user when closing a model : OK
+    * pydoc/docbook generation integration in setup.py: OK
+    * modelling tutorial : on-going
+    
+milestone 2 (version 0.2):
+    * import/export of emulation models & control system : ok
+    * graphical model construction : ok
+    * simple simulation menu (start, stop, pause): ok
+    * module properties panel: ok
+    * assembly/ disassembly implementation and test:
+    * test : garrett use case:
+    * emulation serveur : ok
+    * first results integration (gantt chart integration) : ok
+    * delete in emulation: ok (even if, there is still some minors bugs)
+    
+
+===============pre-alpha===============
+milestone 1 (version 0.1):
+    * create new model
+    * simple simulation cycle : open, start (verifications), graphical animation, stop
+    * setup.py    

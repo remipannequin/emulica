@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Emulica
+GenericName=Emulica Emulation Environment
+GenericName[fr_FR]=Environment d'émulation Emulica
+Comment=Create and Run emulation models
+Comment[fr_FR]=Créer et Executer des modèles d'émulation
+Exec=emulica %f
+Icon=emulica-icon
+Terminal=false
+Type=Application
+MimeType=application/x-emulica;
+Categories=Education;Science;
+
+

@@ -1,0 +1,34 @@
+At the moment, only a distutil script is provided for installation: 
+to install system-wide, unpack this archive, and run
+# python setup.py install
+or (sudo python setup.py install)
+as root. More installation options are availlable: please refer to 
+distutil documentation. ($ python setup.py --help-commands)
+
+Packages for popular linux distribution and installer for win32 are 
+planned, and will soon be availlable.
+
+Installation as been tested on Ubuntu 8.04, but should work on other 
+linux plateform as well. The software as not been tested on win32.
+
+Dependancies for the core emulation module (emulica.emulation) is:
+ * simpy
+But is you wan't to run the GUI, networking and ploting tools, you will need:
+ + pyGTK2
+ + gtksourceview2
+ + pygoocanvas
+ + matplotlib
+ + twisted (required to run emulation server)
+ 
+Debian/Ubuntu users should install the following packages (and their dependencies):
+ * python-simpy
+ + python-matplotlib
+ + python-pygoocanvas
+ + python-gtk2
+ + python-glade2
+ + python-twisted
+ + python-gtksourceview2
+
+Executing the following command should be sufficient:
+$ sudo apt-get install python-simpy python-matplotlib python-pygoocanvas python-gtk2 python-glade2 python-twisted python-gtksourceview2
+

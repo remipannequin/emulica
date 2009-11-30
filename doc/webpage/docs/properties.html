@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Properties &mdash; emulica v0.6 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.6',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="top" title="emulica v0.6 documentation" href="index.html" />
+    <link rel="next" title="Composite Modeling" href="composite.html" />
+    <link rel="prev" title="Products" href="products.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="composite.html" title="Composite Modeling"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="products.html" title="Products"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">emulica v0.6 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="properties">
+<h1>Properties<a class="headerlink" href="#properties" title="Permalink to this headline">¶</a></h1>
+<p>Properties can be attached to every products and module (including models).
+They basically consist in a (name, value) pair. Moreover, a PropertyDisplay
+can also be used. If so the property is said to be &#8220;displayable&#8221;;
+such properties can be presented in the user interface, and modified.
+Properties that don&#8217;t have any PropertyDisplay object associated are not
+displayed by the PropertyWindow UI.</p>
+<p>Properties can be a direct value (a str, bool, int or float) a module (ie a
+pointer to a module), a string that can be evaluated (in a pythonic syntax),
+or complex object that contain other (sub)properties (setup or program
+tables).</p>
+<p>A property can be accessed from its owner using square braquets [], using
+its name.
+For example, create[&#8216;destination&#8217;] returns the value of the &#8216;destination&#8217;
+property of module &#8216;create&#8217;. Shape1[&#8216;program_table&#8217;][&#8216;program1&#8217;] is the
+property &#8216;program1&#8217; of the program_table object (which is in turn the
+property &#8216;program_table&#8217; of module &#8216;Shape1&#8217;)... Properties can be get/set
+using the square braquet syntax, in the same way a python dictionary can be
+used.</p>
+<p>module[&#8216;prop&#8217;] return the non evaluated value of the property. To evaluate
+the property string, the evaluate_property function must be used, or
+alternativelly, the property must be called. Therefore if module[&#8216;prop&#8217;] is
+&#8220;product[&#8216;mass&#8217;] + 5&#8221;, module[&#8216;prop&#8217;](context) is 12, in context wherethe
+current product has a property that evaluates to 7.</p>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo-dense.png" alt="Logo"/>
+            </a></p>
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="products.html"
+                                  title="previous chapter">Products</a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="composite.html"
+                                  title="next chapter">Composite Modeling</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/properties.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="composite.html" title="Composite Modeling"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="products.html" title="Products"
+             >previous</a> |</li>
+        <li><a href="index.html">emulica v0.6 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Rémi Pannequin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.2.
+    </div>
+  </body>
+</html>

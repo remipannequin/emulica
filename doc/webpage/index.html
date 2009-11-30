@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	    <meta http-equiv="author" content="Rémi Pannequin" />
+	    <meta name="date" content="2009-10-08T10:40:40"/>
+	    <meta name="keywords" xml:lang="en" lang="en" content="emulica, manufacturing, simulation, emulation, free, gpl, open source" />
+	    <meta name="description" xml:lang="en" lang="en" content="Home of the Emulica Emulation Framework, a simulation tool designed for engineering of control systems." />
+	    <link rel="stylesheet" type="text/css" href="emulica.css" />
+	    <link rel="icon" type="image/png" href="favicon.png" />
+	    <title>Emulica Emulation Framework : Home</title>
+    </head>
+    
+<body>
+
+<div id="page">
+	<img src="images/logo-textless.png" alt="logo" style="margin-left: 30px; margin-top: 50px" />
+	<h1 id="title">Emulica</h1>
+	<h2 id="subtitle">emulation framework</h2>
+
+	<div id="sectionnav">
+		<a href="index.html" title="The title page">Home</a>
+		<a href="features.html" title="Emulica features">Features</a>
+		<a href="screenshots.html" title="See what it looks like">Screenshots</a>
+		<a href="download.html" title="Downloads and requirements">Download</a>
+		<a href="docs/index.html" title="Emulica Manual, examples and API documentation">Documentation</a>
+		<a href="mailto:remi.pannequin@cran.uhp-nancy.fr">Contact</a>
+		<br /><br />
+		<div style="text-align: center;">
+			<img src="images/screen.jpg" style="border: none;" alt="emulica screenshot" />
+		</div>
+	</div>
+
+    <div id="content">
+		<h3>About Emulica</h3>
+		<p>Emulica is an emulation framework that enable researchers or practitionners to design and run emulation-based control experiments, in the context of manufacturing and logistics systems. See <a href="features.html">features</a> for an extensive overview, take a look at the <a href="screenshots.html">screenshots</a>, or <a href="download.html">download</a> it right away. Emulica is an <a href="development.html">open source development</a> project, released under the <a href="http://emulica.svn.sourceforge.net/viewvc/emulica/COPYING">GNU<abbr title="General Public License">GPL</abbr></a> licence.</p>
+        
+        <p>Emulica is written in python, and runs on every platform that suports it. The simulation core is based on <a href="http://simpy.sourceforge.net/">Simpy</a>. It comes as a python module that provide you with an extensible and versatile emulation framework, or as a graphical application (using pyGTK) that enable graphical editing of emulation models, edition of control routine with syntax highlight, and generation of beautiful results charts.</p> 
+        
+        <h3>News</h3>
+        
+        <p><b>Version 0.6 is out !</b></p>
+        <p><b>Seme has been renamed Emulica</b> With the release of the version 0.6, a new name which highlight the emulation
+        concept has been adopted. 
+        </p>
+        <p><b>what's new in emulica 0.6 ?</b>
+            <ul>
+                <li>Integration of Failures in the application, with a degradation mode</li>
+                <li>Better composite modelling with submodel properties and interface support, enable to create generic components and to reuse them</li>
+                <li>Easy to use windows installer (based on py2exe)</li>
+                <li>Improvements in the documentation, with a <a href="">tutorial for beginners</a></li>
+                <li>A better file format for model saving</li>
+            </ul>
+            
+            Some changes has also been made to the underlying code, for instance, the modularisation of emulicapp (formerly gsemeapp) for better maintenability, transition from the glade fromat to xmlbuilder, a step forward to python3 by replacing '%' pattern with the 'string.format' function. 
+            
+        </p>
+        
+        <p><b>Version 0.5 is now available!</b> Even if it is still alpha, this is the first version that have actually been used, by <a href="http://www.enstib.uhp-nancy.fr">ENSTIB</a> students doing their last year project on simulation-optimisation coupling.</p>
+        <p>This version introduce composite modelling: is it now possible to use emulation models as custom modules. Other improvements are in the graphical application, with better support of execution errors, ability to save results, multiple undo/redo in modelling and control editing, and many bugfixes...</p>
+        
+        
+        
+    </div>
+    
+    
+	<div id="footer">
+		<p>Copyright &copy;2009 Rémi Pannequin</p>
+		<p>Emulica development is supported by <a href="http://www.cran.uhp-nancy.fr">The Research Center for Automatic Control<img src="images/cran_logo.jpg" style="border: none; vertical-align: middle; width: 60px; " alt="CRAN Logo" /></a>.</p>
+		<p>Thanks to <a href="http://sourceforge.net/projects/emulica"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=205403&amp;type=10" width="80" height="15" alt="Get emulica emulation framework at SourceForge.net. Fast, secure and Free Open Source software downloads" /></a> for hosting.</p>
+	</div>
+		
+    
+</div>
+</body>
+</html>

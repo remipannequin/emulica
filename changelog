@@ -1,0 +1,91 @@
+0.6:
+
+
+    * modularisation of gsemeapp (main, modelling, control, results, dialogs)
+    * generalized properties support: OK (infrastructure done, UI todo)
+    * transition to xmlbuilder
+    * preparation of the transition to python 3
+    * degrading failures
+
+======================================
+0.5:
+
+
+  * handle simulation errors in gseme : get errors and display message
+  * better status bar management : display useful messages, progress bar for simulation runs
+  * control editor preferences...
+  * composite modeling (ability to include models in models, as modules)
+  * undo/redo for the whole application (ie control buffer + emulation model)
+  * graphical properties in model (move all selected modules, zoom)
+  * able to export results
+  * basic module properties support
+
+======================================
+0.4:
+In this version, we tried to make seme and its user interface gseme easier to
+use. One the one hand, major change in the emulation package allow now to run 
+simulation several times. On the other hand, our effort have been focused on 
+control writing and results displaying in gseme. The control editor now include
+a library of configurable code snippets and a syntax checking function that 
+allow intuitive control design. Results have been improved too. Three new type 
+of result (holder occupation, product life-cycle and a new generic result form)
+have been added. Result selection have been developped.
+
+This version is still alpha, but the beta is near... Next version will 
+implements hirarchical (composite) modelling, undo/redo in the emulation tab, 
+result export and printing, and a better handling of runtime control errors...
+
+  * ability to run simulation several times.
+  * new result type : Holder occupation graph, Product life-cycle chart, result summary
+  * helper in the control tab: insertion of code, syntax checking, etc...
+  * selection/configuration of results
+  * new function in the control tab : syntax checking, code snippets, etc...
+  * Cut/copy/paste and undo/redo in the control editor
+  * several UI / usability improvements
+
+=======================================
+0.3:
+We are glad to announce a new version of seme and gseme, its graphical interface. 
+It the emulation library, it is now possible to model physical attributes of 
+products... In the modelling application, many improvements have been made.
+
+The software is still alpha-quality, but great progress have been made. The next
+release will focus on usability/ergonomy in writing control system, add on 
+results configuration.
+
+
+  * new properties architecture for emulation.module objects: better module
+    management in gui, better properties display.
+  * improved application icon and several module icons
+  * Refactored UI for programs: transformation attribute are now displayed in a
+    separate dialog window. Change of Products Physical properties are supported.
+  * Integrated physical properties of products
+  * New preference dialog
+  * Cut/Copy/Paste of emulation modules
+  * GUI code for editing modules properties has been separated in a new package
+    'seme.properties'
+  * several other GUI improvements
+  
+=======================================
+0.2:
+ * emulation server (listen for Requests, and send Reports on a TCP port)
+ * internationnalisation
+ * UI improvements:
+    filters on file dialogs
+    new buttons : pause simulation, stop simulation, ...
+    better application icon
+    import/export of emulation models & control system
+    module selection
+    module deletion
+ * improvements in module properties:
+    modules are completelly editables (incl. setup, programs, etc...)
+    modules can be renamed
+ * module 'config' is now named 'semeXML'
+    parsing and writing Report and Request XML messages
+ * emulation
+    assembly
+    improved test-cases
+    
+
+=======================================
+0.1: Initial release

@@ -1,0 +1,22 @@
+Source: python-emulica
+Maintainer: Rémi Pannequin <remi.pannequin@cran.uhp-nancy.fr>
+XS-Python-Version: >=2.6
+Section: python
+Priority: optional
+Build-Depends: debhelper (>= 5.0.38)
+Build-Depends-Indep: python-all (>= 2.6), python-central (>= 0.5.6)
+
+Standards-Version: 3.8.0.1
+Homepage: http://emulica.sourceforge.net/emulica
+Package: python-emulica
+Architecture: all
+Section: python
+Priority: optional
+Depends: ${python:Depends}, python-gtk2 (>=2.8.0), python-simpy (>=1.8), python-matplotlib (>=0.98.3), python-pygoocanvas (>=0.12.0), python-twisted-core (>=8.1.0), python-gtksourceview2 (>=2.4.0)
+XB-Python-Version: ${python:Versions}
+Description: Systemic Emulation Modelling and Execution Environment.
+ .
+ A python library and a graphical application to create and run manufacturing
+ emulation model, i.e. create virtual shop floor, to test and evaluate control systems.
+
+

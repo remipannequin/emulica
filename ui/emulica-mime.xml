@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+   <mime-type type="application/x-emulica">
+     <comment>Emulica model</comment>
+     <comment xml:lang="fr">Modèle Emulica</comment>
+     <sub-class-of type="application/zip"/>
+     <glob pattern="*.emu"/>
+   </mime-type>
+</mime-info>
+

@@ -1,0 +1,86 @@
+python-emulica (0.6) unstable; urgency=low
+
+  * 'seme' has been renamed 'emulica'
+  
+  * modularisation of gsemeapp (main, modelling, control, results, dialogs) 
+  
+  * generalized properties support: interface in emulica to add custom properties
+  
+  * transition to newer technologies: xmlbuilder, string.format
+  
+  * Failures: introduction of the 'degradated mode'. Failure are integarted in the UI
+  
+  * model/submodel interface
+  
+  * Newer definition of emuML: the XML langage used to store models
+  
+  * modelling tutorial, DTD for emulation models and for reports and requests
+
+ -- maintainer Rémi Pannequin <remi.pannequin@cran.uhp-nancy.fr>  Thu, 26 Nov 2009 09:26:45 +0200 
+
+python-seme (0.5) unstable; urgency=low
+
+  * handle simulation errors in gseme : get errors and display message
+
+  * better status bar management : display useful messages, progress bar for simulation runs
+
+  * control editor preferences...
+
+  * composite modeling (ability to include models in models, as modules)
+
+  * undo/redo for the whole application (ie control buffer + emulation model)
+
+  * graphical properties in model (move all selected modules, zoom)
+
+  * able to export results
+
+  * basic module properties support
+
+ -- maintainer Rémi Pannequin <remi.pannequin@cran.uhp-nancy.fr>  Tue, 08 Oct 2009 11:54:09 +0200 
+
+python-seme (0.4) unstable; urgency=low
+  
+  * ability to run simulation several times.
+  
+  * new result type : Holder occupation graph, Product life-cycle chart, result summary
+  
+  * helper in the control tab: insertion of code, syntax checking, etc...
+  
+  * selection/configuration of results
+  
+  * new function in the control tab : syntax checking, code snippets, etc...
+  
+  * Cut/copy/paste and undo/redo in the control editor
+  
+  * several UI / usability improvements
+
+ -- maintainer Rémi Pannequin <remi.pannequin@cran.uhp-nancy.fr>  Mon, 21 Nov 2008 09:54:14 +0100 
+
+python-seme (0.3-1) unstable; urgency=low
+
+  * fixes 2225440 2225445 and 2229834
+  
+ -- maintainer Rémi Pannequin <remi.pannequin@cran.uhp-nancy.fr>  Mon, 7 Nov 2008 14:01:41 +0100
+
+python-seme (0.3) unstable; urgency=low
+  
+  * new properties architecture for emulation.module objects: better module
+    management in gui, better properties display.
+    
+  * improved application icon and several module icons
+  
+  * Refactored UI for programs: transformation attribute are now displayed in a
+    separate dialog window. Change of Products Physical properties are supported.
+  
+  * Integrated physical properties of products
+  
+  * New preference dialog
+  
+  * Cut/Copy/Paste of emulation modules
+  
+  * GUI code for editing modules properties has been separated in a new package
+    'seme.properties'
+    
+  * several other GUI improvements
+  
+ -- maintainer Rémi Pannequin <remi.pannequin@cran.uhp-nancy.fr>  Mon, 5 Nov 2008 14:01:41 +0100

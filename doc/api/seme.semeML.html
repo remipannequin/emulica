@@ -1,0 +1,280 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module seme.semeML</title>
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="seme.html"><font color="#ffffff">seme</font></a>.semeML</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/remi/ProjetsThese/Projets/seme/src/seme/semeML.py">/home/remi/ProjetsThese/Projets/seme/src/seme/semeML.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;contains&nbsp;utilities&nbsp;to&nbsp;load&nbsp;and&nbsp;save&nbsp;seme&nbsp;models&nbsp;in&nbsp;XML&nbsp;format.<br>
+Only&nbsp;module&nbsp;*configuration*&nbsp;is&nbsp;written&nbsp;:&nbsp;the&nbsp;state&nbsp;of&nbsp;a&nbsp;particular&nbsp;module&nbsp;<br>
+is&nbsp;ignored.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="seme.emulation.html">seme.emulation</a><br>
+</td><td width="25%" valign=top><a href="logging.html">logging</a><br>
+</td><td width="25%" valign=top><a href="pickle.html">pickle</a><br>
+</td><td width="25%" valign=top><a href="zipfile.html">zipfile</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="exceptions.html#Exception">exceptions.Exception</a>(<a href="exceptions.html#BaseException">exceptions.BaseException</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="seme.semeML.html#SemeMLError">SemeMLError</a>
+</font></dt></dl>
+</dd>
+<dt><font face="helvetica, arial"><a href="seme.semeML.html#EmulationParser">EmulationParser</a>
+</font></dt><dt><font face="helvetica, arial"><a href="seme.semeML.html#EmulationWriter">EmulationWriter</a>
+</font></dt><dt><font face="helvetica, arial"><a href="seme.semeML.html#GsemeFile">GsemeFile</a>
+</font></dt></dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="EmulationParser">class <strong>EmulationParser</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;can&nbsp;be&nbsp;used&nbsp;to&nbsp;get&nbsp;an&nbsp;Emulation&nbsp;Model&nbsp;from&nbsp;an&nbsp;xml&nbsp;file.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="EmulationParser-__init__"><strong>__init__</strong></a>(self, string, model<font color="#909090">=None</font>, parent<font color="#909090">=None</font>, name<font color="#909090">='main'</font>, path<font color="#909090">=None</font>)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;instance&nbsp;of&nbsp;a&nbsp;semeML.<a href="#EmulationParser">EmulationParser</a>.&nbsp;When&nbsp;the&nbsp;object&nbsp;is&nbsp;<br>
+created,&nbsp;the&nbsp;string&nbsp;is&nbsp;parsed,&nbsp;and&nbsp;submodels&nbsp;list&nbsp;is&nbsp;built.&nbsp;Beware:&nbsp;the<br>
+submodels&nbsp;files&nbsp;are&nbsp;opened&nbsp;at&nbsp;this&nbsp;stage&nbsp;!&nbsp;If&nbsp;the&nbsp;model&nbsp;argument&nbsp;is&nbsp;<br>
+specified,&nbsp;it&nbsp;is&nbsp;used&nbsp;to&nbsp;laod&nbsp;modules&nbsp;into,&nbsp;else&nbsp;a&nbsp;new&nbsp;model&nbsp;is&nbsp;created&nbsp;<br>
+using&nbsp;the&nbsp;kwargs.<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;--&nbsp;the&nbsp;model&nbsp;into&nbsp;which&nbsp;load&nbsp;modules&nbsp;or&nbsp;from&nbsp;which&nbsp;extract&nbsp;modules<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model&nbsp;--&nbsp;the&nbsp;model&nbsp;to&nbsp;load&nbsp;modules&nbsp;into<br>
+&nbsp;&nbsp;&nbsp;&nbsp;*kwargs&nbsp;--&nbsp;keywords&nbsp;argumenst&nbsp;to&nbsp;be&nbsp;passed&nbsp;to&nbsp;the&nbsp;Model&nbsp;constructor<br>
+Raises:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;???Error&nbsp;--&nbsp;if&nbsp;string&nbsp;is&nbsp;not&nbsp;well&nbsp;formed</tt></dd></dl>
+
+<dl><dt><a name="EmulationParser-load_submodels"><strong>load_submodels</strong></a>(self)</dt><dd><tt>Load&nbsp;submodels&nbsp;in&nbsp;the&nbsp;model</tt></dd></dl>
+
+<dl><dt><a name="EmulationParser-parse"><strong>parse</strong></a>(self)</dt><dd><tt>Load&nbsp;a&nbsp;set&nbsp;of&nbsp;modules&nbsp;from&nbsp;an&nbsp;XML&nbsp;string&nbsp;or&nbsp;treeset&nbsp;into&nbsp;the&nbsp;model,&nbsp;<br>
+and&nbsp;Return&nbsp;the&nbsp;list&nbsp;of&nbsp;created&nbsp;modules.<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;string&nbsp;--&nbsp;an&nbsp;XML&nbsp;string&nbsp;that&nbsp;represent&nbsp;the&nbsp;model.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Return&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;list&nbsp;of&nbsp;created&nbsp;modules</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="EmulationWriter">class <strong>EmulationWriter</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;write&nbsp;an&nbsp;emulation&nbsp;model&nbsp;as&nbsp;an&nbsp;xml&nbsp;string<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="EmulationWriter-__init__"><strong>__init__</strong></a>(self, model)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;instance&nbsp;of&nbsp;a&nbsp;semeML.EmulationFile.<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model&nbsp;--&nbsp;the&nbsp;model&nbsp;from&nbsp;which&nbsp;extract&nbsp;modules<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;???Error&nbsp;--&nbsp;if&nbsp;string&nbsp;is&nbsp;not&nbsp;well&nbsp;formed</tt></dd></dl>
+
+<dl><dt><a name="EmulationWriter-marshall_module"><strong>marshall_module</strong></a>(self, module)</dt><dd><tt>Return&nbsp;a&nbsp;XML&nbsp;element&nbsp;that&nbsp;represents&nbsp;the&nbsp;module.<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;module&nbsp;--&nbsp;the&nbsp;module&nbsp;to&nbsp;marshall</tt></dd></dl>
+
+<dl><dt><a name="EmulationWriter-write"><strong>write</strong></a>(self)</dt><dd><tt>Return&nbsp;an&nbsp;XML&nbsp;string&nbsp;that&nbsp;correspond&nbsp;to&nbsp;model.&nbsp;NB:&nbsp;submodels&nbsp;are&nbsp;not<br>
+outputed.</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="GsemeFile">class <strong>GsemeFile</strong></a></font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;enable&nbsp;to&nbsp;read&nbsp;or&nbsp;write&nbsp;Gseme&nbsp;files.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="GsemeFile-__init__"><strong>__init__</strong></a>(self, filename, mode<font color="#909090">='r'</font>, parent_model<font color="#909090">=None</font>, name<font color="#909090">='main'</font>)</dt><dd><tt>Create&nbsp;a&nbsp;new&nbsp;instance&nbsp;of&nbsp;a&nbsp;gseme&nbsp;file.<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;filename&nbsp;--&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;.gseme&nbsp;file&nbsp;to&nbsp;open<br>
+&nbsp;&nbsp;&nbsp;&nbsp;mode&nbsp;--&nbsp;the&nbsp;open&nbsp;mode&nbsp;'r'&nbsp;for&nbsp;reading,&nbsp;'w'&nbsp;for&nbsp;writing<br>
+&nbsp;&nbsp;&nbsp;&nbsp;parent_model&nbsp;--&nbsp;the&nbsp;parent&nbsp;Emulation&nbsp;model,&nbsp;if&nbsp;current&nbsp;model&nbsp;is&nbsp;a&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;submodel<br>
+&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;--&nbsp;the&nbsp;name&nbsp;of&nbsp;the&nbsp;model&nbsp;to&nbsp;load,&nbsp;if&nbsp;it&nbsp;is&nbsp;a&nbsp;submodel<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;IOError&nbsp;if&nbsp;a&nbsp;file&nbsp;is&nbsp;absent&nbsp;or&nbsp;not&nbsp;readeable/writable<br>
+&nbsp;&nbsp;&nbsp;&nbsp;SemeError&nbsp;if&nbsp;mode&nbsp;is&nbsp;not&nbsp;r&nbsp;or&nbsp;w,&nbsp;or&nbsp;if&nbsp;file&nbsp;in&nbsp;not&nbsp;a&nbsp;valid&nbsp;gseme&nbsp;file.</tt></dd></dl>
+
+<dl><dt><a name="GsemeFile-broken_submodels"><strong>broken_submodels</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;list&nbsp;of&nbsp;tuple&nbsp;(name,&nbsp;path)&nbsp;of&nbsp;submodels&nbsp;that&nbsp;are&nbsp;broken,&nbsp;in&nbsp;order&nbsp;to&nbsp;make&nbsp;the&nbsp;user&nbsp;able&nbsp;to&nbsp;relocate&nbsp;them&nbsp;before&nbsp;calling&nbsp;<a href="#GsemeFile-read">read</a>().</tt></dd></dl>
+
+<dl><dt><a name="GsemeFile-close"><strong>close</strong></a>(self)</dt><dd><tt>Close&nbsp;the&nbsp;gseme&nbsp;file.&nbsp;Any&nbsp;operation&nbsp;is&nbsp;invalid&nbsp;after.</tt></dd></dl>
+
+<dl><dt><a name="GsemeFile-get_properties"><strong>get_properties</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;distionary&nbsp;of&nbsp;the&nbsp;model&nbsp;and&nbsp;submodels&nbsp;properties.&nbsp;Models&nbsp;are<br>
+identified&nbsp;by&nbsp;their&nbsp;names&nbsp;(the&nbsp;top-model&nbsp;name&nbsp;is&nbsp;'main')</tt></dd></dl>
+
+<dl><dt><a name="GsemeFile-read"><strong>read</strong></a>(self, parent<font color="#909090">=None</font>, name<font color="#909090">='main'</font>)</dt><dd><tt>Read&nbsp;the&nbsp;content&nbsp;of&nbsp;a&nbsp;model.&nbsp;This&nbsp;class&nbsp;parse&nbsp;the&nbsp;emulation.xml&nbsp;file<br>
+contained&nbsp;in&nbsp;the&nbsp;gseme&nbsp;file,&nbsp;and&nbsp;also&nbsp;parse&nbsp;and&nbsp;loads&nbsp;submodels.&nbsp;NB:<br>
+model&nbsp;and&nbsp;submodels&nbsp;properties&nbsp;can&nbsp;be&nbsp;retrieved&nbsp;using&nbsp;<a href="#GsemeFile-get_properties">get_properties</a>()<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;tuple&nbsp;containing&nbsp;the&nbsp;emulation&nbsp;model&nbsp;and&nbsp;the&nbsp;control&nbsp;file<br>
+Raises:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#SemeMLError">SemeMLError</a>&nbsp;--&nbsp;if&nbsp;file&nbsp;was&nbsp;not&nbsp;open&nbsp;in&nbsp;read&nbsp;mode&nbsp;or&nbsp;if&nbsp;the&nbsp;gseme&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;file&nbsp;is&nbsp;not&nbsp;correct<br>
+&nbsp;&nbsp;&nbsp;&nbsp;IOError&nbsp;--&nbsp;if&nbsp;a&nbsp;submodel&nbsp;could&nbsp;not&nbsp;be&nbsp;read</tt></dd></dl>
+
+<dl><dt><a name="GsemeFile-relocate_submodel"><strong>relocate_submodel</strong></a>(self, name, new_path)</dt><dd><tt>Change&nbsp;the&nbsp;path&nbsp;of&nbsp;the&nbsp;specified&nbsp;submodel.</tt></dd></dl>
+
+<dl><dt><a name="GsemeFile-write"><strong>write</strong></a>(self, model, control, properties)</dt><dd><tt>Write&nbsp;the&nbsp;gseme&nbsp;file&nbsp;element&nbsp;into&nbsp;a&nbsp;gseme&nbsp;file.<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model&nbsp;--&nbsp;the&nbsp;emulation&nbsp;model<br>
+&nbsp;&nbsp;&nbsp;&nbsp;control&nbsp;--&nbsp;the&nbsp;control&nbsp;system<br>
+&nbsp;&nbsp;&nbsp;&nbsp;properties&nbsp;--&nbsp;the&nbsp;model&nbsp;properties</tt></dd></dl>
+
+<dl><dt><a name="GsemeFile-write_control"><strong>write_control</strong></a>(self, control)</dt><dd><tt>Write&nbsp;the&nbsp;control&nbsp;string&nbsp;in&nbsp;the&nbsp;gseme&nbsp;file.<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;control&nbsp;--&nbsp;the&nbsp;code&nbsp;(as&nbsp;text)&nbsp;of&nbsp;the&nbsp;control&nbsp;system</tt></dd></dl>
+
+<dl><dt><a name="GsemeFile-write_model"><strong>write_model</strong></a>(self, model)</dt><dd><tt>Write&nbsp;the&nbsp;emmulation&nbsp;model&nbsp;in&nbsp;the&nbsp;gseme&nbsp;file.<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model&nbsp;--&nbsp;the&nbsp;model&nbsp;to&nbsp;write</tt></dd></dl>
+
+<dl><dt><a name="GsemeFile-write_properties"><strong>write_properties</strong></a>(self, props)</dt><dd><tt>Write&nbsp;the&nbsp;props&nbsp;dictionary&nbsp;in&nbsp;the&nbsp;gseme&nbsp;file&nbsp;(using&nbsp;pickle).<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;props&nbsp;--&nbsp;a&nbsp;dictionary&nbsp;of&nbsp;model&nbsp;properties</tt></dd></dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="SemeMLError">class <strong>SemeMLError</strong></a>(<a href="exceptions.html#Exception">exceptions.Exception</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>This&nbsp;class&nbsp;is&nbsp;used&nbsp;to&nbsp;deal&nbsp;with&nbsp;exception&nbsp;ancountrered&nbsp;when&nbsp;reading&nbsp;or&nbsp;<br>
+writing&nbsp;a&nbsp;file.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="seme.semeML.html#SemeMLError">SemeMLError</a></dd>
+<dd><a href="exceptions.html#Exception">exceptions.Exception</a></dd>
+<dd><a href="exceptions.html#BaseException">exceptions.BaseException</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Methods inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
+<dl><dt><a name="SemeMLError-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#SemeMLError-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;x.__class__.__doc__&nbsp;for&nbsp;signature</tt></dd></dl>
+
+<hr>
+Data and other attributes inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
+<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object at 0x8226dc0&gt;<dd><tt>T.<a href="#SemeMLError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
+
+<hr>
+Methods inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
+<dl><dt><a name="SemeMLError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#SemeMLError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="SemeMLError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#SemeMLError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
+
+<dl><dt><a name="SemeMLError-__getitem__"><strong>__getitem__</strong></a>(...)</dt><dd><tt>x.<a href="#SemeMLError-__getitem__">__getitem__</a>(y)&nbsp;&lt;==&gt;&nbsp;x[y]</tt></dd></dl>
+
+<dl><dt><a name="SemeMLError-__getslice__"><strong>__getslice__</strong></a>(...)</dt><dd><tt>x.<a href="#SemeMLError-__getslice__">__getslice__</a>(i,&nbsp;j)&nbsp;&lt;==&gt;&nbsp;x[i:j]<br>
+&nbsp;<br>
+Use&nbsp;of&nbsp;negative&nbsp;indices&nbsp;is&nbsp;not&nbsp;supported.</tt></dd></dl>
+
+<dl><dt><a name="SemeMLError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="SemeMLError-__repr__"><strong>__repr__</strong></a>(...)</dt><dd><tt>x.<a href="#SemeMLError-__repr__">__repr__</a>()&nbsp;&lt;==&gt;&nbsp;repr(x)</tt></dd></dl>
+
+<dl><dt><a name="SemeMLError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#SemeMLError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
+
+<dl><dt><a name="SemeMLError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
+
+<dl><dt><a name="SemeMLError-__str__"><strong>__str__</strong></a>(...)</dt><dd><tt>x.<a href="#SemeMLError-__str__">__str__</a>()&nbsp;&lt;==&gt;&nbsp;str(x)</tt></dd></dl>
+
+<dl><dt><a name="SemeMLError-__unicode__"><strong>__unicode__</strong></a>(...)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+</dl>
+<dl><dt><strong>args</strong></dt>
+</dl>
+<dl><dt><strong>message</strong></dt>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-compile_control"><strong>compile_control</strong></a>(model, source)</dt><dd><tt>compile&nbsp;code&nbsp;in&nbsp;the&nbsp;control&nbsp;buffer.&nbsp;<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model&nbsp;--&nbsp;the&nbsp;model&nbsp;into&nbsp;which&nbsp;load&nbsp;the&nbsp;control<br>
+&nbsp;&nbsp;&nbsp;&nbsp;source&nbsp;--&nbsp;the&nbsp;source&nbsp;code&nbsp;of&nbsp;the&nbsp;control&nbsp;system<br>
+&nbsp;<br>
+Returns:&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;True&nbsp;if&nbsp;no&nbsp;error&nbsp;are&nbsp;found.<br>
+&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;SyntaxError&nbsp;--&nbsp;if&nbsp;there&nbsp;is&nbsp;syntax&nbsp;error&nbsp;in&nbsp;the&nbsp;source<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#SemeMLError">SemeMLError</a>&nbsp;--&nbsp;if&nbsp;init&nbsp;function&nbsp;has&nbsp;not&nbsp;been&nbsp;declared</tt></dd></dl>
+ <dl><dt><a name="-load"><strong>load</strong></a>(filename)</dt><dd><tt>Convenience&nbsp;function&nbsp;that&nbsp;returns&nbsp;a&nbsp;new&nbsp;Model&nbsp;from&nbsp;a&nbsp;file</tt></dd></dl>
+ <dl><dt><a name="-load_modules"><strong>load_modules</strong></a>(model, elt)</dt><dd><tt>Convenience&nbsp;function&nbsp;to&nbsp;load&nbsp;a&nbsp;set&nbsp;of&nbsp;modules&nbsp;from&nbsp;an&nbsp;XML&nbsp;string&nbsp;in&nbsp;the&nbsp;<br>
+model.&nbsp;Used&nbsp;to&nbsp;paste&nbsp;modules.<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model&nbsp;--&nbsp;the&nbsp;model&nbsp;where&nbsp;the&nbsp;module&nbsp;are&nbsp;loaded<br>
+&nbsp;&nbsp;&nbsp;&nbsp;elt&nbsp;--&nbsp;the&nbsp;XML&nbsp;string&nbsp;that&nbsp;describes&nbsp;the&nbsp;modules</tt></dd></dl>
+ <dl><dt><a name="-parse_request"><strong>parse_request</strong></a>(message)</dt><dd><tt>Parse&nbsp;a&nbsp;XML&nbsp;message&nbsp;and&nbsp;return&nbsp;a&nbsp;Request&nbsp;instance<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;emulation.Request&nbsp;instance<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Raises:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;semeMLError&nbsp;--&nbsp;if&nbsp;the&nbsp;request&nbsp;doesn't&nbsp;respects&nbsp;schema</tt></dd></dl>
+ <dl><dt><a name="-save"><strong>save</strong></a>(model, filename<font color="#909090">=None</font>)</dt><dd><tt>Convenience&nbsp;function&nbsp;to&nbsp;save&nbsp;a&nbsp;model&nbsp;to&nbsp;a&nbsp;file.&nbsp;If&nbsp;filename&nbsp;is&nbsp;not&nbsp;set,&nbsp;<br>
+the&nbsp;resulting&nbsp;xml&nbsp;string&nbsp;is&nbsp;returned.</tt></dd></dl>
+ <dl><dt><a name="-save_modules"><strong>save_modules</strong></a>(model, modules)</dt><dd><tt>Return&nbsp;an&nbsp;XML&nbsp;string&nbsp;that&nbsp;represent&nbsp;these&nbsp;modules.&nbsp;Used&nbsp;to&nbsp;cut&nbsp;or&nbsp;copy&nbsp;<br>
+modules.<br>
+&nbsp;<br>
+Arguments:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;model&nbsp;--&nbsp;the&nbsp;model&nbsp;(context,&nbsp;useful&nbsp;for&nbsp;references)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;modules&nbsp;--&nbsp;the&nbsp;list&nbsp;of&nbsp;module&nbsp;to&nbsp;marshall</tt></dd></dl>
+ <dl><dt><a name="-write_report"><strong>write_report</strong></a>(report)</dt><dd><tt>Return&nbsp;an&nbsp;XML&nbsp;message&nbsp;from&nbsp;a&nbsp;report&nbsp;object</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>logger</strong> = &lt;logging.Logger instance at 0x88e412c&gt;</td></tr></table>
+</body></html>

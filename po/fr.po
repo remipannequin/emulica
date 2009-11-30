@@ -1,0 +1,1151 @@
+# French translations for Gseme package.
+# Copyright (C) 2008 THE Gseme'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Gseme package.
+# Rémi Pannequin <remi.pannequin@cran.uhp-nancy.fr>, 2008.
+# Rémi Pannequin <remi.pannequin@cran.uhp-nancy.fr>, 2008.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Gseme 0.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-24 17:05+0100\n"
+"PO-Revision-Date: 2009-11-24 17:10+0100\n"
+"Last-Translator: Rémi Pannequin <Remi.Pannequin@cran.uhp-nancy.fr>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/emulica/emulicapp/__init__.py:261
+msgid "running"
+msgstr "exécution"
+
+#: src/emulica/emulicapp/__init__.py:272
+msgid "starting"
+msgstr "lancement"
+
+#: src/emulica/emulicapp/__init__.py:278
+msgid "finished"
+msgstr "terminé"
+
+#: src/emulica/emulicapp/__init__.py:288
+msgid "Exception when runing emulation:\n"
+msgstr "Exception lors de l'exécution de l'émulation :\n"
+
+#: src/emulica/emulicapp/__init__.py:301
+msgid "ready"
+msgstr "prêt"
+
+#: src/emulica/emulicapp/__init__.py:318
+msgid "Save File..."
+msgstr "Enregistrement..."
+
+#: src/emulica/emulicapp/__init__.py:371
+msgid "untitled"
+msgstr "sans titre"
+
+#: src/emulica/emulicapp/__init__.py:376
+msgid "Do you want to save modifications in document {0} before closing?"
+msgstr "Voulez-vous sauvegarder les modifications du document « {0} » avant de le fermer ?"
+
+#: src/emulica/emulicapp/__init__.py:377
+msgid "Close without saving"
+msgstr "Fermer sans enregistrer"
+
+#: src/emulica/emulicapp/__init__.py:380
+msgid "If you don't save all modifications will be lost."
+msgstr "Si vous n'enregistrez pas, toutes les modifications seront perdues."
+
+#: src/emulica/emulicapp/__init__.py:401
+msgid "Open File..."
+msgstr "Ouverture..."
+
+#: src/emulica/emulicapp/__init__.py:439
+msgid "Loading {0}"
+msgstr "Chargement de {0}"
+
+#: src/emulica/emulicapp/__init__.py:458
+msgid "module {name} present in layout was not found. removing from layout."
+msgstr ""
+
+#: src/emulica/emulicapp/__init__.py:474
+msgid "model did not have any layout."
+msgstr "le modèle ne contient pas d'élément de disposition."
+
+#: src/emulica/emulicapp/__init__.py:489
+msgid ""
+"Could not open file: {filename}s\n"
+" {warning}"
+msgstr ""
+"Ouverture impossible du fichier {filename}\n"
+"{warning}"
+
+#: src/emulica/emulicapp/__init__.py:501
+#: src/emulica/emulicapp/__init__.py:503
+msgid "Saving {0}"
+msgstr "Enregistrement de {0}"
+
+#: src/emulica/emulicapp/__init__.py:513
+msgid "Could not save file: {0}"
+msgstr "Échec de l'enregistrement : {0}"
+
+#: src/emulica/emulicapp/dialogs.py:42
+msgid "Select emulation modules to add"
+msgstr "Choix des modules à ajouter"
+
+#: src/emulica/emulicapp/dialogs.py:76
+msgid "Select:"
+msgstr "Sélection :"
+
+#: src/emulica/emulicapp/dialogs.py:81
+msgid "All"
+msgstr "Tous"
+
+#: src/emulica/emulicapp/dialogs.py:84
+msgid "None"
+msgstr "Aucun"
+
+#: src/emulica/emulicapp/dialogs.py:87
+msgid "Invert"
+msgstr "Inverser"
+
+#: src/emulica/emulicapp/dialogs.py:166
+msgid "Preferences for emulica"
+msgstr "Préférences de Emulica"
+
+#: src/emulica/emulicapp/dialogs.py:174
+msgid "Control Edition"
+msgstr "Édition du contrôle"
+
+#: src/emulica/emulicapp/dialogs.py:175
+msgid "Show line numbers:"
+msgstr "Afficher les numéros de ligne :"
+
+#: src/emulica/emulicapp/dialogs.py:176
+msgid "Auto-indent:"
+msgstr "Indentation automatique :"
+
+#: src/emulica/emulicapp/dialogs.py:177
+msgid "Insert spaces instead of tabs:"
+msgstr "Insérer des espaces à la place des tabulations :"
+
+#: src/emulica/emulicapp/dialogs.py:178
+msgid "Indent width:"
+msgstr "Largeur de l'indentation :"
+
+#: src/emulica/emulicapp/dialogs.py:179
+msgid "Show line marks"
+msgstr "Montrer les marqueurs de ligne :"
+
+#: src/emulica/emulicapp/dialogs.py:231
+msgid "Execution settings"
+msgstr "Paramètres d'exécution"
+
+#: src/emulica/emulicapp/dialogs.py:238
+msgid "Time advance mode:"
+msgstr "Mode d'avancement du temps :"
+
+#: src/emulica/emulicapp/dialogs.py:239
+msgid "Time limit:"
+msgstr "Limite de temps :"
+
+#: src/emulica/emulicapp/dialogs.py:240
+msgid "Real-time factor:"
+msgstr "Facteur temps-réel :"
+
+#: src/emulica/emulicapp/dialogs.py:241
+msgid "Animate emulation:"
+msgstr "Animer l'émulation :"
+
+#: src/emulica/emulicapp/dialogs.py:246
+msgid "Discrete events"
+msgstr "Événements discrets"
+
+#: src/emulica/emulicapp/dialogs.py:246
+msgid "Real-time"
+msgstr "Temps réel :"
+
+#: src/emulica/emulicapp/dialogs.py:302
+#: ui/emulica.ui:6
+msgid "Emulica"
+msgstr "Emulica"
+
+#: src/emulica/emulicapp/dialogs.py:306
+msgid "Interface to emulica, a emulation modelling and execution environment."
+msgstr "Une interface à Emulica, l'environnement de création et d'exécution de modèles d'émulation systémiques."
+
+#: src/emulica/emulicapp/dialogs.py:340
+msgid "File: {0}"
+msgstr "Fichier {0}"
+
+#: src/emulica/emulicapp/dialogs.py:341
+msgid "File: (UNTITLED)"
+msgstr "Fichier : (Sans titre)"
+
+#: src/emulica/emulicapp/dialogs.py:368
+msgid "Model input interface"
+msgstr "Interface d'entrée du modèle"
+
+#: src/emulica/emulicapp/dialogs.py:448
+#: src/emulica/properties.py:985
+msgid "property{0}"
+msgstr "propriété{0}"
+
+#: src/emulica/emulicapp/modelling.py:97
+#: src/emulica/emulicapp/control.py:82
+msgid "Import emulation model..."
+msgstr "Importer le modèle d'émulation..."
+
+#: src/emulica/emulicapp/modelling.py:112
+msgid "Export emulation model..."
+msgstr "Exporter le modèle d'émulation..."
+
+#: src/emulica/emulicapp/control.py:98
+msgid "Export control model..."
+msgstr "Exporter le modèle de contrôle..."
+
+#: src/emulica/emulicapp/control.py:111
+msgid "export failed"
+msgstr "échec de l'exportation"
+
+#: src/emulica/emulicapp/control.py:197
+#: src/emulica/emulicapp/control.py:299
+#: src/emulica/emulicapp/control.py:381
+msgid "Select request parameters"
+msgstr "Choix des paramètres de la requête"
+
+#: src/emulica/emulicapp/control.py:203
+msgid "Receiver:"
+msgstr "Destinataire :"
+
+#: src/emulica/emulicapp/control.py:203
+msgid "Action:"
+msgstr "Action :"
+
+#: src/emulica/emulicapp/control.py:203
+msgid "Date:"
+msgstr "Date :"
+
+#: src/emulica/emulicapp/control.py:224
+msgid "Program:"
+msgstr "Programme :"
+
+#: src/emulica/emulicapp/control.py:224
+msgid "Product type:"
+msgstr "Type produit :"
+
+#: src/emulica/emulicapp/control.py:224
+msgid "Product ID:"
+msgstr "Identifiant produits :"
+
+#: src/emulica/emulicapp/control.py:305
+msgid "Module to monitor:"
+msgstr ""
+
+#: src/emulica/emulicapp/control.py:331
+msgid "Control code compiled succefully."
+msgstr "compilation du code du système de contrôle réalisée avec succès"
+
+#: src/emulica/emulicapp/control.py:333
+msgid "Control code compilation failed."
+msgstr "la compilation du code du système de contrôle a échoué."
+
+#: src/emulica/emulicapp/control.py:338
+msgid "Select control snippet to insert"
+msgstr "Choisissez l'échantillon de code"
+
+#: src/emulica/emulicapp/control.py:343
+msgid "Main Import"
+msgstr "Import principal"
+
+#: src/emulica/emulicapp/control.py:344
+msgid "Empty control class"
+msgstr "Classe de contrôle vide"
+
+#: src/emulica/emulicapp/control.py:345
+msgid "Emulation module"
+msgstr "Module d'émulation"
+
+#: src/emulica/emulicapp/control.py:346
+msgid "Put request"
+msgstr "Envoyer une requête"
+
+#: src/emulica/emulicapp/control.py:347
+msgid "Get report"
+msgstr "Obtenir un compte-rendu"
+
+#: src/emulica/emulicapp/control.py:348
+msgid "Wait idle state"
+msgstr "Attente de l'état inactif"
+
+#: src/emulica/emulicapp/control.py:354
+msgid "Availlable Snippets"
+msgstr "Extrait disponibles"
+
+#: src/emulica/emulicapp/control.py:387
+msgid "Get report from module:"
+msgstr "Récupérer les comptes-rendus d'un module :"
+
+#: src/emulica/emulicapp/control.py:437
+msgid "{name}: {message}"
+msgstr "{name} : {message}"
+
+#: src/emulica/emulicapp/control.py:445
+#: src/emulica/emuML.py:576
+msgid "control code compilation sucessfull"
+msgstr "compilation du code du système de contrôle réalisée avec succès"
+
+#: src/emulica/emulicapp/results.py:52
+msgid "Product Chart"
+msgstr "Diagramme produits"
+
+#: src/emulica/emulicapp/results.py:55
+msgid "Gantt Chart"
+msgstr "Diagramme de Gantt"
+
+#: src/emulica/emulicapp/results.py:58
+msgid "Holder occupation"
+msgstr "Occupation des conteneurs"
+
+#: src/emulica/emulicapp/results.py:81
+msgid "Summary"
+msgstr "Résumé"
+
+#: src/emulica/emulicapp/results.py:90
+msgid "Export results..."
+msgstr "Exporter les résultats..."
+
+#: src/emulica/emulicapp/results.py:116
+#: ui/emulica.ui:1474
+msgid "Include all"
+msgstr "Inclure tout"
+
+#: src/emulica/emulicapp/results.py:119
+msgid "Type of chart"
+msgstr "Type de Diagramme"
+
+#: src/emulica/emulicapp/results.py:158
+msgid "Save Results as:"
+msgstr "Sauvegarder les résultats"
+
+#: src/emulica/emulicapp/results.py:171
+msgid "Include raw result (csv)"
+msgstr "Inclure les résultats bruts (csv)"
+
+#: src/emulica/emulicapp/results.py:172
+msgid "Include summary (txt)"
+msgstr "Inclure le résumé"
+
+#: src/emulica/emulicapp/results.py:176
+msgid "File prefix:"
+msgstr "Préfixe des fichiers :"
+
+#: src/emulica/emulicapp/results.py:183
+msgid "Saving Directory"
+msgstr "Répertoire de sauvegarde"
+
+#: src/emulica/canvas.py:135
+msgid "module {0} added"
+msgstr "module {0} ajouté"
+
+#: src/emulica/canvas.py:146
+msgid "module {0} removed"
+msgstr "module {0} supprimé"
+
+#: src/emulica/emuML.py:65
+msgid "unable to find emulation.xml"
+msgstr "impossible de charger emulation.xml"
+
+#: src/emulica/emuML.py:69
+msgid "unable to find control.py"
+msgstr "impossible de charger control.py"
+
+#: src/emulica/emuML.py:73
+msgid "unable to find props.db"
+msgstr "impossible de charger props.db"
+
+#: src/emulica/emuML.py:76
+msgid "Invalid opening mode, only 'r' (for reading) and 'w' (for writing) are valid modes."
+msgstr "Mode d'ouverture invalide, seul les modes 'r' (pour la lecture) et 'w' (pour l'écriture) sont valides."
+
+#: src/emulica/emuML.py:503
+#: src/emulica/emulation.py:1044
+#: src/emulica/emulation.py:1084
+#: src/emulica/emulation.py:1350
+msgid "Source"
+msgstr "Source"
+
+#: src/emulica/emuML.py:504
+#: src/emulica/emulation.py:975
+#: src/emulica/emulation.py:1085
+#: src/emulica/emulation.py:1489
+msgid "Destination"
+msgstr "Destination"
+
+#: src/emulica/emuML.py:505
+#: src/emulica/emulation.py:1213
+msgid "Physical changes"
+msgstr "Modifications Physiques"
+
+#: src/emulica/emuML.py:578
+msgid "initialization function have not been implemented"
+msgstr "Attention : la fonction d'initialisation n'a pas été déclarée"
+
+#: src/emulica/properties.py:213
+msgid "could not evaluate '{0}'"
+msgstr "impossible d'évaluer '{0}'"
+
+#: src/emulica/properties.py:274
+msgid "changing setup: ({initial}, {final}) -> ({new_init}, {new_final})"
+msgstr "modification du changement de série : ({initial}, {final}) -> ({new_init}, {new_final})"
+
+#: src/emulica/properties.py:281
+msgid "changing setup time: {0:f}) -> {1:f}"
+msgstr "Modification du délai du changement de série {0:f} -> {1:f}"
+
+#: src/emulica/properties.py:434
+msgid "Module"
+msgstr "Module"
+
+#: src/emulica/properties.py:435
+msgid "String"
+msgstr "Chaîne  de caractères"
+
+#: src/emulica/properties.py:436
+msgid "Boolean"
+msgstr "Booléen"
+
+#: src/emulica/properties.py:437
+msgid "Integer"
+msgstr "Entier"
+
+#: src/emulica/properties.py:438
+msgid "Float"
+msgstr "Nombre à virgule flotante"
+
+#: src/emulica/properties.py:439
+msgid "List of modules"
+msgstr "Liste de modules"
+
+#: src/emulica/properties.py:440
+#: src/emulica/emulation.py:1093
+#: src/emulica/emulation.py:1221
+#: src/emulica/emulation.py:1361
+#: src/emulica/emulation.py:1503
+msgid "Program table"
+msgstr "Programmes"
+
+#: src/emulica/properties.py:441
+msgid "Setup table"
+msgstr "Table de réglages"
+
+#: src/emulica/properties.py:442
+msgid "Evaluable string"
+msgstr "Chaîne évaluable"
+
+#: src/emulica/properties.py:443
+msgid "List of physical properties"
+msgstr "Caractéristiques physiques"
+
+#: src/emulica/properties.py:505
+msgid "Properties of {0}"
+msgstr "Propriétés de {0}"
+
+#: src/emulica/properties.py:514
+msgid "Module Name"
+msgstr "Nom du module"
+
+#: src/emulica/properties.py:543
+msgid "Add Property..."
+msgstr "Ajouter une propriété..."
+
+#: src/emulica/properties.py:564
+msgid "Add a new property to {0}"
+msgstr "Ajouter une nouvelle propriété à {0}"
+
+#: src/emulica/properties.py:572
+#: src/emulica/plot.py:182
+#: src/emulica/plot.py:192
+msgid "Name:"
+msgstr "Nom :"
+
+#: src/emulica/properties.py:579
+msgid "Type:"
+msgstr "Type :"
+
+#: src/emulica/properties.py:666
+msgid "<i>No properties to display</i>"
+msgstr "<i>Aucune propriété à afficher</i>"
+
+#: src/emulica/properties.py:837
+#: src/emulica/properties.py:858
+msgid "Edit..."
+msgstr "Éditer"
+
+#: src/emulica/properties.py:841
+#: src/emulica/properties.py:846
+#: src/emulica/properties.py:862
+msgid "{0:d} programs"
+msgstr "{0:d} programmes"
+
+#: src/emulica/properties.py:1023
+msgid "Edit program table"
+msgstr "Éditer la table des programmes"
+
+#: src/emulica/properties.py:1114
+msgid "program{0}"
+msgstr "programme{0}"
+
+#: src/emulica/properties.py:1179
+msgid "changing program {name} to {new_name}"
+msgstr "changement du nom du programme {name} en {new_name}"
+
+#: src/emulica/properties.py:1205
+msgid "Edit Setup Matrix"
+msgstr "Éditer la matrice de réglage"
+
+#: src/emulica/properties.py:1228
+msgid "Default setup time:"
+msgstr "Temps de changement par défaut :"
+
+#: src/emulica/properties.py:1279
+msgid "initial"
+msgstr "initial"
+
+#: src/emulica/properties.py:1279
+msgid "final"
+msgstr "final"
+
+#: src/emulica/controler.py:102
+msgid "a time limit must be set if executing in discrete-events mode"
+msgstr "une limite de temps doit être fixée en mode d'avance de temps par événement discret"
+
+#: src/emulica/controler.py:176
+msgid "unrecognized action string: {0}"
+msgstr "Action {0} non reconnue"
+
+#: src/emulica/controler.py:186
+msgid "unknown module {0}"
+msgstr "module {0} inconnu"
+
+#: src/emulica/controler.py:224
+msgid "sending report {0}"
+msgstr "envoi du compte-rendu {0}"
+
+#: src/emulica/controler.py:236
+msgid "attaching reports store to module {0}"
+msgstr "association de la queue de comptes-rendus au module {0}"
+
+#: src/emulica/controler.py:255
+msgid "connection opened by {0}"
+msgstr "connexion ouverte par {0}"
+
+#: src/emulica/controler.py:259
+msgid "Another client is already connected: disconnecting..."
+msgstr "Un client est déjà connecté : déconnexion..."
+
+#: src/emulica/controler.py:271
+msgid "received request {0}"
+msgstr "réception de la requête {0}"
+
+#: src/emulica/controler.py:274
+msgid "Error in processing message: {0}"
+msgstr "Erreur de traitement du message: {0}"
+
+#: src/emulica/emulation.py:164
+msgid "Cannot rename module {name} in {new_name}: there is already a module of this name."
+msgstr "Impossible de renommer le module {name} en {new_name} : il existe déjà un module ayant ce nom"
+
+#: src/emulica/emulation.py:193
+#: src/emulica/emulation.py:216
+msgid "A new request_socket must be created, but there is already one, and the multiple_observation parameter was not set to True"
+msgstr "Un nouveau canal de compte-rendu doit être créé, mais il en existe déjà un, et le paramètre d'observation multiple n'a pas été mis à vrai"
+
+#: src/emulica/emulation.py:296
+msgid "a default path will be used"
+msgstr "un chemin par défaut sera utilisé"
+
+#: src/emulica/emulation.py:330
+msgid "Invalid module name: {0}"
+msgstr "Nom de module invalide: {0}"
+
+#: src/emulica/emulation.py:363
+#: src/emulica/emulation.py:410
+msgid "Submodels cannot use this method. Only the top level model can be executed."
+msgstr "Les sous-models ne peuvent pas utiliser cette méthode. Seuls le modèles de plus haut niveau peut l'exécuter."
+
+#: src/emulica/emulation.py:371
+#: src/emulica/emulation.py:497
+msgid "registering control process {0}"
+msgstr "enregistrement du process de contrôle {0}"
+
+#: src/emulica/emulation.py:411
+msgid "simulation stopped at t={0}"
+msgstr "simulation stoppée à t={0}"
+
+#: src/emulica/emulation.py:458
+msgid "Cannot create module {0}: there is already a module of this name"
+msgstr "Impossible de créer le module {0} : il existe déjà un module ayant ce nom"
+
+#: src/emulica/emulation.py:461
+msgid "'main' is a reserved name"
+msgstr "'main' est un nom réservé"
+
+#: src/emulica/emulation.py:582
+msgid "product ID {0} has already been used"
+msgstr "l'identifiant de produit {0} a déjà été utilisé "
+
+#: src/emulica/emulation.py:597
+msgid "product {pid} created at {time}"
+msgstr "le produit {pid} est créé à t={time}"
+
+#: src/emulica/emulation.py:636
+msgid "product {pid} disposed at {time}"
+msgstr "le produit {pid} est prêt à t={time}"
+
+#: src/emulica/emulation.py:722
+msgid "Request {what} to {who} at t={when}"
+msgstr "Requête au module {what} d'exécuter {who} à t={when} "
+
+#: src/emulica/emulation.py:725
+#: src/emulica/emulation.py:776
+msgid "parameters={0}"
+msgstr "paramètres={0}"
+
+#: src/emulica/emulation.py:727
+#: src/emulica/emulation.py:778
+msgid "location={0}"
+msgstr "emplacement={0}"
+
+#: src/emulica/emulation.py:729
+#: src/emulica/emulation.py:780
+msgid "comment={0}"
+msgstr "comment={0}"
+
+#: src/emulica/emulation.py:773
+msgid "Report {what} from {who} at t={when}"
+msgstr "Compte-Rendu de l'état {what} provenant du module {who} à t={when} "
+
+#: src/emulica/emulation.py:858
+msgid "Can not add programs to actuator without program tables (create and dispose actuators)"
+msgstr ""
+
+#: src/emulica/emulation.py:883
+#: ui/emulica.ui:988
+msgid "Processes"
+msgstr "Process"
+
+#: src/emulica/emulation.py:884
+msgid "MTBF"
+msgstr "MTBF"
+
+#: src/emulica/emulation.py:885
+msgid "MTTR"
+msgstr "MTTR"
+
+#: src/emulica/emulation.py:886
+msgid "Performance Degradation"
+msgstr "Dégradation de performance"
+
+#: src/emulica/emulation.py:887
+msgid "Repeat"
+msgstr "Répéter"
+
+#: src/emulica/emulation.py:979
+msgid "Products properties"
+msgstr "Propriétés des produits"
+
+#: src/emulica/emulation.py:992
+msgid "This module has not be properly initialized: destination has not been set"
+msgstr "Ce module n'a pas été correctement initialisé : la destination n'a pas été précisée"
+
+#: src/emulica/emulation.py:1018
+msgid "physical property {0} from create request supersedes property from module"
+msgstr "l'affectation de la propriété physique {0} par une requête écrase celle du module"
+
+#: src/emulica/emulation.py:1051
+msgid "This module has not be properly initialized: source has not been set"
+msgstr "Ce module n'a pas été correctement initialisé : la source n'a pas été précisée"
+
+#: src/emulica/emulation.py:1098
+#: src/emulica/emulation.py:1226
+#: src/emulica/emulation.py:1367
+#: src/emulica/emulation.py:1499
+msgid "Setup matrix"
+msgstr "Matrice de réglage"
+
+#: src/emulica/emulation.py:1114
+msgid "program {0} is not in the program table"
+msgstr "le programme {0} n'est pas dans la table"
+
+#: src/emulica/emulation.py:1116
+#: src/emulica/emulation.py:1249
+#: src/emulica/emulation.py:1390
+#: src/emulica/emulation.py:1392
+#: src/emulica/emulation.py:1528
+msgid "module {name} doing setup at {t}"
+msgstr "module {name} effectue un réglage à {t}"
+
+#: src/emulica/emulation.py:1227
+#: src/emulica/emulation.py:1356
+#: src/emulica/emulation.py:1495
+#: src/emulica/emulation.py:1828
+#: src/emulica/emulation.py:1924
+msgid "Holder"
+msgstr "Conteneur"
+
+#: src/emulica/emulation.py:1235
+#: src/emulica/emulation.py:1374
+#: src/emulica/emulation.py:1512
+msgid "This module has not be properly initialized: holder has not been set"
+msgstr "Ce module n'a pas été correctement initialisé : le conteneur n'a pas été précisé"
+
+#: src/emulica/emulation.py:1288
+msgid "cannot treat more than one product at once"
+msgstr "ne peut pas traiter plus d'un produit à la fois"
+
+#: src/emulica/emulation.py:1302
+msgid "could not find physical property {0}"
+msgstr "Impossible de trouver la caractéristique physique {0}"
+
+#: src/emulica/emulation.py:1375
+msgid "starting assembleAct {0}"
+msgstr "démarrage de l'actionneur d'assemblage {0}"
+
+#: src/emulica/emulation.py:1381
+msgid "module {name} waiting {time}..."
+msgstr "module {name} en attente pendant {time})"
+
+#: src/emulica/emulation.py:1396
+msgid "module {name} doing assembly at {t}"
+msgstr "module {name} effectue un assemblage à {t}"
+
+#: src/emulica/emulation.py:1399
+msgid "module {name} ready at {t}"
+msgstr "module {name} prêt à {t}"
+
+#: src/emulica/emulation.py:1403
+msgid "begining setup on module {0}"
+msgstr "début du réglage sur le module {0}"
+
+#: src/emulica/emulation.py:1417
+msgid "finished setup on module {0}"
+msgstr "fin du réglage sur le module {0}"
+
+#: src/emulica/emulation.py:1424
+msgid "begining assembly on module {0}"
+msgstr "début de l'assemblage sur le module {0}"
+
+#: src/emulica/emulation.py:1428
+msgid "locking holder on module {0}"
+msgstr "verrouillage du conteneur sur le module {0}"
+
+#: src/emulica/emulation.py:1432
+msgid "fetching products to assemble in module {0}"
+msgstr "obtention des produits à assembler sur le module {0}"
+
+#: src/emulica/emulation.py:1448
+#: src/emulica/emulation.py:1575
+msgid "ignoring product in holder {0} other than the first one"
+msgstr "les produits du conteneur {0} autre que le premier sont ignorés"
+
+#: src/emulica/emulation.py:1452
+msgid "assembling with an empty product"
+msgstr "assemblage sans produit"
+
+#: src/emulica/emulation.py:1514
+msgid "starting diassembleAct {0}"
+msgstr "démarrage de l'actionneur d'assemblage {0}"
+
+#: src/emulica/emulation.py:1556
+msgid "begining diassembling on module {0}"
+msgstr "début de l'assemblage sur le module {0}"
+
+#: src/emulica/emulation.py:1580
+msgid "ignoring request to disassemble: no product in holder {0}"
+msgstr "la requête de désassemblage est ignorée: pas de produit dans le conteneur {0}"
+
+#: src/emulica/emulation.py:1623
+msgid "Capacity"
+msgstr "Capacité"
+
+#: src/emulica/emulation.py:1624
+msgid "Speed"
+msgstr "Vitesse"
+
+#: src/emulica/emulation.py:1661
+msgid "no product ready in this holder"
+msgstr "aucun produit n'est prêt dans ce conteneur"
+
+#: src/emulica/emulation.py:1682
+msgid "t={now}: reactivating obs at {delayed}"
+msgstr "t={now}: réactivation de l'observateur à {delayed}"
+
+#: src/emulica/emulation.py:1795
+msgid "product {pid} is ready at {time}"
+msgstr "le produit {pid} est prêt à t={time}"
+
+#: src/emulica/emulation.py:1827
+#: src/emulica/emulation.py:1923
+msgid "Event Name"
+msgstr "Événement"
+
+#: src/emulica/emulation.py:1835
+msgid "Observe identity"
+msgstr "Observer l'identité"
+
+#: src/emulica/emulation.py:1836
+msgid "Observe Type"
+msgstr "Observer le type"
+
+#: src/emulica/emulation.py:1854
+#: src/emulica/emulation.py:1945
+msgid "t={0}: observation done!"
+msgstr "t={0}: observation réalisée !"
+
+#: src/emulica/emulation.py:1858
+msgid "t={0}: observator passivated..."
+msgstr "t={0}: observateur  !"
+
+#: src/emulica/emulation.py:1860
+msgid "t={0}: observator activated..."
+msgstr "t={0}: observateur activé !"
+
+#: src/emulica/emulation.py:1963
+msgid "(module {name}, t={time}): {message}"
+msgstr "(module {name}, t={time}) : {message}"
+
+#: src/emulica/plot.py:40
+msgid "General"
+msgstr "Résultats généraux"
+
+#: src/emulica/plot.py:41
+#: ui/emulica.ui:776
+msgid "Actuators"
+msgstr "Actionneurs"
+
+#: src/emulica/plot.py:42
+msgid "Products"
+msgstr "Produits"
+
+#: src/emulica/plot.py:43
+msgid "Holders"
+msgstr "Conteneurs"
+
+#: src/emulica/plot.py:53
+msgid "Number of products:"
+msgstr "Nombre de produits :"
+
+#: src/emulica/plot.py:54
+msgid "Simulation length:"
+msgstr "Durée de la simulation"
+
+#: src/emulica/plot.py:55
+msgid "Average actuator utilization:"
+msgstr "Taux d'utilisation moyen des actionneurs :"
+
+#: src/emulica/plot.py:56
+msgid "Average product lifetime:"
+msgstr "Durée de vie moyenne des produits :"
+
+#: src/emulica/plot.py:57
+msgid "Average holder occupation:"
+msgstr "Occupation moyenne des conteneurs :"
+
+#: src/emulica/plot.py:58
+msgid "Utilization:"
+msgstr "Taux d'utilisation :"
+
+#: src/emulica/plot.py:59
+msgid "Lifetime:"
+msgstr "Durée de vie :"
+
+#: src/emulica/plot.py:60
+msgid "Occupation:"
+msgstr "Taux d'occupation :"
+
+#: src/emulica/plot.py:72
+msgid "Physical attributes:"
+msgstr "Caractéristiques physiques :"
+
+#: src/emulica/plot.py:187
+msgid "ProdID:"
+msgstr "ID Produit :"
+
+#: src/emulica/plot.py:250
+msgid "time"
+msgstr "temps"
+
+#: src/emulica/plot.py:251
+msgid "holder occupation"
+msgstr "Occupation des conteneurs"
+
+#: src/emulica/plot.py:276
+msgid "product life-cycle"
+msgstr "Cycle de vie produit"
+
+#: src/emulica/plot.py:292
+msgid "Too many row in product chart, add_serie is ignored..."
+msgstr "Trop de ligne dans le diagramme produit, add_serie est ignorée..."
+
+#: src/emulica/plot.py:354
+msgid "gantt chart"
+msgstr "Diagramme de Gantt"
+
+#: src/emulica/plot.py:409
+msgid "Adding an empty trace to gantt chart"
+msgstr "Ajout d'une trace vide au diagramme de gantt"
+
+#: src/emulica.py:38
+msgid "gseme is a GTK interface to seme, an emulation modelling and execution framework"
+msgstr "gseme  est une interface graphique basée sur GTK pour seme, un environnement de création et d'exécution de modèles d'émulation."
+
+#: src/emulica.py:39
+msgid "usage: gseme -hd [gseme_file]"
+msgstr "usage : gseme -hd [fichier gseme]"
+
+#: src/emulica.py:40
+msgid "usage: gseme --server --port num_port seme_model.xml"
+msgstr "usage: gseme --server --port numéro_port modèle.xml"
+
+#: src/emulica.py:52
+msgid "unable to find gseme.ui file, exiting."
+msgstr "impossible de charger gseme.ui, fin du programme"
+
+#: src/emulica.py:88
+msgid "in server mode, a model name must be provided"
+msgstr "en mode serveur, un nom de modèle doit être fourni"
+
+#: ui/emulica.ui:23
+msgid "_File"
+msgstr "_Fichier"
+
+#: ui/emulica.ui:71
+msgid "Export"
+msgstr "Exporter"
+
+#: ui/emulica.ui:80
+#: ui/emulica.ui:116
+msgid "Emulation Model..."
+msgstr "Modèle d'émulation..."
+
+#: ui/emulica.ui:88
+#: ui/emulica.ui:124
+msgid "Control System..."
+msgstr "Système de contrôle..."
+
+#: ui/emulica.ui:96
+msgid "Results..."
+msgstr "Résultats..."
+
+#: ui/emulica.ui:107
+msgid "Import"
+msgstr "Importer..."
+
+#: ui/emulica.ui:154
+msgid "E_dit"
+msgstr "É_dition"
+
+#: ui/emulica.ui:240
+msgid "_View"
+msgstr "_Affichage"
+
+#: ui/emulica.ui:288
+msgid "Modeling"
+msgstr "Modèle"
+
+#: ui/emulica.ui:296
+msgid "Add actuator"
+msgstr "Ajouter un actionneur"
+
+#: ui/emulica.ui:361
+msgid "Add Process"
+msgstr "Ajouter un process"
+
+#: ui/emulica.ui:390
+msgid "Add Observer"
+msgstr "Ajouter un observateur"
+
+#: ui/emulica.ui:487
+msgid "Execution"
+msgstr "Exécution"
+
+#: ui/emulica.ui:535
+msgid "Execution settings..."
+msgstr "Paramètres d'exécution..."
+
+#: ui/emulica.ui:549
+#: ui/emulica.ui:1569
+msgid "Results"
+msgstr "Résultats"
+
+#: ui/emulica.ui:588
+msgid "Help"
+msgstr "Aide"
+
+#: ui/emulica.ui:661
+msgid "Simulate"
+msgstr "Simuler"
+
+#: ui/emulica.ui:673
+msgid "Pause"
+msgstr "Pause"
+
+#: ui/emulica.ui:685
+msgid "Stop"
+msgstr "Stop"
+
+#: ui/emulica.ui:697
+msgid "Clear"
+msgstr "Nettoyer"
+
+#: ui/emulica.ui:1027
+msgid "add a product holder to the model"
+msgstr "Ajout d'un conteneur de produit au modèle"
+
+#: ui/emulica.ui:1050
+msgid "Add a Failure to the model"
+msgstr "Ajoute une panne au modèle"
+
+#: ui/emulica.ui:1100
+msgid "Observers"
+msgstr "Observateurs"
+
+#: ui/emulica.ui:1198
+msgid "Add Submodel..."
+msgstr "Ajout d'un sous-modèle"
+
+#: ui/emulica.ui:1266
+msgid "Emulation model"
+msgstr "Modèle d'émulation"
+
+#: ui/emulica.ui:1302
+msgid "Add Snippet..."
+msgstr "Ajouter un extrait de code..."
+
+#: ui/emulica.ui:1339
+msgid "Update initialization function"
+msgstr "Mettre la fonction d'initialisation à jour"
+
+#: ui/emulica.ui:1377
+msgid "Check syntax"
+msgstr "Vérifier la syntaxe"
+
+#: ui/emulica.ui:1423
+msgid "Control system"
+msgstr "Système de contrôle"
+
+#: ui/emulica.ui:1447
+msgid "Type of Chart:"
+msgstr "Type de Diagramme : "
+
+#: ui/emulica.ui:1524
+msgid "Legend"
+msgstr "Légende"
+
+#~ msgid "Gseme"
+#~ msgstr "Gseme"
+#~ msgid "Program Table of {0}"
+#~ msgstr "Programmes de {0}"
+#~ msgid "initializing program model for {0}"
+#~ msgstr "initialisation du modèle des programmes pour {0}"
+#~ msgid "seme"
+#~ msgstr "seme"
+#~ msgid "Create"
+#~ msgstr "Créer"
+#~ msgid "Dispose"
+#~ msgstr "Détruire"
+#~ msgid "Shape"
+#~ msgstr "Forme"
+#~ msgid "Space"
+#~ msgstr "Espace"
+#~ msgid "Assemble"
+#~ msgstr "Assembler"
+#~ msgid "Disassemble"
+#~ msgstr "Déassembler"
+#~ msgid "Add Failure"
+#~ msgstr "Ajout d'une Panne"
+#~ msgid "Manual"
+#~ msgstr "Manuel"
+#~ msgid "Automatic"
+#~ msgstr "Automatique"
+#~ msgid "Add submodel"
+#~ msgstr "Ajout d'un sous-modèle"
+#~ msgid "Save Results..."
+#~ msgstr "Enregistrer les résultats..."
+#~ msgid "Check Syntax"
+#~ msgstr "Vérifier la syntaxe"
+#~ msgid "Add code snippet..."
+#~ msgstr "Ajouter un extrait de code..."
+#~ msgid "Failed to load UI XML file: gseme.glade"
+#~ msgstr "Échec du chargement du fichier XML d'interface : gseme.glade"
+#~ msgid "Transform"
+#~ msgstr "Transformer"
+#~ msgid "Move"
+#~ msgstr "Déplacer"
+#~ msgid "Update declare function"
+#~ msgstr "Mettre les déclarations à jour"
+#~ msgid "Check control"
+#~ msgstr "Vérifier le contrôle"
+#~ msgid "Module properties display and modification"
+#~ msgstr "Affichage et modification des propriétés des modules"
+#~ msgid "Add an assemble actuator, to combine products"
+#~ msgstr "Ajout d'un actionneur d'assemblage, pour combiner des produits"
+#~ msgid "Add a space actuator, to move products"
+#~ msgstr "Ajout d'un actionneur d'espace, pour déplacer les produits"
+#~ msgid "Add a shape actuator, to transform products"
+#~ msgstr "Ajout d'un actionneur de forme, pour transformer les produits"
+#~ msgid "Add a dispose actuator, to remove products from the model"
+#~ msgstr ""
+#~ "Ajout d'un actionneur de destruction, pour supprimer des produits du "
+#~ "modèle"
+#~ msgid "Add a create actuator, to add products to the model"
+#~ msgstr ""
+#~ "Ajout d'un actionneur de création, pour ajouter des produits au modèle"
+#~ msgid "Add an unassemble actuator, to separate products"
+#~ msgstr "Ajout d'un actionneur de désassemblage, pour séparer les produits"
+#~ msgid "Add an automatic observer"
+#~ msgstr "Ajout d'un observateur automatique"
+#~ msgid "Add a manual observer"
+#~ msgstr "Ajout d'un observateur manuel"
+#~ msgid "results"
+#~ msgstr "résultats"
+#~ msgid "Programs"
+#~ msgstr "Programmes"
+#~ msgid "Setups"
+#~ msgstr "Changements de série"
+#~ msgid ""
+#~ "This module does not contain any properties named %s. Properties must be "
+#~ "declared before being used"
+#~ msgstr ""
+#~ "Ce module ne contient aucune propriété nommé %s. Les propriété doivent "
+#~ "être déclarées avant d'être utilisées."
+#~ msgid "Add holder"
+#~ msgstr "Ajout un conteneur"
+#~ msgid "Resume"
+#~ msgstr "Reprise"
+#~ msgid "gtk-zoom-fit"
+#~ msgstr "Taille idéale"
+#~ msgid "Delete selected modules?"
+#~ msgstr "Supprimer les modules sélectionnés ?"
+#~ msgid ""
+#~ "syntax error at line %(lineno)d, column %(colno)d:\n"
+#~ " %(line)s"
+#~ msgstr ""
+#~ "Erreur de syntaxe à la ligne %(lineno)d, colonne %(colno)d :\n"
+#~ " %(line)s"
+#~ msgid "No more color available: using blue"
+#~ msgstr "La liste des couleurs disponibles est épuisée : le bleu est utilisé"
+#~ msgid "Syntax:  "
+#~ msgstr "Syntaxe :"
+#~ msgid "Select element to add..."
+#~ msgstr "Sélection des éléments à inclure..."
+#~ msgid "syntaxe error (%(errno)s): %(strerror)s"
+#~ msgstr "erreur de syntaxe (%(errno)s) : %(strerror)s"
+#~ msgid "GTK+ SEME interface"
+#~ msgstr "interface GTK+ à SEME "
+#~ msgid "About"
+#~ msgstr "À propos"
+

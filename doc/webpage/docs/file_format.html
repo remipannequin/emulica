@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Emulica File Format &mdash; emulica v0.6 documentation</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.6',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.png"/>
+    <link rel="top" title="emulica v0.6 documentation" href="index.html" />
+    <link rel="prev" title="Composite Modeling" href="composite.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="composite.html" title="Composite Modeling"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">emulica v0.6 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="emulica-file-format">
+<h1>Emulica File Format<a class="headerlink" href="#emulica-file-format" title="Permalink to this headline">¶</a></h1>
+<p>This file describe the file format used for emulica:</p>
+<p>A emulica file is a ZIP archive, containing three files:</p>
+<ol class="arabic">
+<li><p class="first">emulation.xml: an XML file as defined in emuML.dtd</p>
+</li>
+<li><dl class="first docutils">
+<dt>props.db: a dictionnary of properties, marshalled using pickle</dt>
+<dd><dl class="first last docutils">
+<dt>list of keys/ values:</dt>
+<dd><ul class="first last simple">
+<li>layout &#8211; a dictionary that associate module name with the module position in the canvas (as a tuple (x,y))</li>
+<li>exec &#8211; a dictionary that give execution parameter such as execution mode, emulation time limit, etc...</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>control.py</dt>
+<dd><p class="first last">a python source file that contain the control processes.
+It must define a method called &#8216;initialize_control&#8217; taking the emulation
+model as argument. This method must return a list of tuple composed of
+Process instances and of their process execution method.</p>
+</dd>
+</dl>
+</li>
+</ol>
+<p>The file may have the extension &#8216;.emu&#8217; and the mime type &#8220;application/x-emulica&#8221;</p>
+<div class="section" id="emuml-xml-syntax">
+<h2>EmuML XML Syntax<a class="headerlink" href="#emuml-xml-syntax" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>emulation
+    |
+    +-interface [1]
+    |   |
+    |   +-input [*]
+    |
+    +-modules [1]
+        |
+        +-submodel [*]
+        |
+        +-module [*]
+            |
+            +-property (name, type) [*]
+                |
+                +-VALUE [*]</pre>
+</div>
+<dl class="docutils">
+<dt>Property types:</dt>
+<dd><ul class="first last simple">
+<li>common simple types: <cite>string</cite>, <cite>int</cite>, <cite>double</cite>, <cite>boolean</cite></li>
+<li>custom simple types: <cite>reference</cite></li>
+<li>complex types: <cite>program-table</cite>, <cite>setup-table</cite>, <cite>change-table</cite>
+We use the word table to design both dictionary- and list-like types</li>
+</ul>
+</dd>
+</dl>
+<p>Simple type use a simple parser (that take the type as argument) while each complex types use it own parser.</p>
+<p>VALUE can be either value (for common simple types), reference, or one of the complex type. If there is more
+than one VALUE element under a property element, a list is created. If there is no VALUE element, None is used.</p>
+<p>Simple VALUE:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">value</span> <span class="p">(</span><span class="nb">type</span><span class="p">)</span>
+
+<span class="n">reference</span>
+</pre></div>
+</div>
+<p>Complex VALUE:</p>
+<div class="highlight-python"><pre>value-list
+     |
+     +-VALUE
+
+program-table (schema)
+    |
+    + -program (name, delay) [1..*]
+        |
+        + -transform (name, type) [*]
+            |
+            +-VALUE
+
+setup-table (default-delay)
+    |
+    +-setup (initial, final, delay) [*]
+
+change-table
+    |
+    +- change [*]
+        |
+        +- VALUE</pre>
+</div>
+<p>NB: attribute schema is a coma-separated sequence of the keyword <cite>source</cite> destination`, <cite>change</cite>, enclosed in square brackets. For instance <cite>[source, destination]</cite> for a Space Actuation programs, or <cite>[change]</cite> for a Shape Actuation programs.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo-dense.png" alt="Logo"/>
+            </a></p>
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">Emulica File Format</a><ul>
+<li><a class="reference external" href="#emuml-xml-syntax">EmuML XML Syntax</a></li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="composite.html"
+                                  title="previous chapter">Composite Modeling</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="_sources/file_format.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="composite.html" title="Composite Modeling"
+             >previous</a> |</li>
+        <li><a href="index.html">emulica v0.6 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2009, Rémi Pannequin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.2.
+    </div>
+  </body>
+</html>
