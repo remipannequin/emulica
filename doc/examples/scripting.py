@@ -9,6 +9,11 @@ import gtk
 from emulica import emulation, plot
 from emulica.emulation import Process, put, get, Report, Request, Store
 
+from math import ceil
+
+
+
+
 class Schedule(list):
     """This class represent the tasks (Lot) that must be executed by the shop floor."""
 
@@ -164,7 +169,7 @@ class ControlF(Process):
         trans.attach_report_socket(report_hub)
         
         #sp : dict p_type -> number of products in st
-        st = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0}
+        st = [False, False, False, False, False, False, False, False, False, False, False, False,]
         while True:
             rq = None
             yield get, self, report_hub, 1
@@ -182,18 +187,20 @@ class ControlF(Process):
                     yield put, self, trans.request_socket, [rq]
                     sched.report_routed(p_type, dest)
                 else:
-                    st[p_type] += 1    
+                    print "memo"
+                    st[p_type] = True
             else:
                 #trans op finished
-                for p_type in [ptype for (ptype, qty) in st.items() if qty > 0]:
+                for p_type in [ptype for ptype in range(12) if st[ptype]]:
                     #for each product type in store
                     if sched.routable(p_type):
+                        print st
                         dest = sched.route(p_type)
                         
                         rq = Request('transSt', 'move', params = {'program': 'unload_st%sto%s' % (p_type, dest)})
                         yield put, self, trans.request_socket, [rq]
                         sched.report_routed(p_type, dest)
-    
+                        st[ptype] = False
 
 class ControlSf(Process):
     """Control product creation"""
@@ -246,10 +253,12 @@ def create_model():
     #actuators
     create = emulation.CreateAct(model, "create",inBuf['Sf'])
     for i in cells:
+        machine[i] = emulation.ShapeAct(model, "machine"+str(i), workBuf[i])
         if i in ['Fa', 'Fb', 'Fc']:
             dispose[i] = emulation.DisposeAct(model, "dispose"+i, outBuf[i])
-        machine[i] = emulation.ShapeAct(model, "machine"+str(i), workBuf[i])
-        machine[i]['setup'].default_time = 30
+            machine[i]['setup'].default_time = 0
+        else:
+            machine[i]['setup'].default_time = 30
         load[i] = emulation.SpaceAct(model, "load"+str(i))
     transSt = emulation.SpaceAct(model, "transSt")
     transSt['setup'].default_time = 0
@@ -278,21 +287,51 @@ def create_model():
     for i in range(1,13):
         emulation.PushObserver(model, "obs_st"+str(i),"st"+str(i)+"_ready", identify = True, holder = st[i])
     #failures (with degradation)
-    fail1 = emulation.Failure(model, "fail1", 
-                              'rng.expovariate({0})'.format(1./100.),
-                              'rng.expovariate({0})'.format(1./30.), 
-                              [machine['Sf']])
-    fail1.properties['degradation'] = 0.9
-    fail1.properties['repeat'] = False
+    #fail1 = emulation.Failure(model, "fail1", 
+    #                          'rng.expovariate({0})'.format(1./100.),
+    #                          'rng.expovariate({0})'.format(1./30.), 
+    #                          [machine['Sf']])
+    #fail1.properties['degradation'] = 0.9
+    #fail1.properties['repeat'] = True
     return model
     
   
 def initialize_distrib_control(model):
-    ordo = [(1, 10, 'a'), (2, 20, 'b'), (3, 30, 'a'), (4, 40, 'c'), (5, 50, 'b'), (6, 60, 'a'), (7, 70, 'c')]
+    
+    mps = {1:1000, 2:600, 3:500, 4:2000, 5:400}
+    uta = sf_process_time
+    utb = f_process_time
+    fin = {'a': 0, 'b': 0, 'c': 0}
+    q_min = 100# bug if qmin =10 ?
+    tsetup = 30
     schedule = Schedule()
-    for (ptype, qty, dest) in ordo:
-        schedule.append_lot(ptype, qty, dest)
+    t = -50
+    while sum(mps.values()) > 0:
+        print "===================="
+        print "date de fin", fin
+        print "t=", t
+        tpb = map(lambda (t, q): (t, q * utb[t]), mps.items())
+        tpb.sort(key = lambda t: t[1], reverse = True)
+        type_choisi = tpb[0][0]
+        print "type choisi", type_choisi
+        q_todo = mps[type_choisi]
+        dates_fin = fin.items()
+        dates_fin.sort(key = lambda t: t[1])
+        (destination, date_fin) = dates_fin[0]
+        
+        print "duree de production", date_fin - t - tsetup
+        print "qte a faire:", q_todo, "qte calculee", ceil((date_fin - t - tsetup) / uta[type_choisi])
+        q = min(q_todo, max(q_min, ceil((date_fin - t - tsetup) / uta[type_choisi])))
+        print "q=", q
+        schedule.append_lot(type_choisi, q, destination)
+        fin[destination] = t + uta[type_choisi] + q * utb[type_choisi]
+        t = t + q * uta[type_choisi] + tsetup
+        mps[type_choisi] = mps[type_choisi] - q 
+    
     schedule.update_f_current()
+    
+    
+    
     model.register_control(ControlDispose, 'run', (model, 'Fa'))
     model.register_control(ControlDispose, 'run', (model, 'Fb'))
     model.register_control(ControlDispose, 'run', (model, 'Fc'))
@@ -303,7 +342,7 @@ def initialize_distrib_control(model):
     model.register_control(ControlSt)
     model.register_control(ControlF, 'run', (model, schedule))
     model.register_control(ControlSf, 'run', (model, schedule))
-    model.register_control(DetectFailure, 'run', (model, schedule))
+    #model.register_control(DetectFailure, 'run', (model, schedule))
 
 if __name__ == '__main__': 
     print "setting up emulation model"
@@ -313,7 +352,7 @@ if __name__ == '__main__':
     initialize_distrib_control(model)
     print "{0} control classes loaded".format(len(model.control_classes))
     print "simulating..."
-    model.emulate(until = 1000)
+    model.emulate(until = 10000)
     print "simulation finished at {0}".format(model.current_time())
     chart = plot.GanttChart()
     for i in cells:
