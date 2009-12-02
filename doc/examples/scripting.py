@@ -168,8 +168,8 @@ class ControlF(Process):
             model.modules['obs_st'+str(i)].attach_report_socket(report_hub)
         trans.attach_report_socket(report_hub)
         
-        #sp : dict p_type -> number of products in st
-        st = [False, False, False, False, False, False, False, False, False, False, False, False,]
+        #st: list of types that have been memorized
+        st = list()
         while True:
             rq = None
             yield get, self, report_hub, 1
@@ -188,20 +188,21 @@ class ControlF(Process):
                     sched.report_routed(p_type, dest)
                 else:
                     print "memo"
-                    st[p_type] = True
+                    st.append(p_type)
+                    print st
             else:
                 #trans op finished
-                for p_type in [ptype for ptype in range(12) if st[ptype]]:
+                for p_type in st:
                     #for each product type in store
                     if sched.routable(p_type):
-                        print st
                         dest = sched.route(p_type)
-                        
                         rq = Request('transSt', 'move', params = {'program': 'unload_st%sto%s' % (p_type, dest)})
                         yield put, self, trans.request_socket, [rq]
                         sched.report_routed(p_type, dest)
-                        st[ptype] = False
-
+                        st.remove(p_type)
+                        print st
+                        
+                        
 class ControlSf(Process):
     """Control product creation"""
     def run(self, model, ordo = Schedule()):
@@ -287,12 +288,12 @@ def create_model():
     for i in range(1,13):
         emulation.PushObserver(model, "obs_st"+str(i),"st"+str(i)+"_ready", identify = True, holder = st[i])
     #failures (with degradation)
-    #fail1 = emulation.Failure(model, "fail1", 
-    #                          'rng.expovariate({0})'.format(1./100.),
-    #                          'rng.expovariate({0})'.format(1./30.), 
-    #                          [machine['Sf']])
-    #fail1.properties['degradation'] = 0.9
-    #fail1.properties['repeat'] = True
+    fail1 = emulation.Failure(model, "fail1", 
+                              'rng.expovariate({0})'.format(1./100.),
+                              'rng.expovariate({0})'.format(1./30.), 
+                              [machine['Fa']])
+    fail1.properties['degradation'] = 0.9
+    fail1.properties['repeat'] = True
     return model
     
   
@@ -342,7 +343,7 @@ def initialize_distrib_control(model):
     model.register_control(ControlSt)
     model.register_control(ControlF, 'run', (model, schedule))
     model.register_control(ControlSf, 'run', (model, schedule))
-    #model.register_control(DetectFailure, 'run', (model, schedule))
+    model.register_control(DetectFailure, 'run', (model, schedule))
 
 if __name__ == '__main__': 
     print "setting up emulation model"
