@@ -1,17 +1,25 @@
 #! /usr/bin/python
 # *-* coding: utf8 *-*
-"""Test loading a gseme file, setting some of its parameters, and getting the results"""
+"""Test loading a gseme file, setting some of its parameters, and getting the results.
+
+This script accept one argument: an integer that is passed to the ControlCreate 
+control process. This arg determine how many products will be created
+
+"""
 
 import sys, logging
 #use devel version
 sys.path.insert(0, '../../src')
 
-from seme.semeML import GsemeFile, compile_control
+from emulica.emuML import EmuFile, compile_control
 
-def create_model(filename):
-    gsfile = GsemeFile(filename, 'r')
+def create_model(filename, nb):
+    """Load the model from the emu file, and set the additionnal parameter 
+    'nb_product' of the ControlCreate control process. 
+    """
+    gsfile = EmuFile(filename, 'r')
     (model, control) = gsfile.read()
-    compile_control(model, control)  
+    compile_control(model, control, nb_product = nb)
     return model
 
 def init_logger(level):
@@ -23,11 +31,12 @@ def init_logger(level):
     logging.getLogger().addHandler(console)
 
 if __name__ == '__main__':
-
-    
     init_logger(logging.DEBUG)
-
-    model = create_model("looping.gseme")
+    if len(sys.argv) == 2:
+        nb = int(sys.argv[1])
+    else:
+        nb = 10
+    model = create_model("looping.emu", nb)
     
     model.emulate(until=50)
     result_product = [(pid, p.shape_history, 
@@ -36,4 +45,5 @@ if __name__ == '__main__':
                        p.dispose_time) for (pid, p) in model.products.items()]
     
     print result_product
+    print len(model.products)
     
