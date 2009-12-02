@@ -556,13 +556,16 @@ class EmulationParser:
             table[name] = value
         return table
         
-def compile_control(model, source):
+def compile_control(model, source, **kwargs):
     """compile code in the control buffer. 
     
     Arguments:
         model -- the model into which load the control
         source -- the source code of the control system
     
+    Any other keyword argument can be added : these kw arguments will be passed 
+    to the initialize_control method of the source. 
+        
     Returns: 
         True if no error are found.
     
@@ -579,7 +582,7 @@ def compile_control(model, source):
     if not 'initialize_control' in dir():
         raise EmuMLError(_("initialization function have not been implemented"))
     model.control_classes = []
-    initialize_control(l, model)
+    initialize_control(l, model, **kwargs)
         
         
 
