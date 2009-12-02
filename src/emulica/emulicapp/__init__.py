@@ -319,7 +319,13 @@ class Emulica:
                                         gtk.FILE_CHOOSER_ACTION_SAVE,
                                         (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
                                          gtk.STOCK_SAVE, gtk.RESPONSE_OK))
-        
+        filter_emulica = gtk.FileFilter()
+        filter_emulica.set_name("Emulica files")
+        filter_emulica.add_pattern("*.emu")
+        filter_all = gtk.FileFilter()
+        filter_all.set_name("All files")
+        chooser.add_filter(filter_emulica)
+        chooser.add_filter(filter_all)
         response = chooser.run()
         if response == gtk.RESPONSE_OK: 
             filename = chooser.get_filename()
