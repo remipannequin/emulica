@@ -38,6 +38,7 @@ class EmulicaControl:
         buffer -- 
         control_view --
         clipboard -- 
+        debug_textview -- A gtk.TextView that display debug information
         
     """
 
@@ -61,7 +62,7 @@ class EmulicaControl:
         #Work around win32 version
         if 'set_mark_category_background' in dir(self.control_view):
             self.control_view.set_mark_category_background ("emulica_error", gtk.gdk.Color(65000, 0, 0))
-
+        self.debug_textview = self.main.builder.get_object('trace_textview')
         self.control_view.show()
         control_viewport.add(self.control_view)
     
@@ -112,6 +113,31 @@ class EmulicaControl:
             finally:
                 control_file.close()
         chooser.destroy()
+
+    def on_debug_togglebutton_toggled(self, button, data = None):
+        """Called when the trace togglebutton is toggled."""
+        arrow = self.main.builder.get_object('trace_arrow')
+        sw = self.main.builder.get_object('trace_scrolledwindow')
+        
+        if button.get_active():
+            arrow.set(gtk.ARROW_DOWN, gtk.SHADOW_NONE)
+            sw.show()
+            self.debug_textview.show()
+        else:
+            arrow.set(gtk.ARROW_RIGHT, gtk.SHADOW_NONE)
+            sw.hide()
+            self.debug_textview.hide()
+
+    def debug_clear(self):
+        """Clear the debug textview buffer. Called when a new sim begin"""
+        #TODO
+        raise NotImplemented
+        
+    def debug_add(self, message):
+        """Add line `message` in the debug textview"""
+        #TODO
+        raise NotImplemented
+
 
     def undo(self):
         """Undo"""
