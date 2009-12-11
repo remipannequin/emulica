@@ -27,7 +27,7 @@ class Schedule(list):
             self.quantity_done_f = 0
 
         def report_done_sf(self):
-            """Increment the qty done, and return True if the Lot is finished"""    
+            """Increment the qty done, and return True if the Lot is finished"""
             self.quantity_done_sf += 1
             return self.finished_sf()
             
@@ -170,37 +170,35 @@ class ControlF(Process):
         
         #st: list of types that have been memorized
         st = list()
+        idle = True
         while True:
-            rq = None
+            #get event
             yield get, self, report_hub, 1
             rp = self.got[0]
+            #triage event
             if 'productType' in rp.how:
                 #event from a product obs
                 p_type = rp.how['productType']
-                
-                #a product p_type just arrived or a transfert just finished
-                #dest taken from route
-                if sched.routable(p_type):
-                    dest = sched.route(p_type)
-                    
-                    rq = Request('transSt', 'move', params = {'program': 'unload_%sto%s' % (rp.where, dest)})
-                    yield put, self, trans.request_socket, [rq]
-                    sched.report_routed(p_type, dest)
-                else:
-                    print "memo"
-                    st.append(p_type)
-                    print st
+                #change product presence array
+                st.append(p_type)
             else:
-                #trans op finished
-                for p_type in st:
-                    #for each product type in store
-                    if sched.routable(p_type):
-                        dest = sched.route(p_type)
-                        rq = Request('transSt', 'move', params = {'program': 'unload_st%sto%s' % (p_type, dest)})
-                        yield put, self, trans.request_socket, [rq]
-                        sched.report_routed(p_type, dest)
-                        st.remove(p_type)
-                        print st
+                #come from trans actuator
+                #update state
+                idle = (rp.what == 'idle')
+            
+            #if actuator is idle : find a routable product and process it
+            #trans op finished
+            if idle:
+                routable = [t for t in st if sched.routable(t)]
+                if len(routable) > 0:
+                    prod_type = routable[0]
+                    dest = sched.route(prod_type)
+                    rq = Request('transSt', 'move', params = {'program': 'unload_st%sto%s' % (prod_type, dest)})
+                    yield put, self, trans.request_socket, [rq]
+                    idle = False
+                    sched.report_routed(prod_type, dest)
+                    st.remove(prod_type)
+                    
                         
                         
 class ControlSf(Process):
@@ -289,11 +287,27 @@ def create_model():
         emulation.PushObserver(model, "obs_st"+str(i),"st"+str(i)+"_ready", identify = True, holder = st[i])
     #failures (with degradation)
     fail1 = emulation.Failure(model, "fail1", 
-                              'rng.expovariate({0})'.format(1./100.),
+                              'rng.expovariate({0})'.format(1./500.),
                               'rng.expovariate({0})'.format(1./30.), 
                               [machine['Fa']])
     fail1.properties['degradation'] = 0.9
     fail1.properties['repeat'] = True
+    
+    fail2 = emulation.Failure(model, "fail2", 
+                              'rng.expovariate({0})'.format(1./400.),
+                              'rng.expovariate({0})'.format(1./30.), 
+                              [machine['Fb']])
+    fail2.properties['degradation'] = 0.8
+    fail2.properties['repeat'] = True
+    
+    fail3 = emulation.Failure(model, "fail3", 
+                              'rng.expovariate({0})'.format(1./300.),
+                              'rng.normalvariate({0}, {1})'.format(30., 5.), 
+                              [machine['Fc']])
+    fail3.properties['degradation'] = 0.9
+    fail3.properties['repeat'] = True
+    
+    
     return model
     
   
@@ -353,7 +367,7 @@ if __name__ == '__main__':
     initialize_distrib_control(model)
     print "{0} control classes loaded".format(len(model.control_classes))
     print "simulating..."
-    model.emulate(until = 10000)
+    model.emulate(until = 7000)
     print "simulation finished at {0}".format(model.current_time())
     chart = plot.GanttChart()
     for i in cells:
