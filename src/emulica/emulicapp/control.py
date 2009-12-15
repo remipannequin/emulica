@@ -38,7 +38,7 @@ class EmulicaControl:
         buffer -- 
         control_view --
         clipboard -- 
-        debug_textview -- A gtk.TextView that display debug information
+        debug_buffer -- an DebugBuffer that can be used by a logging.StreamHandler
         
     """
 
@@ -62,7 +62,9 @@ class EmulicaControl:
         #Work around win32 version
         if 'set_mark_category_background' in dir(self.control_view):
             self.control_view.set_mark_category_background ("emulica_error", gtk.gdk.Color(65000, 0, 0))
-        self.debug_textview = self.main.builder.get_object('trace_textview')
+        debug_textview = self.main.builder.get_object('trace_textview')
+        self.debug_buffer = LogBuffer()
+        debug_textview.set_buffer(self.debug_buffer)
         self.control_view.show()
         control_viewport.add(self.control_view)
     
@@ -118,26 +120,20 @@ class EmulicaControl:
         """Called when the trace togglebutton is toggled."""
         arrow = self.main.builder.get_object('trace_arrow')
         sw = self.main.builder.get_object('trace_scrolledwindow')
-        
+        debug_textview = self.main.builder.get_object('trace_textview')
         if button.get_active():
             arrow.set(gtk.ARROW_DOWN, gtk.SHADOW_NONE)
             sw.show()
-            self.debug_textview.show()
+            debug_textview.show()
         else:
             arrow.set(gtk.ARROW_RIGHT, gtk.SHADOW_NONE)
             sw.hide()
-            self.debug_textview.hide()
+            debug_textview.hide()
 
     def debug_clear(self):
         """Clear the debug textview buffer. Called when a new sim begin"""
         #TODO
         raise NotImplemented
-        
-    def debug_add(self, message):
-        """Add line `message` in the debug textview"""
-        #TODO
-        raise NotImplemented
-
 
     def undo(self):
         """Undo"""
@@ -500,4 +496,27 @@ class EmulicaControl:
         for c in to_insert:
             snippet = "    model.register_control(locals_['{0}'])\n"
             self.buffer.insert(text_iter, snippet.format(c))
+        
+        
+        
+        
+class LogBuffer(gtk.TextBuffer):
+    """A TextBuffer, that can be displayed by a TextView, and can be used as a 
+    logging handler."""
+        
+    def write(self, message):
+        """Write message into the buffer"""
+        end_iter = self.get_end_iter()
+        self.insert(end_iter, message)
+        
+        
+    def flush(self):
+        """Flush the buffer"""
+        pass
+        
+    def clear(self):
+        """Clear the buffer"""
+        end_iter = self.get_end_iter()
+        start_iter = self.get_start_iter()
+        self.delete(start_iter, end_iter)
         
