@@ -129,7 +129,7 @@ class ControlDispose(Process):
 def create_model():
     model = Model()
     h = Holder(model, "holder1")
-    obs1 = PushObserver(model,"observer1", "ev1", observe_type = False, holder = h)
+    obs1 = PushObserver(model, "observer1", "ev1", observe_type = False, holder = h)
     c = CreateAct(model,"create1", h)
     d = DisposeAct(model,"dispose1", h)
     initialize_control(model)

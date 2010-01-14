@@ -325,6 +325,8 @@ class Model(Module):
         if name is None or len(name) == 0:
             logger.warning(_("get_module returned None because name was None or ''"))
             return None
+        if name == self.name:
+            return self
         names = name.split('.', 1)
         if len(names) == 1:
             if self.is_model():
@@ -340,6 +342,8 @@ class Model(Module):
         its submdel (i.e. get_module(name) found a module."""
         if name is None or len(name) == 0:
             return False
+        if name == self.name:
+            return True
         names = name.split('.', 1)
         if len(names) == 1:
             if self.is_model():
@@ -385,14 +389,6 @@ class Model(Module):
         self.clear()
         if seed:
             self.rng.seed(seed)
-        #control activation
-        for (control_class, pem, args) in self.control_classes:
-            process = control_class()
-            logger.info(_("registering control process {0}").format(str(process)))
-            pem = getattr(process, pem)
-            activate(process, pem(*args))
-            self.control_system.append(process)
-                
         if step:
             startStepping()
             class Timer(Process):
@@ -413,12 +409,14 @@ class Model(Module):
     
     def clear(self):
         """Clear the model."""
+        #init of SimPy
         initialize()
         #clean products registry
         self.products = dict()
         self.__next_pid = 1
         self.control_system = list()
         #modules activation
+        self.initialize()
         for mod in self.module_list():
             if 'initialize' in dir(mod):
                 mod.initialize()
@@ -450,7 +448,7 @@ class Model(Module):
     def current_time(self):
         return now()
     
-    def register_control(self, control_class, pem_name = 'run', args = None):
+    def register_control(self, control_class, pem_name = 'run', pem_args = None):
         """activate and register in the model a list of control Classes.
         
         Arguments:
@@ -459,7 +457,8 @@ class Model(Module):
             args -- an iterable of the arguments of the pem
         
         """
-        args = args or (self,)
+        args = pem_args or (self,)
+        #TODO: assert control_class is callable
         self.control_classes.append((control_class, pem_name, args))
     
     def register_emulation_module(self, module):
@@ -504,20 +503,22 @@ class Model(Module):
             def run(self, request, receiver):
                 """P.E.M. : put the request in the receiver queue and finish"""
                 yield put, self, receiver.request_socket, [request]
-        receiver = self.modules[request.who]
+        logger.info(_("inserting request for module {0}".format(request.who)))
+        receiver = self.get_module(request.who)
         insert_process = Dispatcher()
         activate(insert_process, insert_process.run(request, receiver))
-        #TODO: incoporate in ModuleProcess
         
     def initialize(self):
-        #TODO: initialize report and request queues by calling Module.initialize(self)
+        """Activate the control of the model, and initialize it as a module."""
+        #initialize report and request queues by calling Module.initialize(self)
+        Module.initialize(self)
         #activate control processes
         for (control_class, pem, args) in self.control_classes:
             process = control_class()
             logger.info(_("registering control process {0}").format(str(process)))
             pem = getattr(process, pem)
             activate(process, pem(*args))
-
+            self.control_system.append(process)
 
 class EventMultiplier(Process):
     """

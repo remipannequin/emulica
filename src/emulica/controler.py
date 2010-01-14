@@ -105,7 +105,8 @@ class TimeControler(threading.Thread):
         except Exception, e:
             #TODO: extract line number and pass it to the handler...
             tb = traceback.extract_tb(sys.exc_traceback)
-            logger.debug(tb)
+            logger.warning(e)
+            logger.warning(tb)
             for handler in self.callbacks[EXCEPTION]:
                 handler(e, tb)
         finally:
@@ -170,20 +171,22 @@ class TimeControler(threading.Thread):
         """Send a request to an emulation module."""
         if request.who == NAME:
             if request.what in ACTIONS:
+                logger.debug(_("Request {0.who} to {0.what}").format(request))
+                print request
                 action = getattr(TimeControler, request.what)
                 action(self)
             else:
-                print _("unrecognized action string: {0}").format(request.what)
-             
-        elif self.model.modules.has_key(request.who):
+                logger.warning(_("Unknown action {0}".format(request.what)))
+        elif self.model.has_module(request.who):
             #insert event in model
+            logger.info(_("Inserting request for module {0.who} to do {0.what} into model").format(request))
             self.model.insert_request(request)
             #interrupt sleep
-            self.__event_condition.acquire()
-            self.__event_condition.notify()
-            self.__event_condition.release()
+            #self.__event_condition.acquire()
+            #self.__event_condition.notify()
+            #self.__event_condition.release()
         else:
-            print _("unknown module {0}").format(request.who)
+            logger.warning(_("unknown module {0}").format(request.who))
         
 class EmulationServer:
     """This class implements a TCP server that runs an emulation model. 
@@ -203,18 +206,35 @@ class EmulationServer:
         self.factory.clients = list()
         self.factory.app = self
         self.port = port
-        self.factory.controler = TimeControler(model, real_time = True, rt_factor = 1, until = 100)
+        self.factory.controler = TimeControler(model, real_time = True, rt_factor = 1, until = 100000, step = True)
+        self.factory.controler.add_callback(self.notify_stop, EVENT_FINISH)
+        self.factory.controler.add_callback(self.notify_start, EVENT_START)
+        self.factory.controler.add_callback(self.notify_time, EVENT_TIME)
+        
 
     def start(self):
         """Start the server"""
         reactor.listenTCP(self.port, self.factory)
         reactor.run()
     
+    def notify_stop(self, model):
+        """Stop the server"""
+        print "Emulation finished"
+        self.__send_report(emulation.Report(NAME, 'finished'))
+        #reactor.stop()
+    
+    def notify_start(self, model):
+        """Notify starting of emulation"""
+        self.__send_report(emulation.Report(NAME, 'running'))
+    
+    def notify_time(self, model):
+        """Notify of time advance"""
+        print model.current_time()
+    
     def initialize_controler(self):
         """Make the emulation thread ready to run"""
-        #TODO: add callback to generate emulator reports
-        rp_source = ReportSource()
-        self.factory.controler.model.register_control([(rp_source, rp_source.run(self.factory.controler.model, self.__send_report))])
+        #add callback to generate emulator reports, using the ReportSource class
+        self.factory.controler.model.register_control(ReportSource, 'run', (self.factory.controler.model, self.__send_report))
         self.__send_report(emulation.Report(NAME, 'ready'))
     
     def __send_report(self, report):

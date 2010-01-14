@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Gseme 0.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-11-24 17:05+0100\n"
-"PO-Revision-Date: 2009-11-24 17:10+0100\n"
+"PO-Revision-Date: 2009-12-18 16:23+0100\n"
 "Last-Translator: Rémi Pannequin <Remi.Pannequin@cran.uhp-nancy.fr>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -607,7 +607,7 @@ msgstr "le produit {pid} est prêt à t={time}"
 
 #: src/emulica/emulation.py:722
 msgid "Request {what} to {who} at t={when}"
-msgstr "Requête au module {what} d'exécuter {who} à t={when} "
+msgstr "Requête au module {whO} d'exécuter {what} à t={when} "
 
 #: src/emulica/emulation.py:725
 #: src/emulica/emulation.py:776
