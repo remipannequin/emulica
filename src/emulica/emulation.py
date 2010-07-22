@@ -117,17 +117,21 @@ class Module:
         'property-changed' 
             called when a property definition changes. Callback profile: 
             cb(prop, module, data)
+        'name-changed'
+            called when the name of the module is changed
+            cb(name, module, data)
     """
     
     STATE_CHANGE_SIGNAL = 'state-changed'
     PROPERTIES_CHANGE_SIGNAL = 'property-changed'
+    NAME_CHANGE_SIGNAL = 'name-changed'
     
     def __init__(self, model, name):
         """Create a new instance of Module."""
         self.model = model
         self.name = name
         self.properties = properties.Registry(self, self.model.rng)
-        self.__listeners = {Module.STATE_CHANGE_SIGNAL: dict(), Module.PROPERTIES_CHANGE_SIGNAL: dict()}
+        self.__listeners = {Module.STATE_CHANGE_SIGNAL: dict(), Module.PROPERTIES_CHANGE_SIGNAL: dict(), Module.NAME_CHANGE_SIGNAL: dict()}
         self.accept_observer = True  
         self.__multiplier = None
         
@@ -166,6 +170,8 @@ class Module:
             del self.model.modules[self.name]
             self.name = new_name
             self.model.modules[self.name] = self
+            self.emit('name-changed', self.name, self)
+            
                 
     def create_report_socket(self, multiple_observation = False):
         """Create a new Store object in which reports from the module will be put. 
@@ -511,6 +517,7 @@ class Model(Module):
         
     def initialize(self):
         #TODO: initialize report and request queues by calling Module.initialize(self)
+        Module.initialize(self)
         #activate control processes
         for (control_class, pem, args) in self.control_classes:
             process = control_class()
@@ -953,7 +960,7 @@ class Failure(Module):
                         ##TODO: what happen if two failures strike the same resource at the same time ??
                         yield request, self, act.resource, 1
                     #report failure
-                    report = Report(module.name, 'failure-begin', params={'mttr': mttr, 'degradation': degradation})
+                    report = Report(module.fullname(), 'failure-begin', params={'mttr': mttr, 'degradation': degradation})
                     yield put, self, module.report_socket, [report]
                     act.record_begin('failure')
                 #repair delay
@@ -965,7 +972,7 @@ class Failure(Module):
                     else:
                         yield release, self, act.resource
                     #report failure end
-                    report = Report(module.name, 'failure-end', params={'mttr': mttr, 'degradation': degradation})
+                    report = Report(module.fullname(), 'failure-end', params={'mttr': mttr, 'degradation': degradation})
                     yield put, self, module.report_socket, [report]
                     
                     act.record_end('failure')
@@ -1049,7 +1056,7 @@ class CreateAct(Actuator):
                     yield request, self, module.properties['destination'].lock
                     module.properties['destination'].put_product(prod)
                     yield release, self, module.properties['destination'].lock
-                    report = Report(module.name, 'create-done')
+                    report = Report(module.fullname(), 'create-done')
                     yield put, self, module.report_socket, [report]
 
 class DisposeAct(Actuator):
@@ -1090,7 +1097,7 @@ class DisposeAct(Actuator):
                     prod = module.properties['source'].fetch_product()
                     prod.dispose()
                     yield release, self, module.properties['source'].lock
-                    report = Report(module.name, 'dispose-done')
+                    report = Report(module.fullname(), 'dispose-done')
                     yield put, self, module.report_socket, [report]
                     module.emit(Module.STATE_CHANGE_SIGNAL, None)
 
@@ -1164,7 +1171,7 @@ class SpaceAct(Actuator):
             module.record_end('setup')
             module.program = new_program
             if not implicit:
-                report = Report(module.name, 'setup-done', params={'program':module.program})
+                report = Report(module.fullname(), 'setup-done', params={'program':module.program})
                 yield put, self, module.report_socket, [report]
 
         def __produce(self, module):
@@ -1183,7 +1190,7 @@ class SpaceAct(Actuator):
             #unlock source
             yield release, self, source.lock
             #report state change
-            report = Report(module.name, 'busy', params={'program':module.program})
+            report = Report(module.fullname(), 'busy', params={'program':module.program})
             yield put, self, module.report_socket, [report]
             #transportation delay
             #multiplied by the degradation ration
@@ -1205,7 +1212,7 @@ class SpaceAct(Actuator):
             yield release, self, module.resource
             module.record_end(module.program)
             #report state change
-            report = Report(module.name, 'idle', params={'program': module.program})
+            report = Report(module.fullname(), 'idle', params={'program': module.program})
             yield put, self, module.report_socket, [report]
         
         def __hold(self, time, module):
@@ -1248,7 +1255,7 @@ class ShapeAct(Actuator):
                                          _("Program table"))
         self.properties.add_with_display('setup', 
                                          properties.Display.SETUP, 
-                                         properties.SetupMatrix(self.properties, 'setup'), 
+                                         properties.SetupMatrix(self.properties, 0, 'setup'), 
                                          _("Setup matrix"))
         self.properties.add_with_display('holder', properties.Display.REFERENCE, holder , _("Holder"))
         self.program = None
@@ -1296,7 +1303,7 @@ class ShapeAct(Actuator):
             module.record_end('setup')
             #report
             if not implicit:
-                report = Report(module.name, 'setup-done', params={'program':module.program})
+                report = Report(module.fullname(), 'setup-done', params={'program':module.program})
                 yield put, self, module.report_socket, [report]
 
         def __produce(self, module):
@@ -1307,7 +1314,7 @@ class ShapeAct(Actuator):
             yield request, self, module.properties['holder'].lock
             products = module.properties['holder'].get_products()
             #report busy
-            report = Report(module.name, 'busy', params={'program':module.program})
+            report = Report(module.fullname(), 'busy', params={'program':module.program})
             yield put, self, module.report_socket, [report]
             product = products[0]
             if len(products) > 1:
@@ -1340,7 +1347,7 @@ class ShapeAct(Actuator):
             #release own resource, record end
             yield release, self, module.resource
             module.record_end(module.program)
-            report = Report(module.name, 'idle', params={'program':module.program})
+            report = Report(module.fullname(), 'idle', params={'program':module.program})
             yield put, self, module.report_socket, [report]
             
         def __hold(self, time, module):
@@ -1440,7 +1447,7 @@ class AssembleAct(Actuator):
             #report
             logger.debug(_("finished setup on module {0}").format(module. name))
             if not implicit:
-                report = Report(module.name, 'setup-done', params={'program':module.program})
+                report = Report(module.fullname(), 'setup-done', params={'program':module.program})
                 yield put, self, module.report_socket, [report]
 
         def __produce(self, module):
@@ -1461,7 +1468,7 @@ class AssembleAct(Actuator):
             assemblee.record_position(module.properties['holder'].fullname())
             yield release, self, source.lock
             #send a busy report
-            yield put, self, module.report_socket, [Report(module.name, 'busy', params={'program':module.program})]
+            yield put, self, module.report_socket, [Report(module.fullname(), 'busy', params={'program':module.program})]
             time = program.time()
             time /= module.performance_ratio
             #TODO: manage physical attribute
@@ -1479,7 +1486,7 @@ class AssembleAct(Actuator):
             yield release, self, module.resource
             module.record_end(module.program)
             #send a report
-            yield put, self, module.report_socket, [Report(module.name, 'idle', params={'program':module.program})]
+            yield put, self, module.report_socket, [Report(module.fullname(), 'idle', params={'program':module.program})]
     
         def __hold(self, time, module):
             old_ratio = module.performance_ratio
@@ -1571,7 +1578,7 @@ class DisassembleAct(Actuator):
             module.record_end('setup')
             #report
             if not implicit:
-                report = Report(module.name, 'setup-done', params={'program':module.program})
+                report = Report(module.fullname(), 'setup-done', params={'program':module.program})
                 yield put, self, module.report_socket, [report]
 
         def __produce(self, module):
@@ -1583,13 +1590,13 @@ class DisassembleAct(Actuator):
             yield request, self, module.properties['holder'].lock 
             masters = module.properties['holder'].get_products()
             #send a busy report
-            yield put, self, module.report_socket, [Report(module.name, 'busy', params={'program':module.program})]
+            yield put, self, module.report_socket, [Report(module.fullname(), 'busy', params={'program':module.program})]
             #TODO: manage physical attribute
             program = module.properties['program_table'][module.program]
             #hold (with interruption)
             time = program.time()
             time /= module.performance_ratio
-            for elt in self.__hold(delay, module):
+            for elt in self.__hold(time, module):
                 yield elt
             #release resources and record end
             
@@ -1612,7 +1619,7 @@ class DisassembleAct(Actuator):
             yield release, self, module.resource
             module.record_end(module.program)
             #send a report
-            yield put, self, module.report_socket, [Report(module.name, 'idle', params={'program':module.program})]
+            yield put, self, module.report_socket, [Report(module.fullname(), 'idle', params={'program':module.program})]
 
         def __hold(self, time, module):
             old_ratio = module.performance_ratio
