@@ -1226,10 +1226,10 @@ class SetupDialog(gtk.Dialog):
         for p in module.properties['program_table'].keys():
             program_model.append([p])
         self.setup_default_spin = gtk.SpinButton(digits = 1, 
-                                                 adjustment = gtk.Adjustment(value = self.setup_table.default_time, 
-                                                                             lower = 0, 
-                                                                             upper = 10000, 
-                                                                             step_incr = 1))
+                                                 adjustment = gtk.Adjustment(value = float(self.setup_table.default_time), 
+                                                                             lower = 0., 
+                                                                             upper = 10000., 
+                                                                             step_incr = 1.))
         self.setup_default_spin.connect('changed', self.apply_change)
         for row in self.setup_table.items():
             self.setup_model.append(row)
