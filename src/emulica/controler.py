@@ -173,17 +173,18 @@ class TimeControler(threading.Thread):
                 action = getattr(TimeControler, request.what)
                 action(self)
             else:
-                print _("unrecognized action string: {0}").format(request.what)
+                logging.info(_("unrecognized action string: {0}").format(request.what))
              
         elif self.model.modules.has_key(request.who):
             #insert event in model
+            logging.info("sending request %s to %s" % (request, request.who))
             self.model.insert_request(request)
             #interrupt sleep
             self.__event_condition.acquire()
             self.__event_condition.notify()
             self.__event_condition.release()
         else:
-            print _("unknown module {0}").format(request.who)
+            logging.info(_("unknown module {0}").format(request.who))
         
 class EmulationServer:
     """This class implements a TCP server that runs an emulation model. 
