@@ -147,7 +147,7 @@ class EmulicaCanvas(goocanvas.Canvas):
         widget = self.widgets[module]
         self.__module_layer.remove_module(widget, module)
         del self.widgets[module]
-        self.selection.remove(module)
+        self.selection.remove(module) 
     
     def apply_layout(self, layout, submodel = None):
         """Apply a layout to the canvas.
@@ -648,14 +648,15 @@ class ModuleWidget(goocanvas.Group):
                                            anchor = gtk.ANCHOR_N,
                                            font = 'arial')
             else:
-                
+                self.name.props.text = name
                 self.name.props.visibility = goocanvas.ITEM_VISIBLE
+                
     def __on_item_leave(self, item, t_item, event):
         """Callback called when the cursor leaves a ModuleWidget"""
         if self.name:
             self.name.props.visibility = goocanvas.ITEM_HIDDEN
             self.__rect_corner = (0,0)
-
+            
 
 class Model(ModuleWidget, ModuleLayer):
     """A Wiget that represent a submodel.
@@ -1380,12 +1381,12 @@ class Assemble(ModuleWidget):
 
     def set_emulation_module(self, mod):
         self.module = mod
-        for (name, prog) in mod['program_table'].items():
-            self.__create_connection(name, prog)
         if mod['holder'] in self.canvas.widgets.keys():
             self.__set_holder(self.canvas.widgets[mod['holder']])
         else:
             self.__set_holder(None)
+        for (name, prog) in mod['program_table'].items():
+            self.__create_connection(name, prog)
         mod.connect("state-changed", self.animate)
         mod.connect("property-changed", self.__on_property_change)
     
@@ -1399,7 +1400,7 @@ class Assemble(ModuleWidget):
                 
     
     def __create_connection(self, name, prog):
-        if 'source' in prog.transform.keys() and not self.holder == None:
+        if 'source' in prog.transform.keys() and not prog.transform['source'] == None and not self.holder == None:
             src = self.canvas.widgets[prog.transform['source']]
             dst = self.holder
             connec_widget = Connection(self.canvas, src, dst, weak = True, color = 'purple')
