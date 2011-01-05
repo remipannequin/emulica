@@ -24,7 +24,9 @@ properties in emulica.
 """
 
 import random, logging, locale, re, gettext
-import gtk
+#transition to Gobject introsepection
+import gi
+from gi.repository import Gtk as gtk
 import emulation
 gettext.install('emulica')
 logger = logging.getLogger('emulica.properties')
@@ -202,8 +204,12 @@ class Registry(dict):
         
     
 class SetupMatrix():
-    """A Setup Matrix record setup times between programs. 
-    When a transition is not found, a default time is used instead
+    """A Setup Matrix record setup times between programs.
+    
+    When requesting a setup time for a (initial -> final) transition
+        * if it exists, that precise transition is used
+        * else, if there is a default for that final, it is used
+        * else, the default setup time is used
     
     Attributes:
         default_time -- default setup time when no setup data have been found
@@ -221,21 +227,27 @@ class SetupMatrix():
         assert('notify_owner' in dir(self.registry))
         self.parent_prop_name = parent_prop_name
         self.default_time = default_time
-        self.__source_prog = dict()
+        self.__dest_default = dict()
+        self.__dest_prog = dict()
   
     def add(self, initial_prog, final_prog, setup_time):
         """Add a new element in the matrix.
         
         Arguments:
-            initial_prog -- the program at the beginig of the setup
+            initial_prog -- the program at the begining of the setup
             final_prog -- the program at the end of the setup
             setup_time -- the setup delay
         
         """
-        if not self.__source_prog.has_key(initial_prog):
-            self.__source_prog[initial_prog] = dict()
-        self.__source_prog[initial_prog][final_prog] = setup_time
+        if not self.__dest_prog.has_key(final_prog):
+            self.__dest_prog[final_prog] = dict()
+        self.__dest_prog[final_prog][initial_prog] = setup_time
         self.registry.notify_owner(self.parent_prop_name)
+    
+    def add_final(self, final_prog, setup_time):
+        """Add a new column in the setup matrix : ie a setup that 
+        depends only on the final program."""
+        self.__dest_default[final_prog] = setup_time
     
     def remove(self, initial_prog, final_prog):
         """Remove an element in the setup matrix
@@ -245,16 +257,16 @@ class SetupMatrix():
             final_prog -- the program at the end of the setup
         
         """
-        del self.__source_prog[initial_prog][final_prog]
-        if len(self.__source_prog[initial_prog]) == 0:
-            del self.__source_prog[initial_prog]
+        del self.__dest_prog[final_prog][initial_prog]
+        if len(self.__dest_prog[final_prog]) == 0:
+            del self.__dest_prog[final_prog]
         self.registry.notify_owner(self.parent_prop_name)
     
     def modify(self, initial_prog, final_prog, new_initial=None, new_final=None, new_time=None):
         """Change an entry in the setup matrix. If the change create a conflict..."""
         #TODO: check for duplicate keys
         
-        time = self.__source_prog[initial_prog][final_prog]
+        time = self.__dest_prog[final_prog][initial_prog]
         if (new_initial and (not new_initial == initial_prog)) or (new_final and (not new_final == final_prog)):
             initial = new_initial or initial_prog
             final = new_final or final_prog
@@ -266,7 +278,7 @@ class SetupMatrix():
             self.add(initial, final, time)
         if new_time:
             logger.debug(_("changing setup time: {0:f}) -> {1:f}").format(time, new_time))
-            self.__source_prog[initial_prog][final_prog] = new_time
+            self.__dest_prog[final_prog][initial_prog] = new_time
         self.registry.notify_owner(self.parent_prop_name)
     
     def get(self, initial_prog, final_prog):
@@ -283,11 +295,10 @@ class SetupMatrix():
         """
         if initial_prog == final_prog:
             return 0
-        if self.__source_prog.has_key(initial_prog):
-            if self.__source_prog[initial_prog].has_key(final_prog):
-                expr = self.__source_prog[initial_prog][final_prog]
-            else:
-                expr = self.default_time
+        if self.__dest_prog.has_key(final_prog) and self.__dest_prog[final_prog].has_key(initial_prog):
+            expr = self.__dest_prog[final_prog][initial_prog]
+        elif self.__dest_default.has_key(final_prog):
+            expr = self.__dest_default[final_prog]
         else:
             expr = self.default_time
         return self.registry.eval_expression(expr)
@@ -295,8 +306,8 @@ class SetupMatrix():
     def items(self):
         """Return a list of tuple of the form (initial, final, delay)
         """
-        for (initial, d) in self.__source_prog.items():
-            for (final, delay) in d.items():
+        for (final, d) in self.__dest_prog.items():
+            for (initial, delay) in d.items():
                 yield (initial, final, delay)    
     
     def __len__(self):
@@ -346,9 +357,9 @@ class ProgramTable(XTable):
         XTable.__init__(self, prop_registry, parent_prop_name)
         self.program_keyword = schema
 
-    def add_program(self, name, delay, prog_transform = None):
+    def add_program(self, name, delay, prog_transform = None, prog_resources = []):
         """Add a program in the program Table."""
-        prog = Program(self.registry, delay)
+        prog = Program(self.registry, delay, prog_resources)
         #initialize transforms to default values
         for (transf_name, display) in self.program_keyword:
             prog.transform[transf_name] = Display.default_value[display.type](self.registry, self.parent_prop_name, [])
@@ -378,16 +389,18 @@ class Program():
         transform -- a dictionary of program parameters
         time_law -- a python expression used to evaluate the delay (may be a float, int, or an expression calling random or rng) 
     """
-    def __init__(self, prop_registry, time = 0.0):
+    def __init__(self, prop_registry, time = 0.0, resources = []):
         """Create a new instance of a Program
         
         Arguments:
             module -- the module the own the program.
-            time -- the program duration (default = 0.0). It can be either a number, or an evaluable string. 
+            time -- the program duration (default = 0.0). It can be either a number, or an evaluable string.
+            resources -- a list of resources that the program  execution require (default []) 
         """
         self.registry = prop_registry
         self.time_law = time
         self.transform = XTable(self.registry, 'program_table')
+        self.resources = resources
     
     def time(self, product = None):
         """Return the delay corresponding to this program. If time is a string
@@ -1226,10 +1239,10 @@ class SetupDialog(gtk.Dialog):
         for p in module.properties['program_table'].keys():
             program_model.append([p])
         self.setup_default_spin = gtk.SpinButton(digits = 1, 
-                                                 adjustment = gtk.Adjustment(value = self.setup_table.default_time, 
-                                                                             lower = 0, 
-                                                                             upper = 10000, 
-                                                                             step_incr = 1))
+                                                 adjustment = gtk.Adjustment(value = float(self.setup_table.default_time), 
+                                                                             lower = 0., 
+                                                                             upper = 10000., 
+                                                                             step_incr = 1.))
         self.setup_default_spin.connect('changed', self.apply_change)
         for row in self.setup_table.items():
             self.setup_model.append(row)
