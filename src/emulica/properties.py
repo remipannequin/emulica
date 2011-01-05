@@ -24,9 +24,7 @@ properties in emulica.
 """
 
 import random, logging, locale, re, gettext
-#transition to Gobject introsepection
-import gi
-from gi.repository import Gtk as gtk
+import gtk
 import emulation
 gettext.install('emulica')
 logger = logging.getLogger('emulica.properties')
@@ -310,10 +308,11 @@ class SetupMatrix():
             for (initial, delay) in d.items():
                 yield (initial, final, delay)    
     
+    #TODO: 
     def __len__(self):
         """Return the number of elements in the matrix (ie the number of setups)"""
         result = 0
-        for d in self.__source_prog.values():
+        for d in self.__dest_prog.values():
             result += len(d)
         return result
     
