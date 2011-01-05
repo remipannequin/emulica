@@ -689,6 +689,53 @@ def parse_request(message):
         rq.why = elt.text
     return rq
     
+def parse_report(message):
+    """Parse a XML message and return a Report instance
+    
+    Returns:
+        a emulation.Report instance
+        
+    Raises:
+        EmuMLError -- if the request doesn't respects schema
+        
+    """
+    from xml.etree.ElementTree import fromstring
+    try:
+        root = fromstring(message)
+    except Exception, message:
+        raise EmuMLError(message)
+    attributes = dict()
+    elt = root.find('who')
+    if elt == None: 
+        raise EmuMLError("request message does not specify who must execute it")
+    who = elt.text
+    elt = root.find('what')
+    if elt == None: 
+        raise EmuMLError("request message does not specify what to execute")
+    what = elt.text
+    rp = emulation.Report(who, what)
+    elt = root.find("how")
+    if not elt == None:
+        for e in elt.findall("element"):
+            try:
+                value = eval(e.text)
+            except (SyntaxError, NameError):
+                value = e.text
+            rp.how[e.attrib["name"]] = value
+    elt = root.find("where")
+    if not elt == None:
+        rp.where = elt.text
+    elt = root.find("when")
+    if not elt == None:
+        try:
+            rp.when = float(elt.text)
+        except ValueError:
+            raise EmuMLError("""'{0}' could not be recognized as a date (float)""".format(elt.text))
+    elt = root.find("why")
+    if not elt == None:
+        rp.why = elt.text
+    return rp
+    
     
 def write_report(report):
     """Return an XML message from a report object"""
@@ -700,6 +747,22 @@ def write_report(report):
         elt.text = str(getattr(report, attr))
     how_elt = SubElement(root, 'how')
     for (name, value) in report.how.items():
+        elt = SubElement(how_elt, 'element')
+        elt.attrib['name'] = name
+        elt.text = str(value)
+        
+    return tostring(root)
+    
+def write_request(request):
+    """Return an XML message from a request object"""
+    from xml.etree.ElementTree import tostring
+    root = Element("request")
+    
+    for attr in ['who', 'what', 'when', 'where', 'why']:
+        elt = SubElement(root, attr)
+        elt.text = str(getattr(request, attr))
+    how_elt = SubElement(root, 'how')
+    for (name, value) in request.how.items():
         elt = SubElement(how_elt, 'element')
         elt.attrib['name'] = name
         elt.text = str(value)
