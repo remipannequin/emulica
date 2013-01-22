@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="emulica">
+  <schema id="net.launchpad.emulica" path="/net/launchpad/emulica/">
+    <key name="show-line-number" type="b">
+      <default>true</default>
+      <summary>Show Line Number</summary>
+      <description>Show line number in the control code editor.</description>
+    </key>
+    
+    <key name="auto-indent" type="b">
+      <default>true</default>
+      <summary>Auto-indent</summary>
+      <description>Automaticaly indent new lines.</description>
+    </key>
+    
+    <key name="insert-spaces-instead-of-tabs" type="b">
+      <default>true</default>
+      <summary>Insert whitespace instead of tabs</summary>
+      <description>Isert whitespaces instead of tabulations.</description>
+    </key>
+    <key name="indent-width" type="i">
+      <default>4</default>
+      <summary>Indentation width</summary>
+      <description>Indentation width</description>
+    </key>
+    <key name="show-line-marks" type="b">
+      <default>true</default>
+      <summary>Show line marks</summary>
+      <description>Show line marks (in margin)</description>
+    </key>
+    
+  </schema>
+</schemalist>
