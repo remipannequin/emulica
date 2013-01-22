@@ -1,0 +1,8 @@
+[Desktop Entry]
+_Name=Emulica
+_Comment=Emulica emulation software
+Categories=GNOME;Sciences;
+Exec=emulica
+Icon=emulica
+Terminal=false
+Type=Application

@@ -1,22 +1,28 @@
-Source: python-emulica
-Maintainer: Rémi Pannequin <remi.pannequin@cran.uhp-nancy.fr>
-XS-Python-Version: >=2.6
+Source: emulica
 Section: python
-Priority: optional
-Build-Depends: debhelper (>= 5.0.38)
-Build-Depends-Indep: python-all (>= 2.6), python-central (>= 0.5.6)
+Priority: extra
+Build-Depends: debhelper (>= 8),
+ python (>= 2.6.6-3~),
+ python-distutils-extra (>= 2.10)
+Maintainer: Remi Pannequin <remi.pannequin@univ-lorraine.fr>
+Standards-Version: 3.9.3
+X-Python-Version: >= 2.6
 
-Standards-Version: 3.8.0.1
-Homepage: http://emulica.sourceforge.net/emulica
-Package: python-emulica
+Package: emulica
 Architecture: all
-Section: python
-Priority: optional
-Depends: ${python:Depends}, python-gtk2 (>=2.8.0), python-simpy (>=1.8), python-matplotlib (>=0.98.3), python-pygoocanvas (>=0.12.0), python-twisted-core (>=8.1.0), python-gtksourceview2 (>=2.4.0)
-XB-Python-Version: ${python:Versions}
-Description: Systemic Emulation Modelling and Execution Environment.
- .
- A python library and a graphical application to create and run manufacturing
- emulation model, i.e. create virtual shop floor, to test and evaluate control systems.
-
-
+Depends: ${misc:Depends},
+ ${python:Depends},
+ python-matplotlib,
+ gir1.2-gtk-3.0,
+ gir1.2-gtksource-3.0,
+ gir1.2-goocanvas-2.0-9,
+ gir1.2-pango-1.0,
+ gir1.2-glib-2.0,
+ python-twisted-core,
+ python-cairo,
+ python-simpy,
+ yelp
+Description: Emulication of logistic systems
+ Emulica is an emulation framework that enable researchers or
+ practitionners to design and run emulation-based control experiments, in
+ the context of manufacturing and logistics systems.

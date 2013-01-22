@@ -1,5 +1,0 @@
-?package(python-seme):needs="x11" \
-section="Application/Science" \
-icon="/usr/share/pixmaps/emulica-icon.png" \
-title="Emulica Emulation Environment" \
-command="/usr/bin/emulica"
