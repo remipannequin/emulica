@@ -2,32 +2,35 @@
 # *-* coding: iso-8859-15 *-*
 
 # emulicapp/results.py
-# Copyright 2008, Rémi Pannequin, Centre de Recherche en Automatique de Nancy
+### BEGIN LICENSE
+# Copyright (C) 2013 Rémi Pannequin, Centre de Recherche en Automatique de Nancy remi.pannequin@univ-lorraine.fr
+# This program is free software: you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License version 3, as published 
+# by the Free Software Foundation.
 # 
-# This file is part of Emulica.
-#
-# Emulica is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Emulica is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Emulica.  If not, see <http://www.gnu.org/licenses/>.
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranties of 
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+# PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along 
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+### END LICENSE
 """
 emulica is a graphical application to emulica, build using GTK. This (sub) module 
 contains functions that pertainng to modelling.
 """
 import sys, os, logging
+
+import gettext
+from gettext import gettext as _
+gettext.textdomain('emulica')
+
 from emulica import plot
-import pygtk
-pygtk.require('2.0')
-import gtk, pango, gobject
-import dialogs
+from gi.repository import Gtk as gtk # pylint: disable=E0611
+from gi.repository import GObject as gobject # pylint: disable=E0611
+from gi.repository import Pango as pango # pylint: disable=E0611
+
 logger = logging.getLogger('emulica.emulicapp.results')
 
 class EmulicaResults:
@@ -88,11 +91,11 @@ class EmulicaResults:
     def on_export_results_menuitem_activate(self, menuitem, data = None):
         """Callback for the export result menuitem."""
         chooser = gtk.FileChooserDialog(_("Export results..."), self.window,
-                                        gtk.FILE_CHOOSER_ACTION_SAVE,
-                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
-                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+                                        gtk.FileChooserAction.SAVE,
+                                        (gtk.STOCK_CANCEL, gtk.ResponseType.CANCEL, 
+                                         gtk.STOCK_SAVE, gtk.ResponseType.OK))
         response = chooser.run()
-        if response == gtk.RESPONSE_OK: 
+        if response == gtk.ResponseType.OK: 
             raise NotImplemented()
         chooser.destroy()
 
@@ -101,9 +104,9 @@ class EmulicaResults:
         let the user choose the new graph he want to add"""
         dialog = gtk.Dialog("Add a Result Chart",
                             self.main.window,
-                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                             gtk.STOCK_ADD, gtk.RESPONSE_ACCEPT))
+                            gtk.DialogFlags.MODAL | gtk.DialogFlags.DESTROY_WITH_PARENT,
+                            (gtk.STOCK_CANCEL, gtk.ResponseType.REJECT,
+                             gtk.STOCK_ADD, gtk.ResponseType.ACCEPT))
         
         combo = gtk.ComboBox()
         model = gtk.ListStore(str, str, object, object)    
@@ -111,7 +114,7 @@ class EmulicaResults:
             model.append(row)
         combo.set_model(model)
         cell = gtk.CellRendererText()
-        combo.pack_start(cell, True)
+        combo.pack_start(cell, True, False, 0)
         combo.add_attribute(cell, 'text', 0)
         all_mod_cb = gtk.CheckButton(label = _("Include all"))
         all_mod_cb.set_active(True)
@@ -119,12 +122,12 @@ class EmulicaResults:
         label = gtk.Label(_("Type of chart"))
         label.set_alignment(1, 0.5)
         label.set_padding(8, 0)
-        hbox.pack_start(label)
-        hbox.pack_start(combo)
-        dialog.vbox.pack_start(hbox)
-        dialog.vbox.pack_start(all_mod_cb)
+        hbox.pack_start(label, False, False, 0)
+        hbox.pack_start(combo, False, False, 0)
+        dialog.vbox.pack_start(hbox, False, False, 0)
+        dialog.vbox.pack_start(all_mod_cb, Fasle, False, 0)
         dialog.show_all()
-        if (dialog.run() == gtk.RESPONSE_ACCEPT):
+        if (dialog.run() == gtk.ResponseType.ACCEPT):
             (chart_name, chart_type, elt, elt_filter) = combo.get_model().get(combo.get_active_iter(), 0, 1, 2, 3)
             self.add_result(chart_name, chart_type, elt, elt_filter, all_mod_cb.get_active())
             
@@ -151,9 +154,9 @@ class EmulicaResults:
         that ask the file name, file format, etc..."""
         dialog = gtk.Dialog("Save Results",
                             self.main.window,
-                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                             gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT))
+                            gtk.DialogFlags.MODAL | gtk.DialogFlags.DESTROY_WITH_PARENT,
+                            (gtk.STOCK_CANCEL, gtk.ResponseType.REJECT,
+                             gtk.STOCK_SAVE, gtk.ResponseType.ACCEPT))
         hbox1 = gtk.HBox()
         label = gtk.Label(_("Save Results as:"))
         label.set_alignment(0, 0.5)
@@ -165,13 +168,13 @@ class EmulicaResults:
         combo.append_text('jpg')
         combo.append_text('svg')
         combo.set_active(0)
-        hbox1.pack_start(label)
-        hbox1.pack_start(combo)
-        dialog.vbox.pack_start(hbox1)
+        hbox1.pack_start(label, False, False, 0)
+        hbox1.pack_start(combo, False, False, 0)
+        dialog.vbox.pack_start(hbox1, False, False, 0)
         cb1 = gtk.CheckButton(_("Include raw result (csv)"))
         cb2 = gtk.CheckButton(_("Include summary (txt)"))
-        dialog.vbox.pack_start(cb1)
-        dialog.vbox.pack_start(cb2)
+        dialog.vbox.pack_start(cb1, False, False, 0)
+        dialog.vbox.pack_start(cb2, False, False, 0)
         hbox2 = gtk.HBox()
         label2 = gtk.Label(_("File prefix:"))
         label2.set_alignment(0, 0.5)
@@ -181,13 +184,13 @@ class EmulicaResults:
         base = self.main.filename[:-6]
         entry.set_text(base)
         dir_button = gtk.FileChooserButton(_("Saving Directory"))
-        dir_button.set_action(gtk.FILE_CHOOSER_ACTION_SELECT_FOLDER)
-        hbox2.pack_start(label2)
-        hbox2.pack_start(entry)
-        hbox2.pack_start(dir_button)
-        dialog.vbox.pack_start(hbox2)
+        dir_button.set_action(gtk.FileChooserAction.SELECT_FOLDER)
+        hbox2.pack_start(label2, False, False, 0)
+        hbox2.pack_start(entry, False, False, 0)
+        hbox2.pack_start(dir_button, False, False, 0)
+        dialog.vbox.pack_start(hbox2, False, False, 0)
         dialog.show_all()
-        if (dialog.run() == gtk.RESPONSE_ACCEPT):
+        if (dialog.run() == gtk.ResponseType.ACCEPT):
             #iterate on charts...
             frm = combo.get_active_text()
             for i in range(len(self.charts)):
@@ -252,10 +255,11 @@ class EmulicaResults:
         if add_all:
             mod_list = [(name, mod) for (name, mod) in dic.items() if elt_filter(mod)]
         else:
-            dialog = dialogs.ModuleSelectionDialog(dic, self.main.window, mod_filter = elt_filter)
+            dialog = ModuleSelectionDialog()
+            dialog.set_modules(dic, mod_filter = elt_filter)
             response = dialog.run()
             dialog.destroy()
-            if response == gtk.RESPONSE_ACCEPT:
+            if response == gtk.ResponseType.ACCEPT:
                 if (chart_type == 'ProductChart'):
                     #for products, key is int(name)
                     mod_list = [(name, dic[int(name)]) for name in dialog.selected()]
@@ -277,15 +281,15 @@ class EmulicaResults:
         called by add_result)"""
         notebook = self.builder.get_object('results_notebook')
         hbox = gtk.HBox()
-        hbox.pack_start(result, True, True)
+        hbox.pack_start(result, True, True, 0)
         hbox.show_all()
         if legend:
             sw = gtk.ScrolledWindow()
             sw.add_with_viewport(legend)
-            sw.set_policy (hscrollbar_policy=gtk.POLICY_NEVER,
-                           vscrollbar_policy=gtk.POLICY_AUTOMATIC)
+            sw.set_policy (hscrollbar_policy=gtk.ScrollablePolicy.MINIMUM,
+                           vscrollbar_policy=gtk.ScrollablePolicy.NATURAL)
             self.legends[hbox] = sw
-            hbox.pack_start(sw, False, False)
+            hbox.pack_start(sw, False, False, 0)
             legend.show()
             active = self.builder.get_object('legend_togglebutton').get_active()
             if active:
@@ -297,14 +301,14 @@ class EmulicaResults:
             notebook.remove_page(num)
             child.destroy()
         label = gtk.HBox()
-        label.pack_start(gtk.Label(name))
+        label.pack_start(gtk.Label(name), False, False, 0)
         close_page_button = gtk.Button()
-        close_page_button.set_relief(gtk.RELIEF_NONE)
+        close_page_button.set_relief(gtk.ReliefStyle.NONE)
         img = gtk.Image()
-        img.set_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
+        img.set_from_stock(gtk.STOCK_CLOSE, gtk.IconSize.MENU)
         close_page_button.add(img)
         close_page_button.connect('clicked', on_close_page_button, notebook, hbox)
-        label.pack_end(close_page_button, False, False)
+        label.pack_end(close_page_button, False, False, 0)
         label.show_all()
         page_num = notebook.append_page(hbox, tab_label = label)
         notebook.set_current_page(page_num)

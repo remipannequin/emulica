@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gtk+ 3.0 -->
+  <!-- interface-requires emulica_window 1.0 -->
+  <!-- interface-local-resource-path ../media -->
+  <object class="GtkIconFactory" id="iconfactory">
+    <sources>
+      <source stock-id="emulica-loop-actuator" filename="../media/emulica-loop-actuator.svg"/>
+      <source stock-id="emulica-create" filename="../media/emulica-create.svg"/>
+      <source stock-id="emulica-dispose" filename="../media/emulica-dispose.svg"/>
+      <source stock-id="emulica-pushobs" filename="../media/emulica-pushobs.svg"/>
+      <source stock-id="emulica-disassemble" filename="../media/emulica-disassemble.svg"/>
+      <source stock-id="emulica-loop-observer" filename="../media/emulica-loop-observer.svg"/>
+      <source stock-id="emulica-shape" filename="../media/emulica-shape.svg"/>
+      <source stock-id="emulica-pullobs" filename="../media/emulica-pullobs.svg"/>
+      <source stock-id="emulica-fifo" filename="../media/emulica-fifo.svg"/>
+      <source stock-id="emulica-assemble" filename="../media/emulica-assemble.svg"/>
+      <source stock-id="emulica-space" filename="../media/emulica-space.svg"/>
+      <source stock-id="emulica-loop-holder" filename="../media/emulica-loop-holder.svg"/>
+      <source stock-id="emulica-failure" filename="../media/emulica-failure.svg"/>
+    </sources>
+  </object>
+ </interface>

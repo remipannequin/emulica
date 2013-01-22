@@ -1,0 +1,13 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: emulica
+Upstream-Contact: Remi Pannequin <remi.pannequin@univ-lorraine.fr>
+Source: http://emulica.sourceforge.net/
+
+Files: *
+Copyright: (C)
+Copyright: (C))
+Copyright: (C) 2013 R&#233;mi Pannequin, Centre de Recherche en Automatique de Nancy remi.pannequin@univ-lorraine.fr
+Copyright: (C) 2013 Rémi Pannequin, Centre de Recherche en Automatique de Nancy remi.pannequin@univ-lorraine.fr
+License: GPL-3
+ The full text of the GPL is distributed in
+ /usr/share/common-licenses/GPL-3 on Debian systems.

@@ -14,28 +14,20 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-import optparse
 from locale import gettext as _
-from gi.repository import Gtk # pylint: disable=E0611
-from emulica import EmulicaWindow
-from emulica_lib import set_up_logging, get_version
 
-def parse_options():
-    """Support for command line options"""
-    parser = optparse.OptionParser(version="%%prog %s" % get_version())
-    parser.add_option(
-        "-v", "--verbose", action="count", dest="verbose",
-        help=_("Show debug messages (-vv debugs emulica_lib also)"))
-    (options, args) = parser.parse_args()
+import logging
+logger = logging.getLogger('emulica')
 
-    set_up_logging(options)
+from emulica_lib.AboutDialog import AboutDialog
 
-def main():
-    'constructor for your class instances'
-    parse_options()
-    default_settings = Gtk.Settings.get_default();
-    default_settings.set_property('gtk-button-images', True); 
-    # Run the application.    
-    window = EmulicaWindow.EmulicaWindow()
-    window.show()
-    Gtk.main()
+# See emulica_lib.AboutDialog.py for more details about how this class works.
+class AboutEmulicaDialog(AboutDialog):
+    __gtype_name__ = "AboutEmulicaDialog"
+    
+    def finish_initializing(self, builder): # pylint: disable=E1002
+        """Set up the about dialog"""
+        super(AboutEmulicaDialog, self).finish_initializing(builder)
+
+        # Code for other initialization actions should be added here.
+

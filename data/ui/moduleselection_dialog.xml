@@ -1,0 +1,9 @@
+<glade-catalog name="moduleselection_dialog" domain="glade-3" 
+               depends="gtk+" version="1.0">
+  <glade-widget-classes>
+    <glade-widget-class title="Module Selection Dialog" name="ModuleSelectionDialog" 
+                        generic-name="moduleselection_dialog" parent="GtkDialog"
+                        icon-name="widget-gtk-dialog"/>
+  </glade-widget-classes>
+
+</glade-catalog>

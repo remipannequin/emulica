@@ -1,23 +1,18 @@
-#!/usr/bin/env python
-# *-* coding: iso-8859-15 *-*
-
-# emulicapp/control.py
-# Copyright 2008, Rémi Pannequin, Centre de Recherche en Automatique de Nancy
+# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+### BEGIN LICENSE
+# Copyright (C) 2013 Rémi Pannequin, Centre de Recherche en Automatique de Nancy remi.pannequin@univ-lorraine.fr
+# This program is free software: you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License version 3, as published 
+# by the Free Software Foundation.
 # 
-# This file is part of Emulica.
-#
-# Emulica is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Emulica is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Emulica.  If not, see <http://www.gnu.org/licenses/>.
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranties of 
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+# PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along 
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+### END LICENSE
 """
 emulica is a graphical application to the emulica framework, build using GTK. 
 This (sub) module contains functions that pertainng to modelling.
@@ -25,8 +20,11 @@ This (sub) module contains functions that pertainng to modelling.
 
 import sys, os, logging, re
 from emulica import emuML, controler
-import gtk, gtksourceview2 as gtksourceview
-import dialogs
+from gi.repository import Gtk # pylint: disable=E0611
+from gi.repository import GtkSource# pylint: disable=E0611
+
+from ModuleSelectionDialog import ModuleSelectionDialog
+
 logger = logging.getLogger('emulica.emulicapp.control')
 
 class EmulicaControl:
@@ -46,22 +44,22 @@ class EmulicaControl:
         """Create the source view window and init its properties"""
         self.main = main_app
         self.model = main_app.model
-        self.clipboard = gtk.Clipboard()
+        self.clipboard = Gtk.Clipboard()
         control_viewport = self.main.builder.get_object('control_view')
-        manager = gtksourceview.LanguageManager()
+        manager = GtkSource.LanguageManager()
         lang_python = manager.get_language('python')
-        self.buffer = gtksourceview.Buffer(language = lang_python)
+        self.buffer = GtkSource.Buffer(language = lang_python)
         self.buffer.props.highlight_syntax = True
-        self.control_view = gtksourceview.View(self.buffer)
+        self.control_view = GtkSource.View(buffer = self.buffer)
         self.buffer.place_cursor(self.buffer.get_start_iter())
         self.control_view.connect('button-press-event', self.on_control_view_clicked)
         self.buffer.connect('changed', self.on_buffer_changed)
         self.buffer.connect('notify::can-undo', lambda o, p: self.main.update_undo_redo_menuitem())
         self.buffer.connect('notify::can-redo', lambda o, p: self.main.update_undo_redo_menuitem())
-        self.control_view.set_mark_category_pixbuf("emulica_error", self.control_view.render_icon(gtk.STOCK_NO, gtk.ICON_SIZE_MENU))
+        #self.control_view.set_mark_category_pixbuf("emulica_error", self.control_view.render_icon(Gtk.STOCK_NO, Gtk.ICON_SIZE_MENU))#TODO
         #Work around win32 version
         if 'set_mark_category_background' in dir(self.control_view):
-            self.control_view.set_mark_category_background ("emulica_error", gtk.gdk.Color(65000, 0, 0))
+            self.control_view.set_mark_category_background ("emulica_error", Gtk.gdk.Color(65000, 0, 0))
         debug_textview = self.main.builder.get_object('trace_textview')
         self.debug_buffer = LogBuffer()
         debug_textview.set_buffer(self.debug_buffer)
@@ -82,12 +80,12 @@ class EmulicaControl:
     
     def on_import_control_menuitem_activate(self, menuitem, data = None):
         """Callback for the import control menuitem. (filter .py)"""
-        chooser = gtk.FileChooserDialog(_("Import emulation model..."), self.window,
-                                        gtk.FILE_CHOOSER_ACTION_OPEN,
-                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
-                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+        chooser = Gtk.FileChooserDialog(_("Import emulation model..."), self.window,
+                                        Gtk.FILE_CHOOSER_ACTION_OPEN,
+                                        (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, 
+                                         Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
         response = chooser.run()
-        if response == gtk.RESPONSE_OK: 
+        if response == Gtk.ResponseType.OK: 
             try:
                 control = open(chooser.get_filename(), 'r')
                 self.buffer.set_text(control.read())
@@ -98,14 +96,14 @@ class EmulicaControl:
         
     def on_export_control_menuitem_activate(self, menuitem, data = None):
         """Callback for the export control menuitem."""
-        chooser = gtk.FileChooserDialog(_("Export control model..."), self.window,
-                                        gtk.FILE_CHOOSER_ACTION_SAVE,
-                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL, 
-                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+        chooser = Gtk.FileChooserDialog(_("Export control model..."), self.window,
+                                        Gtk.FILE_CHOOSER_ACTION_SAVE,
+                                        (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, 
+                                         Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
         if self.main.filename:
             chooser.set_filename(os.path.splitext(self.main.filename)[0]+'.py')
         response = chooser.run()
-        if response == gtk.RESPONSE_OK: 
+        if response == Gtk.ResponseType.OK: 
             chooser.get_filename()
             try:
                 control_file = open(chooser.get_filename(), 'w')
@@ -122,11 +120,11 @@ class EmulicaControl:
         sw = self.main.builder.get_object('trace_scrolledwindow')
         debug_textview = self.main.builder.get_object('trace_textview')
         if button.get_active():
-            arrow.set(gtk.ARROW_DOWN, gtk.SHADOW_NONE)
+            arrow.set(Gtk.ArrowType.DOWN, Gtk.ShadowType.NONE)
             sw.show()
             debug_textview.show()
         else:
-            arrow.set(gtk.ARROW_RIGHT, gtk.SHADOW_NONE)
+            arrow.set(Gtk.ArrowType.RIGHT, Gtk.ShadowType.NONE)
             sw.hide()
             debug_textview.hide()
 
@@ -174,8 +172,8 @@ class EmulicaControl:
         if not view.get_show_line_marks():
             return False
         # check that the click was on the left gutter
-        if ev.window == view.get_window(gtk.TEXT_WINDOW_LEFT):
-            x_buf, y_buf = view.window_to_buffer_coords(gtk.TEXT_WINDOW_LEFT,
+        if ev.window == view.get_window(Gtk.TextWindowType.LEFT):#TODO Gtk.TEXT_WINDOW_LEFT
+            x_buf, y_buf = view.window_to_buffer_coords(Gtk.TextWindowType.LEFT,
                                                         int(ev.x), int(ev.y))
             line_start = view.get_line_at_y(y_buf)[0]
             mark_list = self.buffer.get_source_marks_at_line(line_start.get_line(),  mark_type)
@@ -202,10 +200,11 @@ class EmulicaControl:
     
     def control_add_modules(self):
         """Add some declaration useful to control some modules."""
-        dialog = dialogs.ModuleSelectionDialog(self.model.modules, self.main.window)
+        dialog = ModuleSelectionDialog()
+        dialog.set_modules_list(self.model.modules)
         response = dialog.run()
         dialog.destroy()
-        if response == gtk.RESPONSE_ACCEPT:
+        if response == Gtk.ResponseType.ACCEPT:
             iter_here = self.buffer.get_iter_at_mark(self.buffer.get_insert())
             snippet = ""
             for name in dialog.selected():
@@ -216,43 +215,43 @@ class EmulicaControl:
     def control_add_put_request(self):
         """Add control line to send a request to a module"""
         #create dialog with combo to select the module to send request to and set the Request parameters.
-        dialog = gtk.Dialog(_("Select request parameters"),
-                            self.main.window,
-                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                             gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
-        table = gtk.Table(7, 2)
-        for (label, row) in [(gtk.Label(_("Receiver:")),0), (gtk.Label(_("Action:")), 2), (gtk.Label(_("Date:")), 3)]:
+        dialog = Gtk.Dialog(_("Select request parameters"),
+                            self.main,
+                            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                             Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
+        table = Gtk.Table(7, 2)
+        for (label, row) in [(Gtk.Label(_("Receiver:")),0), (Gtk.Label(_("Action:")), 2), (Gtk.Label(_("Date:")), 3)]:
             label.set_alignment(1, 0.5)
             label.set_padding(8, 0)
             table.attach(label, 0, 1, row , row + 1)
-        combo = gtk.combo_box_new_text()
+        combo = Gtk.ComboBoxText()
         for (name, module) in self.model.modules.items():
             #a module is able to receive Request if and only if it has a request_params (list) that give the possible request parameters
             if 'request_params' in dir(module):
                 combo.append_text(name)
         table.attach(combo, 1, 2, 0, 1)
-        table.attach(gtk.HSeparator(), 0, 2, 1, 2)
-        action_entry = gtk.combo_box_entry_new_text()
+        table.attach(Gtk.HSeparator(), 0, 2, 1, 2)
+        action_entry = Gtk.ComboBoxText()
         table.attach(action_entry, 1, 2, 2, 3)
-        date_entry = gtk.Entry()
+        date_entry = Gtk.Entry()
         table.attach(date_entry, 1, 2, 3, 4)
-        action = action_entry.child
+        #action = action_entry.child
         
-        dialog.vbox.pack_start(table)
+        dialog.vbox.pack_start(table, False, False, 0)
         dialog.show_all()
         
         #hidden widgets...
-        labels = {4: gtk.Label(_("Program:")), 5: gtk.Label(_("Product type:")), 6: gtk.Label(_("Product ID:"))}
+        labels = {4: Gtk.Label(_("Program:")), 5: Gtk.Label(_("Product type:")), 6: Gtk.Label(_("Product ID:"))}
         for (row, label) in labels.items():
             label.set_alignment(1, 0.5)
             label.set_padding(8, 0)
             table.attach(label, 0, 1, row , row + 1)
-        program_combo = gtk.combo_box_entry_new_text()
+        program_combo = Gtk.ComboBoxText()
         table.attach(program_combo, 1, 2, 4, 5)
-        ptype_entry = gtk.Entry()
+        ptype_entry = Gtk.Entry()
         table.attach(ptype_entry, 1, 2, 5, 6)
-        pid_entry = gtk.Entry()
+        pid_entry = Gtk.Entry()
         table.attach(pid_entry, 1, 2, 6, 7)
         
         
@@ -290,7 +289,7 @@ class EmulicaControl:
         combo.connect('changed', selected)
         response = dialog.run()
         try:
-            if response == gtk.RESPONSE_ACCEPT:
+            if response == Gtk.ResponseType.ACCEPT:
                 iter_here = self.buffer.get_iter_at_mark(self.buffer.get_insert())
                 if not date_entry.get_text() == "":
                     date = ", date = {0}".format(date_entry.get_text())
@@ -311,34 +310,34 @@ class EmulicaControl:
                     params = params + "}"
                 else:
                     params = ""
-                snippet = """yield put, self, {name}.request_socket, [Request('{name}', '{action}'{date}{params})]""".format(name = combo.get_active_text(), action = action.get_text(), date = date, params = params)
+                snippet = """yield put, self, {name}.request_socket, [Request('{name}', '{action}'{date}{params})]""".format(name = combo.get_active_text(), action = action_entry.get_active_text(), date = date, params = params)
                 self.buffer.insert(iter_here, snippet)
         finally:
             dialog.destroy()
     
     def control_add_wait_idle(self):
         """Add a wait_idle line for the specified actuator"""
-        dialog = gtk.Dialog(_("Select request parameters"),
-                            self.main.window,
-                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                             gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
-        box = gtk.HBox()
-        label = gtk.Label(_("Module to monitor:"))
+        dialog = Gtk.Dialog(_("Select request parameters"),
+                            self.main,
+                            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                             Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
+        box = Gtk.HBox()
+        label = Gtk.Label(_("Module to monitor:"))
         label.set_alignment(1, 0.5)
-        box.pack_start(label)
-        combo = gtk.combo_box_new_text()
+        box.pack_start(label, False, False, 0)
+        combo = Gtk.ComboBoxText()
         for (name, module) in self.model.modules.items():
             if 'degrade' in dir(module):
                 #TODO: find a better way to test if the module is an actuator ?
                 combo.append_text(name)
-        box.pack_start(combo)
-        dialog.vbox.pack_start(box)
+        box.pack_start(combo, False, False, 0)
+        dialog.vbox.pack_start(box, False, False, 0)
         dialog.show_all()
         response = dialog.run()
         actuator = combo.get_active_text()
         dialog.destroy()
-        if response == gtk.RESPONSE_ACCEPT:
+        if response == Gtk.ResponseType.ACCEPT:
             iter_here = self.buffer.get_iter_at_mark(self.buffer.get_insert())
             snippet = "for e in wait_idle(self, rp_{name}): yield e".format(name = actuator)
             self.buffer.insert(iter_here, snippet)
@@ -350,33 +349,33 @@ class EmulicaControl:
         """
         res = self.prepare_control()
         if res:
-            self.main.status.set_text(_("Control code compiled succefully."))
+            self.main.status_set_text(_("Control code compiled succefully."))
         else:
-            self.main.status.set_text(_("Control code compilation failed."))
+            self.main.status_set_text(_("Control code compilation failed."))
             
     def on_control_add_snippet_activate(self, button, data = None):
         """Callback for the add button in the control tab. Call the function 
         corresponding to the selected row in model"""
-        dialog = gtk.Dialog(_("Select control snippet to insert"),
-                            self.main.window,
-                            gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                             gtk.STOCK_ADD, gtk.RESPONSE_ACCEPT))
+        dialog = Gtk.Dialog(_("Select control snippet to insert"),
+                            self.main,
+                            Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                             Gtk.STOCK_ADD, Gtk.ResponseType.ACCEPT))
         snippets = [(_("Main Import"), self.control_add_import),
                     (_("Empty control class"), self.control_add_class),
                     (_("Emulation module"), self.control_add_modules),
                     (_("Put request"), self.control_add_put_request),
                     (_("Get report"), self.control_add_get_report),
                     (_("Wait idle state"), self.control_add_wait_idle)]
-        model = gtk.ListStore(str, object)
+        model = Gtk.ListStore(str, object)
         for row in snippets:
             model.append(row)
-        treeview = gtk.TreeView(model)
-        cell = gtk.CellRendererText()
-        column = gtk.TreeViewColumn(_("Availlable Snippets"), cell, text = 0)
+        treeview = Gtk.TreeView(model)
+        cell = Gtk.CellRendererText()
+        column = Gtk.TreeViewColumn(_("Availlable Snippets"), cell, text = 0)
         column.set_expand(True)
         treeview.append_column(column)
-        dialog.vbox.pack_start(treeview)
+        dialog.vbox.pack_start(treeview, False, False, 0)
         def on_treeview_row_activated(widget, event, data):
             model, treeiter, = treeview.get_selection().get_selected()
             (add_func, ) = model.get(treeiter, 1)
@@ -387,38 +386,34 @@ class EmulicaControl:
         response = dialog.run()
         model, treeiter, = treeview.get_selection().get_selected()
         dialog.destroy()
-        if response == gtk.RESPONSE_ACCEPT:
+        if response == Gtk.ResponseType.ACCEPT:
             
             (add_func, ) = model.get(treeiter, 1)
             add_func()
-    
-    def on_control_update_activate(self, button, data = None):
-        """Callback for the Update declare function button in the control tab."""
-        self.update_control_declare()
         
     
     def control_add_get_report(self):
         """Add control line to get report from a module"""
         #create dialog with combo to select the module frow which to get report
-        dialog = gtk.Dialog(_("Select request parameters"),
-                            self.main.window,
-                            gtk.DIALOG_MODAL | gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                             gtk.STOCK_OK, gtk.RESPONSE_ACCEPT))
-        box = gtk.HBox()
-        label = gtk.Label(_("Get report from module:"+"  "))
+        dialog = Gtk.Dialog(_("Select request parameters"),
+                            self.main,
+                            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                             Gtk.STOCK_OK, Gtk.ResponseType.ACCEPT))
+        box = Gtk.HBox()
+        label = Gtk.Label(_("Get report from module:"+"  "))
         label.set_alignment(1, 0.5)
-        box.pack_start(label)
-        combo = gtk.combo_box_new_text()
+        box.pack_start(label, False, False, 0)
+        combo = Gtk.ComboBoxText()
         for (name, module) in self.model.modules.items():
             combo.append_text(name)
-        box.pack_start(combo)
-        dialog.vbox.pack_start(box)
+        box.pack_start(combo, False, False, 0)
+        dialog.vbox.pack_start(box, False, False, 0)
         dialog.show_all()
         response = dialog.run()
         selection = combo.get_active_text()
         dialog.destroy()
-        if response == gtk.RESPONSE_ACCEPT:
+        if response == Gtk.ResponseType.ACCEPT:
             iter_here = self.buffer.get_iter_at_mark(self.buffer.get_insert())
             snippet = """yield get, self, rp_{name}, 1\n            ev = self.got[0]""".format(name = selection)
             self.buffer.insert(iter_here, snippet)
@@ -430,11 +425,11 @@ class EmulicaControl:
         img = self.main.builder.get_object('syntax_check_image')
         if compilation_done:
             if sucessfull:
-                img.set_from_stock(gtk.STOCK_YES, gtk.ICON_SIZE_BUTTON)
+                img.set_from_stock(Gtk.STOCK_YES, Gtk.IconSize.BUTTON)
             else:
-                img.set_from_stock(gtk.STOCK_NO, gtk.ICON_SIZE_BUTTON)
+                img.set_from_stock(Gtk.STOCK_NO, Gtk.IconSize.BUTTON)
         else:
-            img.set_from_stock(gtk.STOCK_DIALOG_QUESTION, gtk.ICON_SIZE_BUTTON)
+            img.set_from_stock(Gtk.STOCK_DIALOG_QUESTION, Gtk.IconSize.BUTTON)
             
             
             
@@ -476,7 +471,7 @@ class EmulicaControl:
         #search the declaration line in the control buffer
         start_iter = self.buffer.get_start_iter()
         decl_line = "def initialize_control(locals_, model):\n"
-        position = gtksourceview.iter_forward_search(start_iter, decl_line, gtksourceview.SEARCH_VISIBLE_ONLY)
+        position = Gtk.TextIter.forward_search(start_iter, decl_line, Gtk.TextSearchFlag.VISIBLE_ONLY)
         #if not found, add it
         if position == None:
             end_iter = self.buffer.get_end_iter()
@@ -500,7 +495,7 @@ class EmulicaControl:
         
         
         
-class LogBuffer(gtk.TextBuffer):
+class LogBuffer(Gtk.TextBuffer):
     """A TextBuffer, that can be displayed by a TextView, and can be used as a 
     logging handler."""
         

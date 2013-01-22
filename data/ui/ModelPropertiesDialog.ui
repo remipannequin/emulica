@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <!-- interface-requires gtk+ 3.0 -->
+  <!-- interface-requires modelproperties_dialog 1.0 -->
+  <object class="GtkAction" id="add">
+    <property name="stock_id">gtk-add</property>
+    <signal name="activate" handler="on_add_activate" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="del">
+    <property name="stock_id">gtk-remove</property>
+    <signal name="activate" handler="on_del_activate" object="treeview-selection" swapped="no"/>
+  </object>
+  <object class="GtkListStore" id="mod_list">
+    <columns>
+      <!-- column-name module_name -->
+      <column type="gchararray"/>
+      <!-- column-name module_obj -->
+      <column type="PyObject"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="prop_list">
+    <columns>
+      <!-- column-name prop_name -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="tree_model">
+    <columns>
+      <!-- column-name input_name -->
+      <column type="gchararray"/>
+      <!-- column-name module_name -->
+      <column type="gchararray"/>
+      <!-- column-name prop_name -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="ModelPropertiesDialog" id="modelproperties_dialog">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="icon">../media/emulica-icon.svg</property>
+    <property name="type_hint">normal</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-vbox1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="btn_cancel">
+                <property name="label">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="btn_ok">
+                <property name="label">gtk-ok</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox" id="box2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkTreeView" id="treeview1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="model">tree_model</property>
+                <property name="rules_hint">True</property>
+                <signal name="cursor-changed" handler="on_treeview_cursor_changed" object="treeview-selection" swapped="no"/>
+                <signal name="key-press-event" handler="on_key_press_event" object="treeview-selection" swapped="no"/>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection" id="treeview-selection">
+                    <signal name="changed" handler="on_treeview_selection_changed" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                    <property name="title" translatable="yes">Input Name</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="cellrenderertext1">
+                        <property name="background_gdk">#000000000000</property>
+                        <property name="editable">True</property>
+                        <property name="font">Normal</property>
+                        <property name="foreground_gdk">#000000000000</property>
+                        <property name="scale">1.1299999952316284</property>
+                        <property name="background_rgba">rgba(0,0,0,0)</property>
+                        <property name="foreground_rgba">rgba(0,0,0,0)</property>
+                        <signal name="edited" handler="apply_change_name" swapped="no"/>
+                      </object>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                    <property name="title" translatable="yes">Module</property>
+                    <child>
+                      <object class="GtkCellRendererCombo" id="cellrenderercombo1">
+                        <property name="background_gdk">#000000000000</property>
+                        <property name="font">Normal</property>
+                        <property name="foreground_gdk">#000000000000</property>
+                        <property name="background_rgba">rgba(0,0,0,0)</property>
+                        <property name="foreground_rgba">rgba(0,0,0,0)</property>
+                        <property name="has_entry">False</property>
+                        <property name="model">mod_list</property>
+                        <signal name="changed" handler="on_combo_mod_changed" swapped="no"/>
+                      </object>
+                      <attributes>
+                        <attribute name="text-column">1</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="treeviewcolumn3">
+                    <property name="title" translatable="yes">Property</property>
+                    <child>
+                      <object class="GtkCellRendererCombo" id="cellrenderercombo2">
+                        <property name="background_gdk">#000000000000</property>
+                        <property name="font">Normal</property>
+                        <property name="foreground_gdk">#000000000000</property>
+                        <property name="background_rgba">rgba(0,0,0,0)</property>
+                        <property name="foreground_rgba">rgba(0,0,0,0)</property>
+                        <property name="has_entry">False</property>
+                        <property name="model">prop_list</property>
+                        <signal name="changed" handler="on_combo_prop_changed" swapped="no"/>
+                      </object>
+                      <attributes>
+                        <attribute name="text-column">2</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolbar" id="toolbar1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="toolbar_style">icons</property>
+                <child>
+                  <object class="GtkToolButton" id="toolbutton1">
+                    <property name="related_action">add</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">toolbutton1</property>
+                    <property name="use_underline">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="toolbutton2">
+                    <property name="related_action">del</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">toolbutton2</property>
+                    <property name="use_underline">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="-6">btn_cancel</action-widget>
+      <action-widget response="-5">btn_ok</action-widget>
+    </action-widgets>
+  </object>
+</interface>

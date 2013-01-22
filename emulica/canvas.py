@@ -1,23 +1,18 @@
-#!/usr/bin/env python
-# *-* coding: iso-8859-15 *-*
-
-# gui.py
-# Copyright 2008, Rémi Pannequin, Centre de Recherche en Automatique de Nancy
+# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+### BEGIN LICENSE
+# Copyright (C) 2013 Rémi Pannequin, Centre de Recherche en Automatique de Nancy remi.pannequin@univ-lorraine.fr
+# This program is free software: you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License version 3, as published 
+# by the Free Software Foundation.
 # 
-# This file is part of Emulica.
-#
-# Emulica is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Emulica is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Emulica.  If not, see <http://www.gnu.org/licenses/>.
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranties of 
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+# PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along 
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+### END LICENSE
 
 """
 This module enable to graphically animate the execution of emulica models.
@@ -30,7 +25,18 @@ Signals:
 
 from __future__ import division
 import logging
-import gtk, cairo, gobject, goocanvas
+
+import gettext
+from gettext import gettext as _
+gettext.textdomain('emulica')
+
+
+from gi.repository import Gtk as gtk # pylint: disable=E0611
+from gi.repository import Gdk as gdk # pylint: disable=E0611
+from gi.repository import GObject as gobject # pylint: disable=E0611
+import cairo
+from gi.repository import GooCanvas as goo # pylint: disable=E0611
+#import gtk, cairo, gobject, goo
 import emuML
 
 logger = logging.getLogger('emulica.canvas')
@@ -44,10 +50,16 @@ COLOR_SETUP = "yellow"
 COLOR_BUSY = "green"
 COLOR_FAILED = "red"
 
+def CanvasPoints(plist):
+    obj = goo.CanvasPoints.new(len(plist))
+    i = 0
+    for p in plist:
+        obj.set_point(i, p[0], p[1])
+        i += 1
+    return obj
 
-
-class EmulicaCanvas(goocanvas.Canvas):
-    """A subclass of goocanvas.Canvas, that represents an emulation model, 
+class EmulicaCanvas(goo.Canvas):
+    """A subclass of goo.Canvas, that represents an emulation model, 
     during both the modelling and execution phase. A EmulicaCanvas may contains at 
     least one ModuleLayer object: the root ModuleLayer, that can itself contains
     other ModuleLayer instance to represents submodels. The connections betweens
@@ -72,7 +84,7 @@ class EmulicaCanvas(goocanvas.Canvas):
             animate -- True if widget should be animated during emulation 
                        (default = True)
         """
-        goocanvas.Canvas.__init__(self)
+        goo.Canvas.__init__(self)
         self.animate = animate
         self.contextmenu = contextmenu
         self.widgets = dict()
@@ -80,7 +92,7 @@ class EmulicaCanvas(goocanvas.Canvas):
         self.commands = cmd_manager
         root_item = self.get_root_item()
         self.__signal_handlers = {SIGNAL_CHANGED: [], SIGNAL_SELECTION_CHANGED: [], SIGNAL_ADD_DONE: []}
-        self.__connection_layer = goocanvas.Group(parent = root_item)
+        self.__connection_layer = goo.CanvasGroup(parent = root_item)
         self.__module_layer = ModuleLayer(self, root_item)
         self.__adding = False
         
@@ -116,7 +128,7 @@ class EmulicaCanvas(goocanvas.Canvas):
             widget.remove()
         self.widgets.clear()
         self.__connection_layer.remove()
-        self.__connection_layer = goocanvas.Group(parent = self.get_root_item())
+        self.__connection_layer = goo.CanvasGroup(parent = self.get_root_item())
         #add modules to the module_layer
         modules = self.model.modules.values()
         modules.sort(lambda m1, m2: m2.is_model() - m1.is_model())
@@ -177,7 +189,7 @@ class EmulicaCanvas(goocanvas.Canvas):
         if signal in self.__signal_handlers:
             self.__signal_handlers[signal].append((handler, args))
         else:
-            goocanvas.Canvas.connect(self, signal, handler, *args)
+            goo.Canvas.connect(self, signal, handler, *args)
         
     def emit(self, signal, *data):
         """Emit signal."""
@@ -190,11 +202,14 @@ class EmulicaCanvas(goocanvas.Canvas):
     
     def write_pdf(self, pdffile):
         """Write the canvas to a pdf file."""
+        bounds = self.get_root_item().get_bounds()
         surface = cairo.PDFSurface (pdffile, 9 * 72, 10 * 72)
         cr = cairo.Context (surface)
+        
         #Place it in the middle of our 9x10 page.
         cr.translate(20, 130)
-        self.render(cr, None, 1.0)
+        
+        self.render(cr, bounds, 1.0)
         cr.show_page()
     
     def set_adding(self, adding, moduleType = None):
@@ -252,7 +267,7 @@ class EmulicaCanvas(goocanvas.Canvas):
         
         
         
-class ModuleLayer(goocanvas.Group):
+class ModuleLayer(goo.CanvasGroup):
     """A  group of modules.
     
     Attributes:
@@ -267,12 +282,14 @@ class ModuleLayer(goocanvas.Group):
         """Create a new module layer. 
         
         Argument:
+            canvas = the EmulicaCanvas where to draw
+            parent the containning item
             outlined = if true, draw a grey outline around the layer
         """
-        goocanvas.Group.__init__(self, parent = parent)
-        self.canvas = canvas
+        goo.CanvasGroup.__init__(self, parent = parent)
+        self.emulica_canvas = canvas
         if outlined:
-            self.__rect = goocanvas.Rect(parent = self,
+            self.__rect = goo.CanvasRect(parent = self,
                                          line_width = 1,
                                          stroke_color = "grey",
                                          fill_color = "light grey")
@@ -291,9 +308,9 @@ class ModuleLayer(goocanvas.Group):
             
         """
         for (module, position) in layout.items():
-            widget = self.canvas.widgets[module]
+            widget = self.emulica_canvas.widgets[module]
             #convert position to the global coordinate system
-            widget.set_position_at(self.canvas.convert_from_item_space(self, position[0], position[1]))
+            widget.set_position_at(self.emulica_canvas.convert_from_item_space(self, position[0], position[1]))
             self.update_position(module, *position)
         self.__update_outline()
         #self.update_layout()
@@ -307,7 +324,7 @@ class ModuleLayer(goocanvas.Group):
     def update_layout(self):
         """Update the layout dictionary according to current module positions."""
         for widget in self.private_widgets:
-            (x, y, s, r) = widget.get_simple_transform()
+            (b, x, y, s, r) = widget.get_simple_transform()
             self.layout[widget.module] = (x, y)
         
     def get_layout(self):
@@ -326,9 +343,9 @@ class ModuleLayer(goocanvas.Group):
         (xmax, ymax, xmin, ymin) = (0, 0, 2000, 2000)
         for widget in self.private_widgets:
             (x1, y1, x2, y2) = widget.widget_bounds
-            (x, y, s, r) = widget.get_simple_transform()
-            #(x1, y1) = self.canvas.convert_to_item_space(self, x1 + x, y1 + y)
-            #(x2, y2) = self.canvas.convert_to_item_space(self, x2 + x, y2 + y)
+            (b, x, y, s, r) = widget.get_simple_transform()
+            #(x1, y1) = self.emulica_canvas.convert_to_item_space(self, x1 + x, y1 + y)
+            #(x2, y2) = self.emulica_canvas.convert_to_item_space(self, x2 + x, y2 + y)
             xmin = min(x1 + x, xmin)
             ymin = min(y1 + y, ymin)
             xmax = max(x2 + x, xmax)
@@ -352,7 +369,7 @@ class ModuleLayer(goocanvas.Group):
         """
         WidgetClass = views[module.__class__.__name__]
         if not WidgetClass == None:
-            widget = WidgetClass(self.canvas, self, interactive = interactive)
+            widget = WidgetClass(self.emulica_canvas, self, interactive = interactive)
             self.private_widgets.append(widget)
         if module in self.old_layout:
             position =  self.old_layout[module]
@@ -387,8 +404,8 @@ class ModuleSelection(list):
     def __init__(self, canvas):
         list.__init__(self)
         self.__rect_corner = (0,0)
-        self.canvas = canvas
-        self.__rect = goocanvas.Rect(parent = canvas.get_root_item(),
+        self.emulica_canvas = canvas
+        self.__rect = goo.CanvasRect(parent = canvas.get_root_item(),
                                      x = 0,
                                      y = 0,
                                      width = 0,
@@ -399,11 +416,11 @@ class ModuleSelection(list):
         """Remove a module from the selection, if present (else, do nothing)."""
         if module in self:
             list.remove(self, module)
-            self.canvas.emit(SIGNAL_SELECTION_CHANGED, self)
+            self.emulica_canvas.emit(SIGNAL_SELECTION_CHANGED, self)
         
     def reverse_search(self, item):
         """Search and Return the module associated with the widget item."""
-        for (k,v) in self.canvas.widgets.items():
+        for (k,v) in self.emulica_canvas.widgets.items():
             if (v == item):
                 return k
     
@@ -421,7 +438,7 @@ class ModuleSelection(list):
                 #if not in multiple selection: unselect all modules
                 while len(self) > 0:
                     other = self.pop()
-                    self.canvas.widgets[other].unselect()
+                    self.emulica_canvas.widgets[other].unselect()
             
         elif event.button == 3:
             must_select = not (module in self)
@@ -430,20 +447,20 @@ class ModuleSelection(list):
         if must_select:
             item.select()
             self.append(module)
-        self.canvas.emit(SIGNAL_SELECTION_CHANGED, self)
+        self.emulica_canvas.emit(SIGNAL_SELECTION_CHANGED, self)
         return False
         
     def on_button_press (self, item, target, event):
         """Callback for 'button-press-event' on the background. Set first 
         corner of selection rectangle. Unselect modules"""
         if event.button == 1:
-            if not event.state & gtk.gdk.CONTROL_MASK:
-                for widget in self.canvas.widgets.values():
+            if not event.state & gdk.ModifierType.CONTROL_MASK:
+                for widget in self.emulica_canvas.widgets.values():
                     widget.unselect()
                 was_empty = len(self) == 0
                 del self[0:len(self)]
                 if not was_empty:
-                    self.canvas.emit(SIGNAL_SELECTION_CHANGED, self)
+                    self.emulica_canvas.emit(SIGNAL_SELECTION_CHANGED, self)
             self.__rect_corner = (event.x, event.y)
             self.__rect.props.height = 0
             self.__rect.props.width = 0
@@ -452,7 +469,7 @@ class ModuleSelection(list):
         """Callback for the 'button-release-event'. re-draw selection 
         rectangle and update selection.
         """
-        if event.state & gtk.gdk.BUTTON1_MASK:
+        if event.state & gdk.EventMask.BUTTON1_MOTION_MASK:
             x = min(self.__rect_corner[0], event.x)
             y = min(self.__rect_corner[1], event.y)
             w = abs(event.x - self.__rect_corner[0])
@@ -461,9 +478,9 @@ class ModuleSelection(list):
             self.__rect.props.y = y
             self.__rect.props.height = h
             self.__rect.props.width = w
-            self.__rect.props.visibility = goocanvas.ITEM_VISIBLE
+            self.__rect.props.visibility = goo.ITEM_VISIBLE
             changed = False
-            for (module, widget) in self.canvas.widgets.items():
+            for (module, widget) in self.emulica_canvas.widgets.items():
                 if widget.interactive:
                     bounds = widget.get_bounds()
                     module = self.reverse_search(widget)
@@ -475,15 +492,15 @@ class ModuleSelection(list):
                         self.append(module)
                         changed = True
             if changed: 
-                self.canvas.emit(SIGNAL_SELECTION_CHANGED, self)
+                self.emulica_canvas.emit(SIGNAL_SELECTION_CHANGED, self)
             
     def on_button_release(self, item, target, event):
         """Callback for the 'button-release-event'. Hide selection 
         rectangle"""
-        self.__rect.props.visibility = goocanvas.ITEM_HIDDEN
+        self.__rect.props.visibility = goo.CanvasItemVisibility.HIDDEN#TODO: 
 
 
-class ModuleWidget(goocanvas.Group):
+class ModuleWidget(goo.CanvasGroup):
     """
     A ModuleWidget is a generic object used to represent all emulation modules.
     
@@ -502,8 +519,8 @@ class ModuleWidget(goocanvas.Group):
                            (default = True)
             
         """
-        goocanvas.Group.__init__(self, parent = parent)
-        self.canvas = canvas
+        goo.CanvasGroup.__init__(self, parent = parent)
+        self.emulica_canvas = canvas
         self.listeners = dict()
         self.dependants = list()
         self.__dragging = False
@@ -511,8 +528,8 @@ class ModuleWidget(goocanvas.Group):
         if self.interactive:
             self.connect("motion_notify_event", self.__on_motion_notify)
             self.connect("button_press_event", self.__on_button_press)
-            self.connect("button_press_event", self.canvas.selection.on_item_button_press)
-            self.connect("button_press_event", self.canvas.popup_context_menu)
+            self.connect("button_press_event", self.emulica_canvas.selection.on_item_button_press)
+            self.connect("button_press_event", self.emulica_canvas.popup_context_menu)
             self.connect("button_release_event", self.__on_button_release)
         self.connect("enter-notify-event", self.__on_item_enter)
         self.connect("leave-notify-event", self.__on_item_leave)
@@ -520,13 +537,13 @@ class ModuleWidget(goocanvas.Group):
         self.name = None
     
     def translate(self, x, y):
-        """Wrapper around goocanvas's translate, that notify listeners of position changes
+        """Wrapper around goo's translate, that notify listeners of position changes
         
         Arguments:
             x, y -- coordinate of the translation
             
         """
-        goocanvas.Group.translate(self, x, y)
+        goo.CanvasGroup.translate(self, x, y)
         #if widget has childs widget, notify them
         if 'private_widgets' in dir(self):
             for child_widget in self.private_widgets:
@@ -541,8 +558,8 @@ class ModuleWidget(goocanvas.Group):
             point -- a (x, y) tuple
             
         """
-        (x, y, s, r) = self.get_simple_transform()
-        (x, y) = self.canvas.convert_to_item_space(self.get_parent(), point[0], point[1])
+        (b, x, y, s, r) = self.get_simple_transform()
+        (x, y) = self.emulica_canvas.convert_to_item_space(self.get_parent(), point[0], point[1])
         self.set_simple_transform(x, y, s, r)
         self.notify()
         #(delta_x, delta_y) = (point[0] - x, point[1] - y)
@@ -565,10 +582,10 @@ class ModuleWidget(goocanvas.Group):
         del self.listeners[listener]
         
     def remove(self):
-        """Wraps around goocanvas.Item.remove(), to ensure that dependant widgets are removed too"""
+        """Wraps around goo.Item.remove(), to ensure that dependant widgets are removed too"""
         for widget in self.dependants:
             widget.remove()
-        goocanvas.Item.remove(self)
+        goo.CanvasItem.remove(self)
     
     def notify(self):
         """Notify listeners. The notification method is called with self as argument."""
@@ -579,7 +596,7 @@ class ModuleWidget(goocanvas.Group):
         """Draw the widget as 'selected'."""
         if not self.selected:
             (x1, y1, x2, y2) = self.widget_bounds
-            self.selection_rect = goocanvas.Rect(parent = self,
+            self.selection_rect = goo.Rect(parent = self,
                                                  x = x1 - 3,
                                                  y = y1 - 3,
                                                  width = x2 - x1 + 6,
@@ -602,14 +619,14 @@ class ModuleWidget(goocanvas.Group):
             new_y = event.y
             item.translate(new_x - self.__drag_x, new_y - self.__drag_y)
             #also translate all selected modules
-            for module in self.canvas.selection:
-                widget = self.canvas.widgets[module]
+            for module in self.emulica_canvas.selection:
+                widget = self.emulica_canvas.widgets[module]
                 if not widget is self:
                     widget.translate(new_x - self.__drag_x, new_y - self.__drag_y)
             return True
         else:
             #convert event coord from item space
-            (event.x, event.y) = self.canvas.convert_from_item_space(self, event.x, event.y)
+            (event.x, event.y) = self.emulica_canvas.convert_from_item_space(self, event.x, event.y)
             return False
     
     def __on_button_press(self, item, target, event):
@@ -632,7 +649,7 @@ class ModuleWidget(goocanvas.Group):
         canvas.pointer_ungrab(item, event.time)
         self.__dragging = False
         # update position in layout...
-        (x, y, s, r) = self.get_simple_transform()
+        (b, x, y, s, r) = self.get_simple_transform()
         self.get_parent().update_position(self.module, x, y)
 
     def __on_item_enter(self, item, t_item, event):
@@ -641,19 +658,19 @@ class ModuleWidget(goocanvas.Group):
         if ('module' in dir(self)) and self.module:
             name = self.module.name
             if self.name is None:
-                self.name = goocanvas.Text(parent = self,
+                self.name = goo.CanvasText(parent = self,
                                            x = (x2 - x1)/2,
                                            y = y2 + 5,
                                            text = name,
-                                           anchor = gtk.ANCHOR_N,
+                                           anchor = goo.CanvasAnchorType.N,
                                            font = 'arial')
             else:
                 
-                self.name.props.visibility = goocanvas.ITEM_VISIBLE
+                self.name.props.visibility = goo.CanvasItemVisibility.VISIBLE
     def __on_item_leave(self, item, t_item, event):
         """Callback called when the cursor leaves a ModuleWidget"""
         if self.name:
-            self.name.props.visibility = goocanvas.ITEM_HIDDEN
+            self.name.props.visibility = goo.CanvasItemVisibility.HIDDEN
             self.__rect_corner = (0,0)
 
 
@@ -669,7 +686,7 @@ class Model(ModuleWidget, ModuleLayer):
         ModuleWidget.__init__(self, canvas, parent, interactive)
         ModuleLayer.__init__(self, canvas, parent, outlined = True)
         #TODO: render submodel at a different scale.
-        #(x, y, s, r) = self.get_simple_transform()
+        #(b, x, y, s, r) = self.get_simple_transform()
         #self.set_simple_transform(x, y, 0.5, r)
         
         
@@ -680,9 +697,9 @@ class Model(ModuleWidget, ModuleLayer):
         modules.sort(lambda m1, m2: m1.is_model() - m2.is_model())
         for module in modules:
             new_widget = self.add_module(module, interactive = False)
-            self.canvas.widgets[module] = new_widget
+            self.emulica_canvas.widgets[module] = new_widget
         for module in modules:
-            self.canvas.widgets[module].set_emulation_module(module)
+            self.emulica_canvas.widgets[module].set_emulation_module(module)
         
         #TODO: connect to the module-added signal
         mod.connect('module-added', self.__on_module_added)
@@ -691,8 +708,8 @@ class Model(ModuleWidget, ModuleLayer):
     def __on_module_added(self, model, module):
         """Callback called when a module is added to a submodel"""
         new_widget = self.add_module(module, interactive = False)
-        self.canvas.widgets[module] = new_widget
-        self.canvas.widgets[module].set_emulation_module(module)
+        self.emulica_canvas.widgets[module] = new_widget
+        self.emulica_canvas.widgets[module].set_emulation_module(module)
     
     def __getattr__(self, attr):
         """Compute the actual size of the modulewidget when the widget_bounds is
@@ -710,35 +727,35 @@ class Holder(ModuleWidget):
         self.__width = 80
         self.__height = 20
         self.__slot = list()
-        self.__input_port = goocanvas.Ellipse(parent = self,
+        self.__input_port = goo.CanvasEllipse(parent = self,
                                               center_x = 0,
                                               center_y = self.__height/2,
                                               radius_x = 4,
                                               radius_y = 4,
                                               fill_color = 'dark green',              
                                               line_width = 0)       
-        self.__output_port = goocanvas.Ellipse(parent = self,
+        self.__output_port = goo.CanvasEllipse(parent = self,
                                                center_x = self.__width,
                                                center_y = self.__height/2,
                                                radius_x = 4,
                                                radius_y = 4,
                                                fill_color = 'dark green',              
                                                line_width = 0) 
-        self.__rect = goocanvas.Rect(parent = self,
+        self.__rect = goo.CanvasRect(parent = self,
                                      x = 0,
                                      y = 0,
                                      width = self.__width,
                                      height = self.__height,
                                      line_width = 1,
                                      fill_color = 'pale green')
-        self.__text = goocanvas.Text(parent = self,
+        self.__text = goo.CanvasText(parent = self,
                                      x = 8,
                                      y = self.__height / 2,
                                      text = 0,
-                                     anchor = gtk.ANCHOR_W,
+                                     anchor = goo.CanvasAnchorType.W,
                                      font = 'arial')
         for i in range(num_slot - 1, -1, -1):
-            self.__slot.insert(0,goocanvas.Rect(parent = self,
+            self.__slot.insert(0,goo.CanvasRect(parent = self,
                                x = (self.__width - self.__height + 3) - (i * 7),
                                y = 3,
                                width = self.__height - 6,
@@ -752,9 +769,9 @@ class Holder(ModuleWidget):
     
     def make_shape_holder(self, shape):
         #hide text and slot[>0]
-        self.__text.props.visibility = goocanvas.ITEM_HIDDEN
+        self.__text.props.visibility = goo.CanvasItemVisibility.HIDDEN
         for s in self.__slot[1:]:
-            s.props.visibility = goocanvas.ITEM_HIDDEN
+            s.props.visibility = goo.CanvasItemVisibility.HIDDEN
         #change width
         self.__rect.props.width = 20
         self.__output_port.props.center_x = 20
@@ -768,9 +785,9 @@ class Holder(ModuleWidget):
     
     def make_normal_holder(self, shape):
         #show text and slot[>0]
-        self.__text.props.visibility = goocanvas.ITEM_VISIBLE
+        self.__text.props.visibility = goo.CanvasItemVisibility.VISIBLE
         for s in self.__slot[1:]:
-            s.props.visibility = goocanvas.ITEM_VISIBLE
+            s.props.visibility = goo.CanvasItemVisibility.VISIBLE
         #change width
         self.__rect.props.width = 80
         self.__output_port.props.center_x = 80
@@ -787,7 +804,7 @@ class Holder(ModuleWidget):
     def input_port_coord(self):
         """Return a tupple of the coordinate of input port, in the display 
         coordinate system."""
-        (x, y, s, r) = self.get_simple_transform()
+        (b, x, y, s, r) = self.get_simple_transform()
         return self.get_canvas().convert_from_item_space(self.get_parent(),
                                             self.__input_port.props.center_x + x,
                                             self.__input_port.props.center_y + y)
@@ -796,14 +813,14 @@ class Holder(ModuleWidget):
     def output_port_coord(self):
         """Return a tupple of the coordinate of output port, in the display 
         coordinate system."""
-        (x, y, s, r) = self.get_simple_transform()
+        (b, x, y, s, r) = self.get_simple_transform()
         return self.get_canvas().convert_from_item_space(self.get_parent(), 
                                                          self.__output_port.props.center_x + x,
                                                          self.__output_port.props.center_y + y)
 
     def observer_port_coord(self):
         slot = self.__slot[0]
-        (x, y, s, r) = self.get_simple_transform()
+        (b, x, y, s, r) = self.get_simple_transform()
         x = slot.props.x + (slot.props.width / 2) + x
         y = self.__slot[0].props.y + y
         return self.get_canvas().convert_from_item_space(self.get_parent(), x, y)
@@ -822,12 +839,12 @@ class Holder(ModuleWidget):
                 else:
                     s.props.fill_color = 'pale green'
                 i += 1
-            self.__text.props.text = state
+            self.__text.props.text = str(state)
         if self.get_canvas().animate:
             gobject.idle_add(change_widget, state)
         
 
-class Connection(goocanvas.Polyline):
+class Connection(goo.CanvasPolyline):
     """A graphical connection between to Module Widgets"""
     def __init__(self, canvas, source, destination, weak = False, color = 'dark green'):
         self.source = source
@@ -836,14 +853,15 @@ class Connection(goocanvas.Polyline):
         destination.add_listener(self, getattr(self,'update'))
         (x1, y1) = source.output_port_coord()
         (x2, y2) = destination.input_port_coord()
-        p_points = goocanvas.Points(self.__route(self.source, self.destination))
+        p_points = CanvasPoints(self.__route(self.source, self.destination))
 
-        goocanvas.Polyline.__init__(self, parent = canvas.get_connection_layer(), 
+        goo.CanvasPolyline.__init__(self, parent = canvas.get_connection_layer(), 
                                                   points = p_points, 
                                                   close_path = False, 
                                                   stroke_color = color)
         if weak:
-            self.props.line_dash = goocanvas.LineDash([5.0, 3.0])
+            #self.props.line_dash = goo.CanvasLineDash.newv([5.0, 3.0])#May not work with stock goocanvas typelib
+            self.props.stroke_color = 'orange'
         
     def __route(self, source, dest):
         (x1, y1) = source.output_port_coord()
@@ -854,7 +872,7 @@ class Connection(goocanvas.Polyline):
     def update(self, node):
         (x1, y1) = self.source.output_port_coord()
         (x2, y2) = self.destination.input_port_coord()
-        self.set_property("points", goocanvas.Points(self.__route(self.source, self.destination)))
+        self.set_property("points", CanvasPoints(self.__route(self.source, self.destination)))
 
 
 
@@ -868,13 +886,13 @@ class PushObserver(ModuleWidget):
     
     def __init__(self, canvas, parent, interactive = True):
         ModuleWidget.__init__(self, canvas, parent, interactive)
-        p_points = goocanvas.Points([(0, 5), (20, -35), (0, -25), (15, -55)])
-        goocanvas.Polyline(parent = self,
+        p_points = CanvasPoints([(0, 5), (20, -35), (0, -25), (15, -55)])
+        goo.CanvasPolyline(parent = self,
                            points = p_points,
                            line_width = 3,
                            end_arrow = True,
                            stroke_color = 'sienna4')
-        self.__ellipse = goocanvas.Ellipse(parent = self,
+        self.__ellipse = goo.CanvasEllipse(parent = self,
                                            center_x = 10, 
                                            center_y = -15,
                                            radius_x = 10,
@@ -882,10 +900,10 @@ class PushObserver(ModuleWidget):
                                            line_width = 1,
                                            stroke_color = 'DarkGoldenRod',
                                            fill_color = 'white')    
-        self.__text = goocanvas.Text(parent = self,
+        self.__text = goo.CanvasText(parent = self,
                                    x = 10,
                                    y = -15,
-                                   anchor = gtk.ANCHOR_CENTER,
+                                   anchor = goo.CanvasAnchorType.CENTER,
                                    font = "sans 10",
                                    text = "")
         self.holder = None
@@ -897,13 +915,13 @@ class PushObserver(ModuleWidget):
         mod.connect('state-changed', self.animate)
         mod.connect('property-changed', self.on_property_change)
         self.set_type(mod)
-        if mod['holder'] in self.canvas.widgets.keys():
-            self.set_holder(self.canvas.widgets[mod['holder']])
+        if mod['holder'] in self.emulica_canvas.widgets.keys():
+            self.set_holder(self.emulica_canvas.widgets[mod['holder']])
    
     def on_property_change(self, prop, module):
         if prop == 'holder' and not module[prop] == None:
-            if module[prop] in self.canvas.widgets.keys():
-                holder_widget = self.canvas.widgets[module[prop]]
+            if module[prop] in self.emulica_canvas.widgets.keys():
+                holder_widget = self.emulica_canvas.widgets[module[prop]]
             else:
                 holder_widget = None
             self.set_holder(holder_widget)
@@ -942,7 +960,7 @@ class PushObserver(ModuleWidget):
             if state:
                 
                 #TODO: how to animate observation events ??
-                self.__ellipse.animate(-3, 5, 1.4, 0, True, 50, 25, goocanvas.ANIMATE_RESET)
+                self.__ellipse.animate(-3, 5, 1.4, 0, True, 50, 25, goo.CanvasAnimateType.RESET)
                 
         if self.get_canvas().animate:
             gobject.idle_add(change_widget, state)
@@ -958,8 +976,8 @@ class PullObserver(ModuleWidget):
     
     def __init__(self, canvas, parent, interactive = True):
         ModuleWidget.__init__(self, canvas, parent, interactive)
-        p_points = goocanvas.Points([(0, 5), (20, -35), (0, -25), (15, -55)])
-        goocanvas.Polyline(parent = self,
+        p_points = CanvasPoints([(0, 5), (20, -35), (0, -25), (15, -55)])
+        goo.CanvasPolyline(parent = self,
                            points = p_points,
                            line_width = 3,
                            end_arrow = True,
@@ -973,13 +991,13 @@ class PullObserver(ModuleWidget):
         self.module = mod
         mod.connect('state-changed', self.animate)
         mod.connect('property-changed', self.on_property_change)
-        if mod['holder'] in self.canvas.widgets.keys():
-            self.set_holder(self.canvas.widgets[mod['holder']])
+        if mod['holder'] in self.emulica_canvas.widgets.keys():
+            self.set_holder(self.emulica_canvas.widgets[mod['holder']])
    
     def on_property_change(self, prop, module):
         if prop == 'holder' and not module[prop] == None:
-            if module[prop] in self.canvas.widgets.keys():
-                holder_widget = self.canvas.widgets[module[prop]]
+            if module[prop] in self.emulica_canvas.widgets.keys():
+                holder_widget = self.emulica_canvas.widgets[module[prop]]
             else:
                 holder_widget = None
             self.set_holder(holder_widget)
@@ -1011,22 +1029,22 @@ class PullObserver(ModuleWidget):
 class Create(ModuleWidget):
     def __init__(self, canvas, parent, holder = None, interactive = True):
         ModuleWidget.__init__(self, canvas, parent, interactive)
-        p_points = goocanvas.Points([(0, 0), (40, 0), (60, 20), (40, 40), (0, 40)])
+        p_points = CanvasPoints([(0, 0), (40, 0), (60, 20), (40, 40), (0, 40)])
         
-        self.output_port = goocanvas.Ellipse(parent = self,
+        self.output_port = goo.CanvasEllipse(parent = self,
                                              center_x = 60,
                                              center_y = 20,
                                              radius_x = 4,
                                              radius_y = 4,
                                              fill_color = "dark blue",           
                                              line_width = 0)
-        goocanvas.Polyline(parent = self,
+        goo.CanvasPolyline(parent = self,
                            points = p_points,
                            stroke_color = "dark blue",
                            fill_color = "SlateBlue1",
                            line_width = 1,
                            close_path = True)
-        self.__light = goocanvas.Ellipse(parent = self,
+        self.__light = goo.CanvasEllipse(parent = self,
                                          center_x = 10,
                                          center_y = 10,
                                          radius_x = 5,
@@ -1034,16 +1052,16 @@ class Create(ModuleWidget):
                                          fill_color = COLOR_BUSY,
                                          line_width = 1,
                                          stroke_color = "black")
-        self.__text = goocanvas.Text(parent = self,
+        self.__text = goo.CanvasText(parent = self,
                                      x = 3,
                                      y = 33,
-                                     anchor = gtk.ANCHOR_W,
+                                     anchor = goo.CanvasAnchorType.W,
                                      font = "sans 6",
                                      text = "")
-        self.__num = goocanvas.Text(parent = self,
+        self.__num = goo.CanvasText(parent = self,
                                     x = 53,
                                     y = 33,
-                                    anchor = gtk.ANCHOR_W,
+                                    anchor = goo.CanvasAnchorType.W,
                                     font = "sans 6",
                                     text = "0")
         self.widget_bounds = (0, 0, 60, 40)
@@ -1055,19 +1073,19 @@ class Create(ModuleWidget):
         mod.connect("state-changed", self.animate)
         mod.connect("property-changed", self.__on_property_change)
         if not mod['destination'] == None:
-            holder = self.canvas.widgets[mod['destination']]
+            holder = self.emulica_canvas.widgets[mod['destination']]
             self.__set_holder(holder)
     
     def __on_property_change(self, prop, module):
-        if prop == "destination" and not module[prop] == None and not self.canvas.widgets[module[prop]] == self.holder:
-            self.__set_holder(self.canvas.widgets[module[prop]])
+        if prop == "destination" and not module[prop] == None and not self.emulica_canvas.widgets[module[prop]] == self.holder:
+            self.__set_holder(self.emulica_canvas.widgets[module[prop]])
     
     def __set_holder(self, holder):
         self.holder = holder
         if not self.connection == None:
             self.connection.remove()
         if not holder == None:    
-            self.connection = Connection(self.canvas, self, holder)
+            self.connection = Connection(self.emulica_canvas, self, holder)
             self.dependants.append(self.connection)
             
     def output_port_coord(self):
@@ -1078,32 +1096,32 @@ class Create(ModuleWidget):
                                                          
     def animate(self, state):
         """Animate the widget when emulation module change"""
-        #self.__light.animate(-5, -5, 1.5, 0, True, 150, 25, goocanvas.ANIMATE_RESET)
+        #self.__light.animate(-5, -5, 1.5, 0, True, 150, 25, goo.CanvasAnimateType.RESET)
         def change_widget(state):
-            self.__text.props.text = state
-            self.__num.props.text = self.module.quantity_created
+            self.__text.props.text = str(state)
+            self.__num.props.text = str(self.module.quantity_created)
         if self.get_canvas().animate:
             gobject.idle_add(change_widget, state)
 
 class Dispose(ModuleWidget):
     def __init__(self, canvas, parent, holder = None, interactive = True):
         ModuleWidget.__init__(self, canvas, parent, interactive)
-        p_points = goocanvas.Points([(0, 20), (20, 0), (60, 0), (60, 40), (20, 40)])
+        p_points = CanvasPoints([(0, 20), (20, 0), (60, 0), (60, 40), (20, 40)])
         
-        self.input_port = goocanvas.Ellipse(parent = self,
+        self.input_port = goo.CanvasEllipse(parent = self,
                                              center_x = 0,
                                              center_y = 20,
                                              radius_x = 4,
                                              radius_y = 4,
                                              fill_color = "dark blue",              
                                              line_width = 0)
-        self.line = goocanvas.Polyline(parent = self,
+        self.line = goo.CanvasPolyline(parent = self,
                                        points = p_points,
                                        line_width = 1,
                                        fill_color = "SlateBlue1",
                                        stroke_color = "dark blue",
                                        close_path = True)
-        self.__light = goocanvas.Ellipse(parent = self,
+        self.__light = goo.CanvasEllipse(parent = self,
                                          center_x = 50,
                                          center_y = 10,
                                          radius_x = 5,
@@ -1121,19 +1139,19 @@ class Dispose(ModuleWidget):
         mod.connect("property-changed", self.__on_property_change)
         emu_holder = mod['source']
         if not emu_holder == None:
-            holder = self.canvas.widgets[emu_holder]
+            holder = self.emulica_canvas.widgets[emu_holder]
             self.__set_holder(holder)
     
     def __on_property_change(self, prop, module):
-        if prop == "source" and not module[prop] == None and not self.canvas.widgets[module[prop]] == self.holder:
-            self.__set_holder(self.canvas.widgets[module[prop]])
+        if prop == "source" and not module[prop] == None and not self.emulica_canvas.widgets[module[prop]] == self.holder:
+            self.__set_holder(self.emulica_canvas.widgets[module[prop]])
     
     def __set_holder(self, holder):
         self.holder = holder
         if not self.connection == None:
             self.connection.remove()
         if not holder == None:
-            self.connection = Connection(self.canvas, holder, self)
+            self.connection = Connection(self.emulica_canvas, holder, self)
             self.dependants.append(self.connection)
             
     def input_port_coord(self):
@@ -1145,7 +1163,7 @@ class Dispose(ModuleWidget):
     def animate(self, state):
         """animate object when emulation module is active"""
         def change_widget(state):
-            self.__light.animate(-25, -5, 1.5, 0, True, 150, 25, goocanvas.ANIMATE_RESET)
+            self.__light.animate(-25, -5, 1.5, 0, True, 150, 25, goo.CanvasAnimateType.RESET)
         if self.get_canvas().animate:
             gobject.idle_add(change_widget, state)
         
@@ -1154,7 +1172,7 @@ class Space(ModuleWidget):
     def __init__(self, emulica_canvas, parent, interactive = True):
         ModuleWidget.__init__(self, emulica_canvas, parent, interactive)
         self.connections = dict()
-        goocanvas.Rect(parent = self,
+        goo.CanvasRect(parent = self,
                        height = 60,
                        width = 60,
                        radius_x = 15,
@@ -1162,8 +1180,8 @@ class Space(ModuleWidget):
                        fill_color = "SlateBlue1",
                        line_width = 1,
                        stroke_color = "dark blue")
-        goocanvas.Polyline(parent = self,
-                           points = goocanvas.Points([(25, 25), (55, 55)]),
+        goo.CanvasPolyline(parent = self,
+                           points = CanvasPoints([(25, 25), (55, 55)]),
                            line_width = 4,
                            arrow_length = 2.5,
                            arrow_tip_length = 2.5,
@@ -1171,8 +1189,8 @@ class Space(ModuleWidget):
                            end_arrow = True,
                            start_arrow = True,
                            stroke_color = "grey")
-        goocanvas.Polyline(parent = self,
-                           points = goocanvas.Points([(25, 55), (55, 25)]),
+        goo.CanvasPolyline(parent = self,
+                           points = CanvasPoints([(25, 55), (55, 25)]),
                            line_width = 4,
                            arrow_length = 2.5,
                            arrow_tip_length = 2.5,
@@ -1180,7 +1198,7 @@ class Space(ModuleWidget):
                            end_arrow = True,
                            start_arrow = True,
                            stroke_color = "grey")
-        self.__light = goocanvas.Ellipse(parent = self,
+        self.__light = goo.CanvasEllipse(parent = self,
                                          center_x = 15,
                                          center_y = 15,
                                          radius_x = 5,
@@ -1188,10 +1206,10 @@ class Space(ModuleWidget):
                                          fill_color = COLOR_IDLE,
                                          line_width = 1,
                                          stroke_color = "black")
-        self.__text = goocanvas.Text(parent = self,
+        self.__text = goo.CanvasText(parent = self,
                                      x = 10,
                                      y = 50,
-                                     anchor = gtk.ANCHOR_W,
+                                     anchor = goo.CanvasAnchorType.W,
                                      font = "sans 6",
                                      text = "")
         self.widget_bounds = (0, 0, 60, 60)
@@ -1207,9 +1225,9 @@ class Space(ModuleWidget):
         if 'source' in prog.transform.keys() and 'destination' in prog.transform.keys() \
         and not prog.transform['source'] is None and not prog.transform['destination'] is None:
             
-            src = self.canvas.widgets[prog.transform['source']]
-            dst = self.canvas.widgets[prog.transform['destination']]
-            connec_widget = Connection(self.canvas, src, dst, weak = True)
+            src = self.emulica_canvas.widgets[prog.transform['source']]
+            dst = self.emulica_canvas.widgets[prog.transform['destination']]
+            connec_widget = Connection(self.emulica_canvas, src, dst, weak = True)
             self.connections[name] = (src, dst, connec_widget)
             self.dependants.append(connec_widget)
     
@@ -1238,7 +1256,7 @@ class Space(ModuleWidget):
                 self.__light.props.fill_color = COLOR_FAILED
             else:
                 self.__light.props.fill_color = COLOR_BUSY
-            self.__text.props.text = state
+            self.__text.props.text = str(state)
         if self.get_canvas().animate:
             gobject.idle_add(change_widget, state)
 
@@ -1246,33 +1264,33 @@ class Shape(ModuleWidget):
     def __init__(self, canvas, parent, interactive = True):
         ModuleWidget.__init__(self, canvas, parent, interactive)
         self.holder = None
-        self.__rect = goocanvas.Rect(parent = self,
+        self.__rect = goo.CanvasRect(parent = self,
                        height = 60,
                        width = 60,
                        fill_color = "SlateBlue1",
                        line_width = 1,
                        stroke_color = "dark blue")
-        self.__gear = goocanvas.Group(parent = self)
-        points = goocanvas.Points([(-8, -20), (-8, -30), (-5, -40), (5, -40), (8, -30), (8, -20)])
+        self.__gear = goo.CanvasGroup(parent = self)
+        points = CanvasPoints([(-8, -20), (-8, -30), (-5, -40), (5, -40), (8, -30), (8, -20)])
         for i in range(0, 7):
-            teeth = goocanvas.Polyline(parent = self.__gear,
+            teeth = goo.CanvasPolyline(parent = self.__gear,
                                points = points,
                                close_path = True,
                                fill_color = "grey",
                                line_width = 0)
             teeth.rotate(i*360/7, 0, 0)
-        goocanvas.Ellipse(parent = self.__gear,
+        goo.CanvasEllipse(parent = self.__gear,
                           center_x = 0, center_y = 0,
                           radius_x = 27, radius_y = 27,
                           fill_color = "grey",
                           line_width = 0)
-        goocanvas.Ellipse(parent = self.__gear,
+        goo.CanvasEllipse(parent = self.__gear,
                           center_x = 0, center_y = 0,
                           radius_x = 10, radius_y = 10,
                           fill_color = "SlateBlue1",
                           line_width = 0)
         self.__gear.set_simple_transform(40, 40, 0.4, 20)
-        self.__light = goocanvas.Ellipse(parent = self,
+        self.__light = goo.CanvasEllipse(parent = self,
                                          center_x = 15,
                                          center_y = 15,
                                          radius_x = 5,
@@ -1280,10 +1298,10 @@ class Shape(ModuleWidget):
                                          fill_color = COLOR_IDLE,
                                          line_width = 1,
                                          stroke_color = "black")
-        self.__text = goocanvas.Text(parent = self,
+        self.__text = goo.CanvasText(parent = self,
                                      x = 3,
                                      y = 53,
-                                     anchor = gtk.ANCHOR_W,
+                                     anchor = goo.CanvasAnchorType.W,
                                      font = "sans 6",
                                      text = "")
         self.widget_bounds = (0, 0, 60, 60)
@@ -1291,8 +1309,8 @@ class Shape(ModuleWidget):
 
     def set_emulation_module(self, mod):
         self.module = mod
-        if mod['holder'] in self.canvas.widgets.keys():
-            self.__set_holder(self.canvas.widgets[mod['holder']])
+        if mod['holder'] in self.emulica_canvas.widgets.keys():
+            self.__set_holder(self.emulica_canvas.widgets[mod['holder']])
         else:
             self.__set_holder(None)
         mod.connect("state-changed", self.animate)
@@ -1308,15 +1326,15 @@ class Shape(ModuleWidget):
     
     def __on_property_change(self, prop, module):
         if prop == 'holder':
-            if module[prop] in self.canvas.widgets.keys():
-                self.__set_holder(self.canvas.widgets[module[prop]])
+            if module[prop] in self.emulica_canvas.widgets.keys():
+                self.__set_holder(self.emulica_canvas.widgets[module[prop]])
             else:
                 self.__set_holder(None)
             
     
     def holder_coord(self):
         """Return the center of the module, where the holder should be"""
-        (x, y, s, r) = self.get_simple_transform()
+        (b, x, y, s, r) = self.get_simple_transform()
         return self.get_canvas().convert_from_item_space(self.get_parent(), 
                                                          self.__rect.props.x + 30 + x,
                                                          self.__rect.props.y + 10 + y)
@@ -1331,7 +1349,7 @@ class Shape(ModuleWidget):
                 self.__light.props.fill_color = COLOR_FAILED
             else:
                 self.__light.props.fill_color = COLOR_BUSY
-            self.__text.props.text = state
+            self.__text.props.text = str(state)
         if self.get_canvas().animate:
             gobject.idle_add(change_widget, state)
 
@@ -1341,14 +1359,14 @@ class Assemble(ModuleWidget):
         ModuleWidget.__init__(self, canvas, parent, interactive)
         self.holder = None
         self.connections = dict()
-        self.__rect = goocanvas.Rect(parent = self,
+        self.__rect = goo.CanvasRect(parent = self,
                        height = 60,
                        width = 60,
                        fill_color = "SlateBlue1",
                        line_width = 1,
                        stroke_color = "dark blue")
-        goocanvas.Polyline(parent = self,
-                           points = goocanvas.Points([(25, 27), (37, 40), (55, 40)]),
+        goo.CanvasPolyline(parent = self,
+                           points = CanvasPoints([(25, 27), (37, 40), (55, 40)]),
                            line_width = 4,
                            arrow_length = 2.5,
                            arrow_tip_length = 2.5,
@@ -1356,13 +1374,13 @@ class Assemble(ModuleWidget):
                            end_arrow = True,
                            start_arrow = False,
                            stroke_color = "grey")
-        goocanvas.Polyline(parent = self,
-                           points = goocanvas.Points([(25, 52), (37, 40)]),
+        goo.CanvasPolyline(parent = self,
+                           points = CanvasPoints([(25, 52), (37, 40)]),
                            line_width = 4,
                            end_arrow = False,
                            start_arrow = False,
                            stroke_color = "grey")
-        self.__light = goocanvas.Ellipse(parent = self,
+        self.__light = goo.CanvasEllipse(parent = self,
                                          center_x = 15,
                                          center_y = 15,
                                          radius_x = 5,
@@ -1370,10 +1388,10 @@ class Assemble(ModuleWidget):
                                          fill_color = COLOR_IDLE,
                                          line_width = 1,
                                          stroke_color = "black")
-        self.__text = goocanvas.Text(parent = self,
+        self.__text = goo.CanvasText(parent = self,
                                      x = 3,
                                      y = 53,
-                                     anchor = gtk.ANCHOR_W,
+                                     anchor = goo.CanvasAnchorType.W,
                                      font = "sans 6",
                                      text = "")
         self.widget_bounds = (0, 0, 60, 60)
@@ -1382,8 +1400,8 @@ class Assemble(ModuleWidget):
         self.module = mod
         for (name, prog) in mod['program_table'].items():
             self.__create_connection(name, prog)
-        if mod['holder'] in self.canvas.widgets.keys():
-            self.__set_holder(self.canvas.widgets[mod['holder']])
+        if mod['holder'] in self.emulica_canvas.widgets.keys():
+            self.__set_holder(self.emulica_canvas.widgets[mod['holder']])
         else:
             self.__set_holder(None)
         mod.connect("state-changed", self.animate)
@@ -1400,9 +1418,9 @@ class Assemble(ModuleWidget):
     
     def __create_connection(self, name, prog):
         if 'source' in prog.transform.keys() and not self.holder == None:
-            src = self.canvas.widgets[prog.transform['source']]
+            src = self.emulica_canvas.widgets[prog.transform['source']]
             dst = self.holder
-            connec_widget = Connection(self.canvas, src, dst, weak = True, color = 'purple')
+            connec_widget = Connection(self.emulica_canvas, src, dst, weak = True, color = 'purple')
             self.connections[name] = (src, dst, connec_widget)
             self.dependants.append(connec_widget)
     
@@ -1412,7 +1430,7 @@ class Assemble(ModuleWidget):
             if not name in self.connections.keys():
                 self.__create_connection(name, prog)
             #if it is present but has changed, remove/create
-            elif not self.connections[name][:2] == (self.canvas.widgets[prog.transform['source']], self.holder):
+            elif not self.connections[name][:2] == (self.emulica_canvas.widgets[prog.transform['source']], self.holder):
                 self.connections[name][2].remove()
                 self.__create_connection(name, prog)
         #if some connection are not used, remove
@@ -1422,8 +1440,8 @@ class Assemble(ModuleWidget):
     
     def __on_property_change(self, prop, module):
         if prop == 'holder':
-            if module[prop] in self.canvas.widgets.keys():
-                self.__set_holder(self.canvas.widgets[module[prop]])
+            if module[prop] in self.emulica_canvas.widgets.keys():
+                self.__set_holder(self.emulica_canvas.widgets[module[prop]])
                 self.__update_program(module['program_table'])
             else:
                 self.__set_holder(None)
@@ -1446,7 +1464,7 @@ class Assemble(ModuleWidget):
                 self.__light.props.fill_color = COLOR_FAILED
             else:
                 self.__light.props.fill_color = COLOR_BUSY
-            self.__text.props.text = state
+            self.__text.props.text = str(state)
         if self.get_canvas().animate:
             gobject.idle_add(change_widget, state)
 
@@ -1456,14 +1474,14 @@ class Disassemble(ModuleWidget):
         ModuleWidget.__init__(self, canvas, parent, interactive)
         self.holder = None
         self.connections = dict()
-        self.__rect = goocanvas.Rect(parent = self,
+        self.__rect = goo.CanvasRect(parent = self,
                        height = 60,
                        width = 60,
                        fill_color = "SlateBlue1",
                        line_width = 1,
                        stroke_color = "dark blue")
-        goocanvas.Polyline(parent = self,
-                           points = goocanvas.Points([(25, 40), (40, 40), (55, 25)]),
+        goo.CanvasPolyline(parent = self,
+                           points = CanvasPoints([(25, 40), (40, 40), (55, 25)]),
                            line_width = 4,
                            arrow_length = 2.5,
                            arrow_tip_length = 2.5,
@@ -1471,8 +1489,8 @@ class Disassemble(ModuleWidget):
                            end_arrow = True,
                            start_arrow = False,
                            stroke_color = "grey")
-        goocanvas.Polyline(parent = self,
-                           points = goocanvas.Points([(40, 40), (55, 55)]),
+        goo.CanvasPolyline(parent = self,
+                           points = CanvasPoints([(40, 40), (55, 55)]),
                            line_width = 4,
                            arrow_length = 2.5,
                            arrow_tip_length = 2.5,
@@ -1480,7 +1498,7 @@ class Disassemble(ModuleWidget):
                            end_arrow = True,
                            start_arrow = False,
                            stroke_color = "grey")
-        self.__light = goocanvas.Ellipse(parent = self,
+        self.__light = goo.CanvasEllipse(parent = self,
                                          center_x = 15,
                                          center_y = 15,
                                          radius_x = 5,
@@ -1488,10 +1506,10 @@ class Disassemble(ModuleWidget):
                                          fill_color = COLOR_IDLE,
                                          line_width = 1,
                                          stroke_color = "black")
-        self.__text = goocanvas.Text(parent = self,
+        self.__text = goo.CanvasText(parent = self,
                                      x = 3,
                                      y = 53,
-                                     anchor = gtk.ANCHOR_W,
+                                     anchor = goo.CanvasAnchorType.W,
                                      font = "sans 6",
                                      text = "")
         self.widget_bounds = (0, 0, 60, 60)
@@ -1500,8 +1518,8 @@ class Disassemble(ModuleWidget):
         self.module = mod
         for (name, prog) in mod['program_table'].items():
             self.__create_connection(name, prog)
-        if mod['holder'] in self.canvas.widgets.keys():
-            self.__set_holder(self.canvas.widgets[mod['holder']])
+        if mod['holder'] in self.emulica_canvas.widgets.keys():
+            self.__set_holder(self.emulica_canvas.widgets[mod['holder']])
         else:
             self.__set_holder(None)
         mod.connect("state-changed", self.animate)
@@ -1517,9 +1535,9 @@ class Disassemble(ModuleWidget):
                 
     def __create_connection(self, name, prog):
         if 'destination' in prog.transform.keys() and not self.holder == None:
-            dst = self.canvas.widgets[prog.transform['destination']]
+            dst = self.emulica_canvas.widgets[prog.transform['destination']]
             src = self.holder
-            connec_widget = Connection(self.canvas, src, dst, weak = True, color = 'purple')
+            connec_widget = Connection(self.emulica_canvas, src, dst, weak = True, color = 'purple')
             self.connections[name] = (src, dst, connec_widget)
             self.dependants.append(connec_widget)
     
@@ -1529,7 +1547,7 @@ class Disassemble(ModuleWidget):
             if not name in self.connections.keys():
                 self.__create_connection(name, prog)
             #if it is present but has changed, remove/create
-            elif not self.connections[name][:2] == (self.canvas.widgets[prog.transform['destination']], self.holder):
+            elif not self.connections[name][:2] == (self.emulica_canvas.widgets[prog.transform['destination']], self.holder):
                 self.connections[name][2].remove()
                 self.__create_connection(name, prog)
         #if some connection are not used, remove
@@ -1539,8 +1557,8 @@ class Disassemble(ModuleWidget):
     
     def __on_property_change(self, prop, module):
         if prop == 'holder':
-            if module[prop] in self.canvas.widgets.keys():
-                self.__set_holder(self.canvas.widgets[module[prop]])
+            if module[prop] in self.emulica_canvas.widgets.keys():
+                self.__set_holder(self.emulica_canvas.widgets[module[prop]])
                 self.__update_program(module['program_table'])
             else:
                 self.__set_holder(None)
@@ -1563,14 +1581,14 @@ class Disassemble(ModuleWidget):
                 self.__light.props.fill_color = COLOR_FAILED
             else:
                 self.__light.props.fill_color = COLOR_BUSY
-            self.__text.props.text = state
+            self.__text.props.text = str(state)
         if self.get_canvas().animate:
             gobject.idle_add(change_widget, state)
 
 class Failure(ModuleWidget):
     def __init__(self, canvas, parent, interactive = True):
         ModuleWidget.__init__(self, canvas, parent, interactive)
-        self.__rect = goocanvas.Rect(parent = self,
+        self.__rect = goo.CanvasRect(parent = self,
                        height = 30,
                        width = 30,
                        fill_color = "red",

@@ -2,22 +2,20 @@
 # *-* coding: iso-8859-15 *-*
 
 # emulation.py
-# Copyright 2008, Rémi Pannequin, Centre de Recherche en Automatique de Nancy
+### BEGIN LICENSE
+# Copyright (C) 2013 RÃ©mi Pannequin, Centre de Recherche en Automatique de Nancy remi.pannequin@univ-lorraine.fr
+# This program is free software: you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License version 3, as published 
+# by the Free Software Foundation.
 # 
-# This file is part of Emulica.
-#
-# Emulica is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Emulica is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Emulica.  If not, see <http://www.gnu.org/licenses/>.
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranties of 
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+# PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along 
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+### END LICENSE
 
 """Emulica, the python Systemic Emulation Modelling and Execution envionnement, 
 is a SimPy-based simulation package, that enable emulation of manufacturing systems.
@@ -57,9 +55,10 @@ import random, logging, copy, re
 import properties 
 from SimPy.SimulationStep import *
 
-application = 'emulica'
 import gettext
-gettext.install(application)
+from gettext import gettext as _
+gettext.textdomain('emulica')
+
 
 logger = logging.getLogger('emulica.emulation')
 

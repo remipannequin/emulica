@@ -1,29 +1,28 @@
-#! /usr/bin/python
-# *-* coding: iso-8859-15 *-*
-
-# plot.py
-# Copyright 2008, Rémi Pannequin, Centre de Recherche en Automatique de Nancy
+# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+### BEGIN LICENSE
+# Copyright (C) 2013 Rémi Pannequin, Centre de Recherche en Automatique de Nancy remi.pannequin@univ-lorraine.fr
+# This program is free software: you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License version 3, as published 
+# by the Free Software Foundation.
 # 
-# This file is part of Emulica.
-#
-# Emulica is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Emulica is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Emulica.  If not, see <http://www.gnu.org/licenses/>.
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranties of 
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+# PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along 
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+### END LICENSE
+
+
 
 """This module allow to create various charts from emulica results."""
 
-import logging, gtk, goocanvas
+from gi.repository import Gtk as gtk # pylint: disable=E0611
+from gi.repository import GooCanvas as goocanvas # pylint: disable=E0611
+import logging
 from matplotlib import figure, patches, colors, cm
-from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
+#from matplotlib.backends.backend_gtk3 import FigureCanvasGTK3 as FigureCanvas
 
 logger = logging.getLogger('emulica.plot')
 
@@ -31,6 +30,7 @@ class ResultSummary(gtk.Table):
     
     def __init__(self, model):
         gtk.Table.__init__(self, 16, 3)
+        
         entries = []
         self.avg_occupation = dict()
         self.avg_lifetime = dict()
@@ -62,17 +62,17 @@ class ResultSummary(gtk.Table):
             label = gtk.Label(string)
             label.set_padding(10, 0)
             label.set_alignment(1, 0.5)
-            self.attach(label, 1, 2, row, row + 1, yoptions = gtk.FILL)
+            self.attach(label, 1, 2, row, row + 1)
             entry = gtk.Entry()
             entry.set_property('editable', False)
             entries.append(entry)
-            self.attach(entry, 2, 3, row, row + 1, yoptions = gtk.FILL)
+            self.attach(entry, 2, 3, row, row + 1)
         
         #create a treeview for product's physical props
         label = gtk.Label(_("Physical attributes:"))
         label.set_alignment(1, 0.1)
         label.set_padding(10, 0)
-        self.attach(label, 1, 2, 12, 13, yoptions = gtk.EXPAND|gtk.FILL)
+        self.attach(label, 1, 2, 12, 13)
         self.phys_prop_model = gtk.ListStore(str, str)
         phys_prop_tv = gtk.TreeView(self.phys_prop_model)
         phys_prop_tv.set_size_request(-1, 50)
@@ -83,14 +83,14 @@ class ResultSummary(gtk.Table):
         phys_prop_tv.set_property('headers-visible', False)
         phys_prop_tv.set_property('rules-hint', True)
         sw = gtk.ScrolledWindow()
-        sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        sw.set_policy(gtk.ScrollablePolicy.NATURAL, gtk.ScrollablePolicy.NATURAL)
         sw.add(phys_prop_tv)
         frame = gtk.Frame()
         frame.add(sw)
-        self.attach(frame, 2, 3, 12, 13, yoptions = gtk.EXPAND|gtk.FILL)
+        self.attach(frame, 2, 3, 12, 13)
         
         #create the combo
-        combo = gtk.combo_box_new_text()
+        combo = gtk.ComboBoxText()
         for (name, module) in model.modules.items():
             if 'trace' in dir(module):
                 combo.append_text(name)
@@ -101,7 +101,7 @@ class ResultSummary(gtk.Table):
         combo.connect("changed", self.on_report_actuators_change, entries)
         self.attach(combo, 2, 3, 7, 8)
         
-        combo = gtk.combo_box_new_text()
+        combo = gtk.ComboBoxText()
         for (name, product) in model.products.items():
             combo.append_text(str(name))
             self.avg_lifetime[str(name)] = float(product.dispose_time - product.create_time)
@@ -109,7 +109,7 @@ class ResultSummary(gtk.Table):
         combo.connect("changed", self.on_report_product_change, entries)
         self.attach(combo, 2, 3, 10, 11)
         
-        combo = gtk.combo_box_new_text()
+        combo = gtk.ComboBoxText()
         for (name, module) in model.modules.items():
             if 'monitor' in dir(module):
                 combo.append_text(name)
@@ -152,7 +152,7 @@ class ResultSummary(gtk.Table):
         #TODO: display physical properties as multi-line entry
         self.phys_prop_model.clear()
         for (name, value) in self.physical_prop[name].items():
-            self.phys_prop_model.append((name, value))
+            self.phys_prop_model.append((name, str(value)))
         
         
     def on_report_holder_change(self, combo, entries):
