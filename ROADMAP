@@ -1,6 +1,11 @@
 ==================bêta=================
 undefined future:
     * use simpy 2 object-oriented features (when its deb package is released)
+    * migrate this ROADMAP to launchpad blueprints
+    * GTK3 transition (nearly over)
+    * quickly as a "build"/project management system
+    * python3 transition
+    * completely separate gtk-related code (gtk, goocanvas, etc) and pure python libs (modelling and actual simulation)
 
 milestone 7:
     * inspection modules (i.e. observation of product physical properties)
@@ -11,7 +16,6 @@ milestone 7:
     * gui integration in server mode
     * model printing (as pdf) (with selectable categories: model graphics, properties, control code, results, etc...)
     * logging facility for the control system
-    * completely separate gtk-related code (gtk, goocanvas, etc) and pure python libs (modelling and actual simulation)
     * display prop window when double clicking a module
     * prop editing of space act : 
 
