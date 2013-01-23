@@ -1,18 +1,37 @@
-#! /usr/bin/python
-# *-* coding: utf8 *-*
+#!/usr/bin/python
+# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+### BEGIN LICENSE
+# Copyright (C) 2013 Rémi Pannequin, Centre de Recherche en Automatique de Nancy remi.pannequin@univ-lorraine.fr
+# This program is free software: you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License version 3, as published 
+# by the Free Software Foundation.
+# 
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranties of 
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+# PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along 
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+### END LICENSE
+
 
 """
 In this test model, we use assemble actuators...
 two type of products are created, and then assembled, and finally put in inventory
-
 """
 
-import sys, logging
-sys.path.insert(0,"../src")
+
+import sys
+import os.path
+import unittest
+sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
+
+
 from emulica import emulation
 logger = logging.getLogger('sim10')
 
-exp_result_resource = [[(0, 0, 'setup'), 
+EXP_RESULT_RESOURCE = [[(0, 0, 'setup'), 
                         (0, 2, 'load'), 
                         (7, 7, 'setup'), 
                         (7, 8, 'unload'), 
@@ -49,7 +68,7 @@ exp_result_resource = [[(0, 0, 'setup'),
                         (42, 47, 'p'),
                         (50, 55, 'p')]]
 
-exp_result_product = [(1, [], [(0, 'source1'), (0, 'trans'), (2, 'assy_space'), (7, 'trans'), (8, 'sink')], 0, 56), 
+EXP_RESULT_PRODUCT = [(1, [], [(0, 'source1'), (0, 'trans'), (2, 'assy_space'), (7, 'trans'), (8, 'sink')], 0, 56), 
                       (2, [], [(0, 'source1'), (8, 'trans'), (10, 'assy_space'), (15, 'trans'), (16, 'sink')], 0, 56), 
                       (3, [], [(0, 'source1'), (16, 'trans'), (18, 'assy_space'), (23, 'trans'), (24, 'sink')], 0, 56), 
                       (4, [], [(0, 'source1'), (24, 'trans'), (26, 'assy_space'), (31, 'trans'), (32, 'sink')], 0, 56), 
@@ -63,6 +82,9 @@ exp_result_product = [(1, [], [(0, 'source1'), (0, 'trans'), (2, 'assy_space'), 
                       (12, [], [(0, 'source2'), (34, 'assy_space'), (39, 'trans'), (40, 'sink')], 0, 56), 
                       (13, [], [(0, 'source2'), (42, 'assy_space'), (47, 'trans'), (48, 'sink')], 0, 56), 
                       (14, [], [(0, 'source2'), (50, 'assy_space'), (55, 'trans'), (56, 'sink')], 0, 56)]
+
+EMULATE_UNTIL = 100;
+
 
 class ControlCreate(emulation.Process):
     def run(self, model):
@@ -115,7 +137,7 @@ class ControlAssy(emulation.Process):
             logger.info("dechargement")
             yield emulation.put, self, trans.request_socket, [emulation.Request("trans", "move", params={"program": 'unload'})]
 
-def create_model():
+def get_model():
     model = emulation.Model()
     source1 = emulation.Holder(model, "source1")
     obs_source1 = emulation.PushObserver(model, "obs_source1", holder = source1)
@@ -132,25 +154,32 @@ def create_model():
     trans.add_program('load', 2, {'source':source1, 'destination':assy_space})
     trans.add_program('unload', 1, {'source':assy_space, 'destination':sink})
     assy.add_program('p', 5, {'source':source2})
-    initialize_control(model)
-    return model
-
-def initialize_control(model):
     model.register_control(ControlCreate)
     model.register_control(ControlAssy)
-    
-def start(model):
-    model.emulate(until = 100)
+    return model
 
-def main():
-    console = logging.StreamHandler()
-    logging.getLogger().setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
-    console.setFormatter(formatter)
-    logging.getLogger('').addHandler(console)
-    model = create_model()
-    start(model)
-    for (pid, p) in model.products.items():
-        print (pid, p.shape_history, p.space_history, p.create_time, p.dispose_time)
 
-if __name__ == '__main__': main()
+class TestSim10(unittest.TestCase):
+        
+    def test_ModelCreate(self):
+        get_model()
+
+    def test_Start(self):
+        model = get_model()
+        model.emulate(until = EMULATE_UNTIL)
+
+    def test_RunResults(self):
+        model = get_model()
+        model.emulate(until = EMULATE_UNTIL)
+        result_product = [(pid, 
+                       p.shape_history, 
+                       p.space_history, 
+                       p.create_time, 
+                       p.dispose_time) for (pid, p) in model.products.items()]
+        result_resource = [model.modules["trans"].trace, model.modules["assy"].trace]
+        self.assertEqual(result_product, EXP_RESULT_PRODUCT)
+        self.assertEqual(result_resource, EXP_RESULT_RESOURCE)
+
+
+if __name__ == '__main__':    
+    unittest.main()

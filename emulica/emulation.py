@@ -793,7 +793,13 @@ class Report:
         self.where = location or source
         self.how = params or dict()
         self.why = comment
-
+    
+    def __eq__(self, other):
+        for i in ['who', 'what', 'when', 'where', 'how', 'why']:
+            if not (getattr(self, i) == getattr(other, i)):
+                return False;
+        return True;
+    
     def __repr__(self):
         """Return a human-readable string representation of a Report"""
         s = _("Report {what} from {who} at t={when}").format(what = self.what, who = self.who, when = self.when)

@@ -1,20 +1,28 @@
-#! /usr/bin/python
-# *-* coding: utf8 *-*
-
-"""
-In this very simple example, we create the mot simple model possible:
-a create actuator put some product in a holder. These product trigger 
-a dispose actuator thanks to a product observer on the holder.
-
-"""
+#!/usr/bin/python
+# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+### BEGIN LICENSE
+# Copyright (C) 2013 Rémi Pannequin, Centre de Recherche en Automatique de Nancy remi.pannequin@univ-lorraine.fr
+# This program is free software: you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License version 3, as published 
+# by the Free Software Foundation.
+# 
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranties of 
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+# PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along 
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+### END LICENSE
 
 import sys
-sys.path.insert(0, "../src/")
+import os.path
+import unittest
+sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
-RT = True
 import emulica.emulation as emu
 
-exp_result = [(1, [], [(0. , 'holder1')], 0., 3.5),
+EXP_RESULT = [(1, [], [(0. , 'holder1')], 0., 3.5),
               (2, [], [(2., 'holder1')], 2., 5.5), 
               (3, [], [(4., 'holder1')], 4., 7.0), 
               (4, [], [(5., 'holder1')], 5., 8.5), 
@@ -24,7 +32,7 @@ exp_result = [(1, [], [(0. , 'holder1')], 0., 3.5),
               (8, [], [(8., 'holder1')], 8., 14.5)]
               
               
-exp_result_position =  [(0.5, {4.0: 1}), 
+EXP_RESULT_POSITION =  [(0.5, {4.0: 1}), 
                         (1.0, {3.0: 1}), 
                         (1.5, {2.0: 1}), 
                         (2, {1.0: 1, 5: 2}), 
@@ -59,6 +67,8 @@ exp_result_position =  [(0.5, {4.0: 1}),
 
 pos_list = list()
 
+EMULATE_UNTIL = 16;
+
 class ControlCreate(emu.Process):
     def run(self, model):
         createModule = model.modules["create1"]
@@ -86,7 +96,7 @@ class ObsMonitor(emu.Process):
             pos_list.append((r.when, r.how['ID_by_position']))
             
             
-def create_model(stepping = False):
+def get_model(stepping = False):
     pos_list = list()
     model = emu.Model()
     h = emu.Holder(model, "holder1")
@@ -96,29 +106,33 @@ def create_model(stepping = False):
     obs2 = emu.PullObserver(model, "observer2", "position", holder = h)
     c = emu.CreateAct(model, "create1", h)
     d = emu.DisposeAct(model, "dispose1", h)
-    initialize_control(model)
-    return model
-
-def initialize_control(model):
     model.register_control(ControlDispose)
     model.register_control(ControlCreate)
     model.register_control(ObsMonitor)
+    return model
 
-def start(model):
-    model.emulate(until = 16)
 
-def step(model):
-    model.emulate(until = 100, speed = 2, real_time = True) 
+class TestSim8(unittest.TestCase):
+        
+    def test_ModelCreate(self):
+        get_model()
 
-if __name__ == '__main__': 
-    model = create_model()
-    start(model)
-    result = [(pid, 
+    def test_Start(self):
+        model = get_model()
+        model.emulate(until = EMULATE_UNTIL)
+
+    def test_RunResults(self):
+        model = get_model()
+        model.emulate(until = EMULATE_UNTIL)
+        result = [(pid, 
                p.shape_history, 
                p.space_history, 
                p.create_time, 
                p.dispose_time) for (pid, p) in model.products.items()]
-    print result
-    for (t, pos) in pos_list:
-       print t, '\t', pos 
-    print pos_list   
+        self.assertEqual(result, EXP_RESULT)
+        self.assertEqual(pos_list, EXP_RESULT_POSITION)
+
+
+if __name__ == '__main__':    
+    unittest.main()
+

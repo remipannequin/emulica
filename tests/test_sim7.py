@@ -1,12 +1,32 @@
-#! /usr/bin/python
-# *-* coding: utf8 *-*
+#!/usr/bin/python
+# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+### BEGIN LICENSE
+# Copyright (C) 2013 Rémi Pannequin, Centre de Recherche en Automatique de Nancy remi.pannequin@univ-lorraine.fr
+# This program is free software: you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License version 3, as published 
+# by the Free Software Foundation.
+# 
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranties of 
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+# PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along 
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+### END LICENSE
+
 
 import sys
-sys.path.insert(0, "../src/")
+import os.path
+import unittest
+sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
+
+
+
 from emulica.emulation import *
 from emulica.properties import SetupMatrix
 
-exp_result_product = [(1, [(3, 7, 'machine', 'p1')], 
+EXP_RESULT_PRODUCT = [(1, [(3, 7, 'machine', 'p1')], 
                           [(0, 'source'), 
                            (0, 'transporter'), 
                            (2, 'espaceMachine'), 
@@ -42,7 +62,7 @@ exp_result_product = [(1, [(3, 7, 'machine', 'p1')],
                            (61, 'espaceMachine'), 
                            (71, 'transporter'), 
                            (74, 'sink')], 0, 80)] 
-exp_result_resource = [[(0, 0, 'setup'), 
+EXP_RESULT_RESOURCE = [[(0, 0, 'setup'), 
                         (0, 2, 'load'), 
                         (7, 7, 'setup'), 
                         (7, 10, 'unload'), 
@@ -83,6 +103,7 @@ exp_result_resource = [[(0, 0, 'setup'),
                         (66, 68, 'failure'), 
                         (63, 71, 'p3')]]
 
+EMULATE_UNTIL = 80;
 
 class ControlCreate(Process):
     def run(self, model):
@@ -129,7 +150,7 @@ class ControlMachine(Process):
             yield put, self, sp.request_socket, [Request("transporter", "move", params={"program":'unload'})]
 
 
-def create_model():
+def get_model():
     model = Model()
     source = Holder(model, "source")
     sink = Holder(model, "sink")
@@ -152,23 +173,32 @@ def create_model():
     m.add('p3','p1',3)
     machine['setup'] = m
     fail1 = Failure(model, "fail1", 15, 2, [machine])
-    
-    initialize_control(model)
-    return model
-
-def initialize_control(model):
     model.register_control(ControlCreate)
     model.register_control(ControlMachine)
-    
-def start(model):
-    model.emulate(until=80)
+    return model
 
-def step(model, tempo):
-    model.emulate(tempo = tempo, until=80)
 
-if __name__ == '__main__':
-    model = create_model()
-    start(model)
-    add_trace('T',model.modules["transporter"].trace)
-    add_trace('M', model.modules["machine"].trace)
-    plot('svg', '-')
+class TestSim7(unittest.TestCase):
+        
+    def test_ModelCreate(self):
+        get_model()
+
+    def test_Start(self):
+        model = get_model()
+        model.emulate(until = EMULATE_UNTIL)
+
+    def test_RunResults(self):
+        model = get_model()
+        model.emulate(until = EMULATE_UNTIL)
+        result_product = [(pid, p.shape_history, 
+                       p.space_history,
+                       p.create_time,
+                       p.dispose_time) for (pid, p) in model.products.items()]
+        result_resource = [model.modules["transporter"].trace, model.modules["machine"].trace]
+        self.assertEqual(result_product, EXP_RESULT_PRODUCT)
+        self.assertEqual(result_resource, EXP_RESULT_RESOURCE)
+
+
+if __name__ == '__main__':    
+    unittest.main()
+

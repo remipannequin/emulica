@@ -1,8 +1,0 @@
-include *.txt
-include INSTALL ROADMAP changelog
-include src/emulica.py
-recursive-include doc/examples *
-recursive-include doc/webpage *
-recursive-include po *.po *.pot 
-recursive-include locale *.mo
-recursive-include test *.xml *.py *.emu
