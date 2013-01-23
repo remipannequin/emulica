@@ -27,11 +27,13 @@ class TestServer(unittest.TestCase):
     
     def setUp(self):
         self.model = test_sim12.get_model()
+        
+        "<request><who>emulator</who><what>start</what></request>"
     
-    def test_Create(self):
+    def todotest_Create(self):
         serv = controler.EmulationServer(self.model, 51000)
         
-    def test_Start(self):
+    def todotest_Start(self):
         serv = controler.EmulationServer(self.model, 51001)
         serv.start()
         #temporisation ?

@@ -15,7 +15,7 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-"""Submodel testing: use a model property in the control system"""
+"""Submodel testing: use a model input in the control system"""
 
 import sys
 import os.path
@@ -138,7 +138,7 @@ def create_submodel(parent, name, delay):
     m.add('p3','p1',3)
     machine['setup'] = m
     model.register_control(ControlCell)
-    model.add_property('delay', 'INT', delay)
+    model.properties['delay'] = delay
 
 
 def get_model():

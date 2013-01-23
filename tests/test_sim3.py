@@ -18,12 +18,10 @@
 source -> machine -> sink
 """
 
-mport sys
+import sys
 import os.path
 import unittest
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
-import sys
-sys.path.insert(0, "../src/")
 
 from emulica.emulation import *
 from emulica.properties import SetupMatrix
