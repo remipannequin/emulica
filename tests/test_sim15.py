@@ -109,6 +109,11 @@ def get_model():
     model.register_control(ControlDispose)
     return model
 
+def register_control(model):
+    model.register_control(ControlCreate)
+    model.register_control(ControlDispose)
+    return model
+
 class TestSim15(unittest.TestCase):
     """
     In this very simple example, we create the mot simple model possible:

@@ -177,6 +177,11 @@ def get_model():
     model.register_control(ControlMachine)
     return model
 
+def register_control(model):
+    model.register_control(ControlCreate)
+    model.register_control(ControlMachine)
+    return model
+
 
 class TestSim7(unittest.TestCase):
         

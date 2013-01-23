@@ -25,45 +25,45 @@ from emulica import emulation
 
 
 
-class TestSetupmatrix(unittest.TestCase):
+class TestSetupMatrix(unittest.TestCase):
     
-    def test_setUp(self):
-        model = emulation.Model()
-        p = emulation.Product(model)
-        self.m = SetupMatrix(Registry(p, model.rng), 3)
+    def setUp(self):
+        self.model = emulation.Model()
+        self.p = emulation.Product(self.model)
 
-    def compare(self, init, final, expRes):
-        t = self.m.get(init, final)
+    def compare(self, instance, init, final, expRes):
+        t = instance.get(init, final)
         self.assertEqual(t, expRes)
 
 
 
     def test_AddValues(self):
-        self.m.add('p1', 'p2', 1)
-        v = test('p1', 'p2', 1)
-        self.m.add('p1', 'p3', 2)
-        self.compare('p1', 'p3', 2)
-        self.compare('p0', 'p0', 0)
-        self.compare('p0', 'p1', 3)
-        self.m.add('p2', 'p3', 4)
-        self.compare('p2', 'p3', 4)
-        self.compare('p1', 'p2', 1)
-        self.compare('p1', 'p3', 2)
-        self.m.add('p3', 'p1', 5)
-        self.compare('p3', 'p1', 5)
+        instance = SetupMatrix(Registry(self.p, self.model.rng), 3)
+        instance.add('p1', 'p2', 1)
+        self.compare(instance, 'p1', 'p2', 1)
+        instance.add('p1', 'p3', 2)
+        self.compare(instance, 'p1', 'p3', 2)
+        self.compare(instance, 'p0', 'p0', 0)
+        self.compare(instance, 'p0', 'p1', 3)
+        instance.add('p2', 'p3', 4)
+        self.compare(instance, 'p2', 'p3', 4)
+        self.compare(instance, 'p1', 'p2', 1)
+        self.compare(instance, 'p1', 'p3', 2)
+        instance.add('p3', 'p1', 5)
+        self.compare(instance, 'p3', 'p1', 5)
 
 
     def test_ModValue(self):
-        self.m = SetupMatrix(Registry(p, model.rng), 3)
-        self.m.add('p3', 'p1', 5)
-        self.m.modify('p3', 'p1', new_final = 'p12')
-        self.compare('p3', 'p12', 5)
-        self.m.add('p2', 'p3', 4)
-        self.m.modify('p2', 'p3', new_initial = 'p12')
-        self.compare('p12', 'p3', 4)
-        self.m.add('p1', 'p2', 1)
-        self.m.modify('p1', 'p2', new_time = 2)
-        self.compare('p1', 'p2', 2)
+        instance = SetupMatrix(Registry(self.p, self.model.rng), 3)
+        instance.add('p3', 'p1', 5)
+        instance.modify('p3', 'p1', new_final = 'p12')
+        self.compare(instance, 'p3', 'p12', 5)
+        instance.add('p2', 'p3', 4)
+        instance.modify('p2', 'p3', new_initial = 'p12')
+        self.compare(instance, 'p12', 'p3', 4)
+        instance.add('p1', 'p2', 1)
+        instance.modify('p1', 'p2', new_time = 2)
+        self.compare(instance, 'p1', 'p2', 2)
         
         
 if __name__ == '__main__':    

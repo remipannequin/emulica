@@ -29,7 +29,8 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), ".."
 
 
 from emulica import emulation
-logger = logging.getLogger('sim10')
+import logging
+logger = logging.getLogger('test_sim10')
 
 EXP_RESULT_RESOURCE = [[(0, 0, 'setup'), 
                         (0, 2, 'load'), 

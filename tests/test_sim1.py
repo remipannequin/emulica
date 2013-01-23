@@ -103,7 +103,18 @@ class TestSim1(unittest.TestCase):
                    p.space_history, 
                    p.create_time, 
                    p.dispose_time) for (pid, p) in model.products.items()]
-        self.assertEqual(result, self.EXP_RESULT)
+        self.assertEqual(result, EXP_RESULT)
+
+    def test_MultipleRun(self):
+        model = get_model()
+        model.emulate(until = EMULATE_UNTIL)
+        model.emulate(until = EMULATE_UNTIL)
+        result = [(pid, 
+                   p.shape_history, 
+                   p.space_history, 
+                   p.create_time, 
+                   p.dispose_time) for (pid, p) in model.products.items()]
+        self.assertEqual(result, EXP_RESULT)
 
 
 if __name__ == '__main__':    

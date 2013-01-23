@@ -152,7 +152,7 @@ def get_model():
     model.register_control(ControlMachine)
     return model
 
-def initialize_control(model):
+def register_control(model):
     model.register_control(ControlCreate)
     model.register_control(ControlMachine)
     return model

@@ -117,9 +117,9 @@ class TestConfig(unittest.TestCase):
         output = emuML.save(m2)
         self.assertTrue(self.compare_dom(output, exp_output))
         m3 = emuML.load(os.path.join(os.path.dirname(__file__), 'data', "sim4.xml"))
-        sim.initialize_control(m3)
+        sim.register_control(m3)
         
-        m3.emulate(until = EMULATE_UNTIL)
+        m3.emulate(until = sim.EMULATE_UNTIL)
         result_product = [(pid, p.shape_history, 
                        p.space_history, 
                        p.create_time, 
@@ -128,73 +128,73 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(result_product, sim.EXP_RESULT_PRODUCT)
         self.assertEqual(result_resource, sim.EXP_RESULT_RESOURCE)
 
-    def test_config3(self):
+    def test_config(self):
         """test emuML with create, holder, pushobserver, failure"""
-        import sim7 as sim
-        from emulica import emuML
-        m1 = sim.create_model()
+        import test_sim7 as sim
+        sim_file = os.path.join(os.path.dirname(__file__), 'data', "sim7.xml")
+        m1 = sim.get_model()
         output = emuML.save(m1)
         #test whether output equals sim4.xml...
-        f = open("sim7.xml",'r')
+        f = open(sim_file,'r')
         exp_output = f.read()
         f.close()
-        yield ("config: sim7, save", compare_dom(output, exp_output))
-        m2 = emuML.load("sim7.xml")
+        self.assertTrue(self.compare_dom(output, exp_output))
+        m2 = emuML.load(sim_file)
         output = emuML.save(m2)
-        yield ("config: sim7, load and save", compare_dom(output, exp_output))
-        m3 = emuML.load("sim7.xml")
-        sim.initialize_control(m3)
-        sim.start(m3)
+        self.assertTrue(self.compare_dom(output, exp_output))
+        m3 = emuML.load(sim_file)
+        sim.register_control(m3)
+        m3.emulate(until = sim.EMULATE_UNTIL)
         result_product = [(pid, p.shape_history, 
                            p.space_history, 
                            p.create_time, 
                            p.dispose_time) for (pid, p) in m3.products.items()]
         result_resource = [m3.modules["transporter"].trace, m3.modules["machine"].trace]
-        #print result_product, sim.exp_result_product
-        yield ("config: sim7, execute (product)", result_product == sim.exp_result_product)
-        yield ("config: sim7, execute (resource)", result_resource == sim.exp_result_resource)
+        self.assertEqual(result_product, sim.EXP_RESULT_PRODUCT)
+        self.assertEqual(result_resource, sim.EXP_RESULT_RESOURCE)
 
     def test_config4(self):
         """test emuML with create, holder with speed and capacity, pushobserver, pullobserver"""
-        import sim8 as sim
-        from emulica import emuML
-        m1 = sim.create_model()
+        import test_sim8 as sim
+        sim_file = os.path.join(os.path.dirname(__file__), 'data', "sim8.xml")
+        m1 = sim.get_model()
         output = emuML.save(m1)
         #test whether output equals sim4.xml...
-        f = open("sim8.xml",'r')
+        f = open(sim_file,'r')
         exp_output = f.read()
         f.close()
-        yield ("config: sim8, save", compare_dom(output, exp_output))
-        m2 = emuML.load("sim8.xml")
+        self.assertTrue(self.compare_dom(output, exp_output))
+        m2 = emuML.load(sim_file)
         output = emuML.save(m2)
-        yield ("config: sim8, load and save", compare_dom(output, exp_output))
-        m3 = emuML.load("sim8.xml")
-        sim.initialize_control(m3)
-        sim.start(m3)
+        self.assertTrue(self.compare_dom(output, exp_output))
+        m3 = emuML.load(sim_file)
+        sim.register_control(m3)
+        m3.emulate(until = sim.EMULATE_UNTIL)
         result = [(pid, 
-                   p.shape_history, 
-                   p.space_history, 
-                   p.create_time, 
-                   p.dispose_time) for (pid, p) in m3.products.items()]
-        yield ("config: sim8, execute (product)", result == sim.exp_result)
-        yield ("config: sim8, execute (observation)", sim.pos_list == sim.exp_result_position)
+               p.shape_history, 
+               p.space_history, 
+               p.create_time, 
+               p.dispose_time) for (pid, p) in m3.products.items()]
+        self.assertEqual(result, sim.EXP_RESULT)
+
 
     def test_config5(self):
         """Test emuML with physical properties"""
-        import sim14 as sim
-        from emulica import emuML
-        m1 = sim.create_model()
+        import test_sim14 as sim
+        sim_file = os.path.join(os.path.dirname(__file__), 'data', "sim14.xml")
+        m1 = sim.get_model()
         output = emuML.save(m1)
-        f = open("sim14.xml",'r')
+        #test whether output equals sim4.xml...
+        f = open(sim_file,'r')
         exp_output = f.read()
         f.close()
-        yield ("config: sim14, save", compare_dom(output, exp_output))
-        m2 = emuML.load("sim14.xml")
+        self.assertTrue(self.compare_dom(output, exp_output))
+        m2 = emuML.load(sim_file)
         output = emuML.save(m2)
-        yield ("config: sim14, load and save", compare_dom(output, exp_output))
-        m3 = emuML.load("sim14.xml")
-        sim.initialize_control(m3)
-        sim.start(m3)
+        self.assertTrue(self.compare_dom(output, exp_output))
+        m3 = emuML.load(sim_file)
+        sim.register_control(m3)
+        m3.emulate(until = sim.EMULATE_UNTIL)
         result = [(pid, 
                    p.shape_history, 
                    p.space_history,
@@ -202,34 +202,31 @@ class TestConfig(unittest.TestCase):
                    p.create_time, 
                    p.dispose_time) for (pid, p) in m3.products.items()]
         result_resource = [m3.modules["transporter"].trace, m3.modules["machine"].trace]
-        yield ("config: sim14, execute (product)", result == sim.exp_result_product)
-        yield ("config: sim14, execute (resources)", result_resource == sim.exp_result_resource)
+        self.assertEqual(result, sim.EXP_RESULT_PRODUCT)
+        self.assertEqual(result_resource, sim.EXP_RESULT_RESOURCE)
 
     def test_config6(self):
-        import sim15 as sim
-        from emulica import emuML
-        m1 = sim.create_model()
-        
+        import test_sim15 as sim
+        m1 = sim.get_model()
+        sim_file = os.path.join(os.path.dirname(__file__), 'data', "sim15.xml")
         output = emuML.save(m1)
-        f = open("sim15.xml",'r')
+        f = open(sim_file,'r')
         exp_output = f.read()
         f.close()
+        self.assertTrue(self.compare_dom(output, exp_output))
         
-        #there is one xml doc on each line
-        yield ("config: sim15, save (main)", compare_dom(output, exp_output))
-        
-        m3 = emuML.load("sim15.xml")
-        #sim.initialize_control_submodel(m3.modules['cell'])
-        sim.initialize_control(m3)
-        sim.start(m3)
+        m3 = emuML.load(sim_file)
+        #sim.register_control_submodel(m3.modules['cell'])
+        sim.register_control(m3)
+        m3.emulate(until = sim.EMULATE_UNTIL)
         result = [(pid, 
                    p.shape_history, 
                    p.space_history,
                    p.create_time, 
                    p.dispose_time) for (pid, p) in m3.products.items()]
         result_resource = [m3.get_module("cell.transporter").trace, m3.get_module("cell.machine").trace]
-        yield ("config: sim15, execute (product)", result == sim.exp_result_product)
-        yield ("config: sim15, execute (resources)", result_resource == sim.exp_result_resource)
+        self.assertEqual(result, sim.EXP_RESULT_PRODUCT)
+        self.assertEqual(result_resource, sim.EXP_RESULT_RESOURCE)
         
         
     

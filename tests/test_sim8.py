@@ -111,6 +111,12 @@ def get_model(stepping = False):
     model.register_control(ObsMonitor)
     return model
 
+def register_control(model):
+    model.register_control(ControlDispose)
+    model.register_control(ControlCreate)
+    model.register_control(ObsMonitor)
+    return model
+
 
 class TestSim8(unittest.TestCase):
         
