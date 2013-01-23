@@ -1,37 +1,20 @@
 #!/usr/bin/env python
 # *-* coding: iso-8859-15 *-*
-
-# gui.py
-# Copyright 2008, Rémi Pannequin, Centre de Recherche en Automatique de Nancy
-# 
-#
-# This file is part of Emulica.
-#
-# Emulica is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# Emulica is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with Emulica.  If not, see <http://www.gnu.org/licenses/>.
+ ### BEGIN LICENSE
+ ### END LICENSE
 
 DEFAULT_PORT = 51000
-
+#TODO : migarte file to GTK3...
 
 import sys, logging, zipfile, socket
-import gtk
+from gi.repository import Gtk
 sys.path.insert(0, '../src')
 
 from emulica import emuML
 from emulica.emulation import Report, Request
 
-from twisted.internet import gtk2reactor
-gtk2reactor.install()
+from twisted.internet import gtk3reactor
+gtk3reactor.install()
 
 from twisted.internet.protocol import ClientFactory
 from twisted.protocols.basic import LineReceiver

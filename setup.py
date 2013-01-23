@@ -1,225 +1,148 @@
 #!/usr/bin/env python
-# *-* coding: utf8 *-*
+# -*- Mode: Python; coding: utf-8; indent-tabs-mode: nil; tab-width: 4 -*-
+### BEGIN LICENSE
+# Copyright (C) 2013 Rémi Pannequin, Centre de Recherche en Automatique de Nancy remi.pannequin@univ-lorraine.fr
+# This program is free software: you can redistribute it and/or modify it 
+# under the terms of the GNU General Public License version 3, as published 
+# by the Free Software Foundation.
+# 
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranties of 
+# MERCHANTABILITY, SATISFACTORY QUALITY, or FITNESS FOR A PARTICULAR 
+# PURPOSE.  See the GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License along 
+# with this program.  If not, see <http://www.gnu.org/licenses/>.
+### END LICENSE
 
-import os, subprocess
+###################### DO NOT TOUCH THIS (HEAD TO THE SECOND PART) ######################
 
-from distutils.core import setup
-from distutils.cmd import Command
-from distutils.filelist import findall
-from glob import glob
-
-
-class BuildDoc(Command):
-    description = "Generate projet documentation using pydoc"
-    user_options = []
-    doc_src="src"
-    doc_dst="doc/api"
-    exceptions=['__init__.py']
-  
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        import pydoc, sys
-
-        def walk(base, prefix, element):
-            """Recursively walk through the base directory. 
-            Return a list of python modules in this directory."""
-            path = os.path.join(base, element)
-            if os.path.isdir(path):
-                if os.path.isfile(os.path.join(path, '__init__.py')):
-                    l = [element]
-                    if len(prefix) == 0:
-                        subprefix = element
-                    else:
-                        subprefix = '.'.join([prefix, element])
-                else:
-                    l = []
-                    subprefix = ''
-                for subpath in os.listdir(path):
-                    l += walk(path, subprefix, subpath)
-                return l
-            elif element.endswith('.py') and not element == '__init__.py':
-                return ['.'.join([prefix, os.path.splitext(element)[0]])]
-            else:
-                return []
-
-        sys.path.insert(0, Doc.doc_src)
-        file_list = walk(Doc.doc_src, '', '')
-        for f in file_list:
-            pydoc.writedoc(f)
-            doc_file = f+'.html'
-            os.rename(doc_file, os.path.join(Doc.doc_dst, doc_file))
-   
-class InstallDoc(Command):
-    description = "install projet documentation"
-    user_options = [('install-dir=', 'd', "directory to install doc files to")]
-    
-    docs = [('api', glob('doc/api/*')),
-            ('manual', glob('doc/manual/_build/html/*/*')),
-            ('examples', glob('doc/examples/*'))]
-    
-    def initialize_options(self) :
-        self.install_dir = None
-    def finalize_options(self) :
-        pass
-
-    def get_outputs(self) :
-        return self.outputs
-
-    def run(self) :
-        self.outputs = []
-        for (destination, files) in docs:
-            d = os.path.join(self.install_dir, destination)
-            self.mkpath(os.path.dirname(d))
-            for f in files:
-                elf.copy_file(f, d)
-            self.outputs.append(d)
-
-class BuildCatalog(Command):
-    description = "build translation catalog from source files"
-    user_options = []
-
-    def initialize_options(self) :
-        pass
-        
-    def finalize_options(self) :
-        pass
-        
-    def run(self) :
-        self.outputs = []
-        PO_DIR = 'po'
-        #extract messages from source files,
-        src = glob('src/emulica/emulicapp/*.py') + glob('src/emulica/*.py') + ['src/emulica.py', 'ui/emulica.ui']
-        #print "source files: ", src
-        pot = os.path.join(PO_DIR, 'emulica.pot')
-        common_opt = ['--keyword=_', '--keyword=N_', '--output=%s' % pot]
-        #print ['/usr/bin/xgettext', '--language=python'] + common_opt + src[:-1]
-        subprocess.call(['/usr/bin/xgettext', '--language=python'] + common_opt + src[:-1])
-        #print ['xgettext', '--join-existing', '--language=glade'] + common_opt + [src[-1]]
-        subprocess.call(['xgettext', '--join-existing', '--language=glade'] + common_opt + [src[-1]])
-        print "updating messages catalog %s" % pot
-        poFiles = filter(os.path.isfile, glob(os.path.join(PO_DIR,'*.po')))
-        for pofile in poFiles:
-            #fuzzyfy .po based on the new .pot catalog
-            print "merging new messages in %s" % pofile
-            subprocess.call(['msgmerge', '-U', pofile, pot])
-
-
-class BuildLocales(Command):
-    description = "build translation files"
-    user_options = []
-
-    def initialize_options(self) :
-        pass
-    def finalize_options(self) :
-        pass
-
-    def run(self) :
-        for po in glob("po/*.po") :
-            mo = po[:-2]+'mo'
-            subprocess.call(['msgfmt', '-c', po, '-o', mo])
-            print "building %s into %s" % (po, mo)
-
-
-class InstallLocales(Command):
-    description = "install translation files"
-    user_options = [('install-dir=', 'd', "directory to install locale files to")]
-
-    def initialize_options(self):
-        self.install_dir = None
-        
-    def finalize_options(self):
-        if self.install_dir is None:
-            self.install_dir = 'dist/locales'
-    
-    def get_outputs(self):
-        return self.outputs
-
-    def run(self):
-        self.run_command('build_locales')
-        install_path = os.path.join(os.path.join(os.path.join(self.install_dir,"%s"),"LC_MESSAGES"),"emulica.mo")
-        self.outputs = []
-        for mo in glob("po/*.mo") :
-            d = install_path % os.path.basename(mo)[:-3]
-            self.mkpath(os.path.dirname(d))
-            self.copy_file(mo, d)
-            self.outputs.append(d)
-
-
-class InstallIcons(Command):
-    description = "install graphic files required by emulica"
-    user_options = [('install-dir=', 'd', "directory to install icons files to")]
-    
-    def initialize_options(self):
-        self.install_dir = None
-        
-    def finalize_options(self):
-        if self.install_dir is None:
-            self.install_dir = 'dist/icons'
-    
-    def get_outputs(self):
-        return self.outputs
-
-    def run(self):
-        pass
-
-
-
-data_files = [('icons', glob('ui/*.png')),
-              ('.', ['ui/emulica.ui', 'ui/emulica-icon.png'])]
+import os
+import sys
 
 try:
-    import py2exe
-    class MyPy2Exe(py2exe.build_exe.py2exe):
-        def run(self):
-            import matplotlib as mpl
-            for e in mpl.get_py2exe_datafiles():
-                data_files.append(e)
-            
-            
-            py2exe.build_exe.py2exe.run(self)
-        
+    import DistUtilsExtra.auto
 except ImportError:
-    class MyPy2Exe():
-        def run(self):
-            print "py2exe not found"
+    print >> sys.stderr, 'To build emulica you need https://launchpad.net/python-distutils-extra'
+    sys.exit(1)
+assert DistUtilsExtra.auto.__version__ >= '2.18', 'needs DistUtilsExtra.auto >= 2.18'
+
+def update_config(libdir, values = {}):
+
+    filename = os.path.join(libdir, 'emulica_lib/emulicaconfig.py')
+    oldvalues = {}
+    try:
+        fin = file(filename, 'r')
+        fout = file(filename + '.new', 'w')
+
+        for line in fin:
+            fields = line.split(' = ') # Separate variable from value
+            if fields[0] in values:
+                oldvalues[fields[0]] = fields[1].strip()
+                line = "%s = %s\n" % (fields[0], values[fields[0]])
+            fout.write(line)
+
+        fout.flush()
+        fout.close()
+        fin.close()
+        os.rename(fout.name, fin.name)
+    except (OSError, IOError), e:
+        print ("ERROR: Can't find %s" % filename)
+        sys.exit(1)
+    return oldvalues
 
 
-setup(name='Emulica',
-      version='0.6',
-      description='Systemic Emulation Modeling and Execution Environment',
-      author='Rémi Pannequin, Research Center for Automatic Control',
-      author_email='remi.pannequin@cran.uhp-nancy.fr',
-      license='GNU General Public License (GPL)',
-      url='http://emulica.sourceforge.net/',
-      packages=['emulica', 'emulica.emulicapp'],
-      package_dir={'emulica': 'src/emulica'},
-      classifiers=[
-          'Development Status :: 4 - Beta',
-          'License :: OSI Approved :: GNU General Public License (GPL)',
-          'Programming Language :: Python',
-          'Topic :: Scientific/Engineering :: Simulations '
-          ],
-      windows=[{'script': 'src/emulica.py',
-                'icon_resources': [(1, 'ui/emulica-icon.ico')]}],
-      options = {
-        'py2exe': {
-            'includes': ['cairo', 'pango', 'pangocairo', 'atk', 'gobject'],
-            'excludes': ['_tkagg', 'tcl', 'pywin', 'pywin.debbuger', 'pywin.debugger.dbgcon', 'pywin.dialog', 'pywin.dialogs.list', 'Tkconstants', 'Tkinter'],
-            'dll_excludes': 'libxml2-2.dll'}
-            },
-      scripts=['scripts/emulica'],
-      data_files = data_files,
-      cmdclass = {'install_locales': InstallLocales,
-                  'build_locales': BuildLocales,
-                  'catalog': BuildCatalog,
-                  'doc': BuildDoc, 
-                  'install_doc': InstallDoc,
-                  'py2exe': MyPy2Exe}
-     )
+def move_desktop_file(root, target_data, prefix):
+    # The desktop file is rightly installed into install_data.  But it should
+    # always really be installed into prefix, because while we can install
+    # normal data files anywhere we want, the desktop file needs to exist in
+    # the main system to be found.  Only actually useful for /opt installs.
 
+    old_desktop_path = os.path.normpath(root + target_data +
+                                        '/share/applications')
+    old_desktop_file = old_desktop_path + '/emulica.desktop'
+    desktop_path = os.path.normpath(root + prefix + '/share/applications')
+    desktop_file = desktop_path + '/emulica.desktop'
+
+    if not os.path.exists(old_desktop_file):
+        print ("ERROR: Can't find", old_desktop_file)
+        sys.exit(1)
+    elif target_data != prefix + '/':
+        # This is an /opt install, so rename desktop file to use extras-
+        desktop_file = desktop_path + '/extras-emulica.desktop'
+        try:
+            os.makedirs(desktop_path)
+            os.rename(old_desktop_file, desktop_file)
+            os.rmdir(old_desktop_path)
+        except OSError as e:
+            print ("ERROR: Can't rename", old_desktop_file, ":", e)
+            sys.exit(1)
+
+    return desktop_file
+
+def update_desktop_file(filename, target_pkgdata, target_scripts):
+
+    try:
+        fin = file(filename, 'r')
+        fout = file(filename + '.new', 'w')
+
+        for line in fin:
+            if 'Icon=' in line:
+                line = "Icon=%s\n" % (target_pkgdata + 'media/emulica.svg')
+            elif 'Exec=' in line:
+                cmd = line.split("=")[1].split(None, 1)
+                line = "Exec=%s" % (target_scripts + 'emulica')
+                if len(cmd) > 1:
+                    line += " %s" % cmd[1].strip()  # Add script arguments back
+                line += "\n"
+            fout.write(line)
+        fout.flush()
+        fout.close()
+        fin.close()
+        os.rename(fout.name, fin.name)
+    except (OSError, IOError), e:
+        print ("ERROR: Can't find %s" % filename)
+        sys.exit(1)
+
+def compile_schemas(root, target_data):
+    if target_data == '/usr/':
+        return  # /usr paths don't need this, they will be handled by dpkg
+    schemadir = os.path.normpath(root + target_data + 'share/glib-2.0/schemas')
+    if (os.path.isdir(schemadir) and
+            os.path.isfile('/usr/bin/glib-compile-schemas')):
+        os.system('/usr/bin/glib-compile-schemas "%s"' % schemadir)
+
+
+class InstallAndUpdateDataDirectory(DistUtilsExtra.auto.install_auto):
+    def run(self):
+        DistUtilsExtra.auto.install_auto.run(self)
+
+        target_data = '/' + os.path.relpath(self.install_data, self.root) + '/'
+        target_pkgdata = target_data + 'share/emulica/'
+        target_scripts = '/' + os.path.relpath(self.install_scripts, self.root) + '/'
+
+        values = {'__emulica_data_directory__': "'%s'" % (target_pkgdata),
+                  '__version__': "'%s'" % self.distribution.get_version()}
+        update_config(self.install_lib, values)
+
+        desktop_file = move_desktop_file(self.root, target_data, self.prefix)
+        update_desktop_file(desktop_file, target_pkgdata, target_scripts)
+        compile_schemas(self.root, target_data)
+
+        
+##################################################################################
+###################### YOU SHOULD MODIFY ONLY WHAT IS BELOW ######################
+##################################################################################
+
+DistUtilsExtra.auto.setup(
+    name='emulica',
+    version='0.8',
+    license='GPL-3',
+    author='Remi Pannequin',
+    author_email='remi.pannequin@univ-lorraine.fr',
+    description='Emulication of logistic systems',
+    long_description='Emulica is an emulation framework that enable researchers or practitionners to design and run emulation-based control experiments, in the context of manufacturing and logistics systems.',
+    url='http://emulica.sourceforge.net/',
+    cmdclass={'install': InstallAndUpdateDataDirectory}
+    )
 
