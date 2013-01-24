@@ -1,22 +1,22 @@
-python-emulica (0.6) unstable; urgency=low
+python-emulica (0.6ubuntu1) quantal; urgency=low
 
   * 'seme' has been renamed 'emulica'
-  
+
   * modularisation of gsemeapp (main, modelling, control, results, dialogs) 
-  
+
   * generalized properties support: interface in emulica to add custom properties
-  
+
   * transition to newer technologies: xmlbuilder, string.format
-  
+
   * Failures: introduction of the 'degradated mode'. Failure are integarted in the UI
-  
+
   * model/submodel interface
-  
+
   * Newer definition of emuML: the XML langage used to store models
-  
+
   * modelling tutorial, DTD for emulation models and for reports and requests
 
- -- maintainer Rémi Pannequin <remi.pannequin@cran.uhp-nancy.fr>  Thu, 26 Nov 2009 09:26:45 +0200 
+ -- Rémi Pannequin <remi.pannequin@univ-lorraine.fr>  Thu, 29 Nov 2009 12:29:36 +0100
 
 python-seme (0.5) unstable; urgency=low
 
