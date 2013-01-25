@@ -4,7 +4,7 @@
  ### END LICENSE
 
 DEFAULT_PORT = 51000
-#TODO : migarte file to GTK3...
+#TODO : migrate file to GTK3...
 
 import sys, logging, zipfile, socket
 from gi.repository import Gtk

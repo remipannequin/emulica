@@ -32,12 +32,13 @@ gettext.textdomain('emulica')
 
 
 from gi.repository import Gtk as gtk # pylint: disable=E0611
-from gi.repository import Gdk as gdk # pylint: disable=E0611
+from gi.repository import Gdk # pylint: disable=E0611
 from gi.repository import GObject as gobject # pylint: disable=E0611
 import cairo
 from gi.repository import GooCanvas as goo # pylint: disable=E0611
 #import gtk, cairo, gobject, goo
 import emuML
+from propertiesDialog import PropertiesDialog
 
 logger = logging.getLogger('emulica.canvas')
 
@@ -110,8 +111,8 @@ class EmulicaCanvas(goo.Canvas):
 
     def popup_context_menu(self, item, target, event):
         """Callback connected to button press events. Popup the contextual menu."""
-        if event.button == 3 and not self.contextmenu == None:
-            self.contextmenu.popup(None, None, None, event.button, event.time)
+        if event.get_button()[1] == 3 and not self.contextmenu == None:
+            self.contextmenu.popup(None, None, None, None, event.get_button()[1], event.time)
         return True
 
     def setup_model(self, model):
@@ -427,9 +428,9 @@ class ModuleSelection(list):
     def on_item_button_press (self, item, target, event):
         """Callback for 'button-press-event' on ModuleWidgets."""
         module = self.reverse_search(item)
-        if event.button == 1:
+        if event.get_button()[1] == 1:
             must_select = not (module in self)
-            if event.state & gtk.gdk.CONTROL_MASK:
+            if event.state & Gdk.ModifierType.CONTROL_MASK:
                 #if in multiple selection: only unselect clicked module
                 if not must_select:
                     item.unselect()
@@ -440,7 +441,7 @@ class ModuleSelection(list):
                     other = self.pop()
                     self.emulica_canvas.widgets[other].unselect()
             
-        elif event.button == 3:
+        elif event.get_button()[1] == 3:
             must_select = not (module in self)
         else:
             must_select = False
@@ -454,7 +455,7 @@ class ModuleSelection(list):
         """Callback for 'button-press-event' on the background. Set first 
         corner of selection rectangle. Unselect modules"""
         if event.button == 1:
-            if not event.state & gdk.ModifierType.CONTROL_MASK:
+            if not event.state & Gdk.ModifierType.CONTROL_MASK:
                 for widget in self.emulica_canvas.widgets.values():
                     widget.unselect()
                 was_empty = len(self) == 0
@@ -469,7 +470,7 @@ class ModuleSelection(list):
         """Callback for the 'button-release-event'. re-draw selection 
         rectangle and update selection.
         """
-        if event.state & gdk.EventMask.BUTTON1_MOTION_MASK:
+        if event.state & Gdk.EventMask.BUTTON1_MOTION_MASK:
             x = min(self.__rect_corner[0], event.x)
             y = min(self.__rect_corner[1], event.y)
             w = abs(event.x - self.__rect_corner[0])
@@ -596,7 +597,7 @@ class ModuleWidget(goo.CanvasGroup):
         """Draw the widget as 'selected'."""
         if not self.selected:
             (x1, y1, x2, y2) = self.widget_bounds
-            self.selection_rect = goo.Rect(parent = self,
+            self.selection_rect = goo.CanvasRect(parent = self,
                                                  x = x1 - 3,
                                                  y = y1 - 3,
                                                  width = x2 - x1 + 6,
@@ -614,7 +615,7 @@ class ModuleWidget(goo.CanvasGroup):
 
     def __on_motion_notify(self, item, target, event):
         """Callback usefull to drag widget."""
-        if self.__dragging and (event.state & gtk.gdk.BUTTON1_MASK):
+        if self.__dragging and (event.state & Gdk.ModifierType.BUTTON1_MASK):
             new_x = event.x
             new_y = event.y
             item.translate(new_x - self.__drag_x, new_y - self.__drag_y)
@@ -631,16 +632,20 @@ class ModuleWidget(goo.CanvasGroup):
     
     def __on_button_press(self, item, target, event):
         """Method executed when a widget is clicked"""
-        if event.button == 1:
+        #TODO: check event type (press/release/2press)
+        if event.get_button()[1] == 1:
             self.__drag_x = event.x
             self.__drag_y = event.y
-            fleur = gtk.gdk.Cursor(gtk.gdk.FLEUR)
+            fleur = Gdk.Cursor(Gdk.CursorType.FLEUR)
             canvas = item.get_canvas()
             canvas.pointer_grab(item,
-                                gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.BUTTON_RELEASE_MASK,
+                                Gdk.EventMask.POINTER_MOTION_MASK | Gdk.EventMask.BUTTON_RELEASE_MASK,
                                 fleur,
                                 event.time)
             self.__dragging = True
+        if  event.get_button()[1] == 1 and event.get_click_count()[1] == 2:
+            prop_win = PropertiesDialog(None, self.module, self.emulica_canvas.model, self.emulica_canvas.commands)
+            prop_win.show()
         return False
 
     def __on_button_release(self, item, target, event):

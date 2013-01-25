@@ -53,8 +53,8 @@ class PropertiesDialog(gtk.Dialog):
         """
         gtk.Dialog.__init__(self, _("Properties of {0}").format(module.name),
                             parent,
-                            gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
+                            gtk.DialogFlags.DESTROY_WITH_PARENT,
+                            (gtk.STOCK_CLOSE, gtk.ResponseType.CLOSE))
         self.commands = cmd_manager
         self.properties = module.properties
         #add name-editing widget
@@ -62,18 +62,18 @@ class PropertiesDialog(gtk.Dialog):
             hbox = gtk.HBox()
             label = gtk.Label(_("Module Name")+' :  ')
             label.set_alignment(1, 0.5)
-            hbox.pack_start(label)
-            name_entry = gtk.Entry()
+            hbox.pack_start(label, False, False, 0)
+            name_entry = gtk.Entry()   
             name_entry.set_text(module.name)
-            hbox.pack_start(name_entry)
+            hbox.pack_start(name_entry, False, False, 0)
             def apply_change(entry):
                 value = entry.get_text()
                 if len(value) > 0:
                     self.commands.rename_module(module, value)
             name_entry.connect('changed', apply_change)
             hbox.set_border_width(5)
-            self.vbox.pack_start(hbox, expand = False)
-            self.vbox.pack_start(gtk.HSeparator(), expand = False)
+            self.vbox.pack_start(hbox,False, False, 0)
+            self.vbox.pack_start(gtk.HSeparator(),False, False, 0)
             
         #add properties editing table
         self.props_table = PropertiesBox(model, 
@@ -83,17 +83,17 @@ class PropertiesDialog(gtk.Dialog):
         hbox = gtk.HBox()
         
         hbox.set_border_width(5)
-        hbox.pack_start(self.props_table)
-        self.vbox.pack_start(hbox)
+        hbox.pack_start(self.props_table, False, False, 0)
+        self.vbox.pack_start(hbox, False, False, 0)
         
         bbox = gtk.HButtonBox()
-        bbox.set_property('layout-style', gtk.BUTTONBOX_END)
+        bbox.set_property('layout-style', gtk.ButtonBoxStyle.END)
         bbox.set_border_width(5)
         add_button = gtk.Button(_("Add Property..."))
         
-        self.action_area.pack_start(add_button)
+        self.action_area.pack_start(add_button, False, False, 0)
         self.action_area.reorder_child(add_button, 0) 
-        self.vbox.pack_start(bbox)
+        self.vbox.pack_start(bbox, False, False, 0)
         
         add_button.connect('clicked', self.on_add_property_activate, module)
         self.connect('response', self.close)
@@ -112,11 +112,11 @@ class PropertiesDialog(gtk.Dialog):
         """Called when the add property button is clicked: show an "add property dialog" and update the prop view"""
         dialog = gtk.Dialog(_("Add a new property to {0}").format(module.name),
                             self,
-                            gtk.DIALOG_DESTROY_WITH_PARENT | gtk.DIALOG_MODAL,
-                            (gtk.STOCK_ADD, gtk.RESPONSE_ACCEPT,
-                             gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL))
+                            gtk.DialogFlags.DESTROY_WITH_PARENT | gtk.DialogFlags.MODAL,
+                            (gtk.STOCK_ADD, gtk.ResponseType.ACCEPT,
+                             gtk.STOCK_CANCEL, gtk.ResponseType.CANCEL))
         table = gtk.Table(rows = 2, columns = 2)
-        dialog.vbox.pack_start(table)
+        dialog.vbox.pack_start(table, False, False, 0)
         #Get Name
         label_name = gtk.Label(_("Name:"))
         label_name.set_alignment(1, 0.5)
@@ -133,14 +133,14 @@ class PropertiesDialog(gtk.Dialog):
             type_list.append([name, num])
         combo_type = gtk.ComboBox(type_list)
         cell = gtk.CellRendererText()
-        combo_type.pack_start(cell, True)
+        combo_type.pack_start(cell, True, False, 0)
         combo_type.add_attribute(cell, 'text', 1)
         table.attach(label_type, 0, 1, 1, 2)
         table.attach(combo_type, 1, 2, 1, 2)
         
         dialog.show_all()
         
-        if dialog.run() == gtk.RESPONSE_ACCEPT:
+        if dialog.run() == gtk.ResponseType.ACCEPT:
             #get name and type values
             new_name = entry_name.get_text()
             new_type = type_list[combo_type.get_active()][0]
@@ -236,8 +236,8 @@ class PropertiesBox(gtk.Table):
             label.set_padding(5, 0)
             label.set_alignment(1, 0.5)
             label.show()
-            self.attach(label, 0, 1, self.row, self.row + 1, yoptions=gtk.FILL)
-            self.attach(widget, 1, 2, self.row, self.row + 1, yoptions=gtk.FILL)
+            self.attach(label, 0, 1, self.row, self.row + 1, yoptions=gtk.AttachOptions.FILL)
+            self.attach(widget, 1, 2, self.row, self.row + 1, yoptions=gtk.AttachOptions.FILL)
         self.row += 1
         
         
@@ -291,8 +291,8 @@ class PropertiesBox(gtk.Table):
                                                         upper = display.upper, 
                                                         step_incr = i),
                                                         digits = d)
-        hbox.pack_start(check, expand = False)
-        hbox.pack_start(spin, expand = True, fill = True)
+        hbox.pack_start(check, False, False, 0)
+        hbox.pack_start(spin, True, True, 0)
         
         def on_check_toggled(toggle, spin):
             spin.set_sensitive(toggle.get_active())
@@ -328,7 +328,7 @@ class PropertiesBox(gtk.Table):
     def __create_reference_edit_widget(self, name, display):
         """Return a combo box to display and set a module reference"""
         
-        combo = gtk.combo_box_new_text()
+        combo = gtk.ComboBoxText()
         index = -1
         for ref in [m.fullname() for m in self.model.module_list() if m.__class__.__name__ == 'Holder']:
             combo.append_text(ref)
@@ -394,8 +394,8 @@ class PropertiesBox(gtk.Table):
                 value = module.properties['program_table']
                 widget.set_text(_("{0:d} programs").format(len(value)))
         button.connect('clicked', on_button_clicked, name)
-        hbox.pack_start(label)
-        hbox.pack_start(button)
+        hbox.pack_start(label, False, False, 0)
+        hbox.pack_start(button, False, False, 0)
         return (hbox, (set_value, (label,)))
 
     def __create_setup_edit_widget(self, name, display):
@@ -410,8 +410,8 @@ class PropertiesBox(gtk.Table):
         def set_value(value, widget):
             widget.set_text(_("{0:d} programs").format(len(value)))
         button.connect('clicked', on_button_clicked, name)
-        hbox.pack_start(label)
-        hbox.pack_start(button)
+        hbox.pack_start(label, False, False, 0)
+        hbox.pack_start(button, False, False, 0)
         return (hbox, (set_value, (label,)))
         
     def __create_physicalprop_list_edit_widget(self, name, display):
@@ -585,24 +585,24 @@ class ProgramDialog(gtk.Dialog):
         #create a vbox into the hbox
         vbox = gtk.VBox()
         vbox.set_border_width(5)
-        hbox.pack_start(vbox)
+        hbox.pack_start(vbox, False, False, 0)
         #create a SW, put the treeview into it, add it to the vbox
         sw = gtk.ScrolledWindow()
         sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
         sw.add(treeview)
-        vbox.pack_start(sw)
+        vbox.pack_start(sw, False, False, 0)
         #add a separator
-        vbox.pack_start(gtk.HSeparator(), expand = False)
+        vbox.pack_start(gtk.HSeparator(), False, False, 0)
         #creates some buttons to add and remove the programs
         buttons = gtk.HButtonBox()
         buttons.set_border_width(5)
         new_button = gtk.Button(stock = gtk.STOCK_ADD)
-        buttons.pack_start(new_button)
+        buttons.pack_start(new_button, False, False, 0)
         del_button = gtk.Button(stock = gtk.STOCK_REMOVE)
-        buttons.pack_start(del_button)
-        vbox.pack_start(buttons, expand = False)
+        buttons.pack_start(del_button, False, False, 0)
+        vbox.pack_start(buttons, False, False, 0)
         #add a Vertical separator
-        hbox.pack_start(gtk.VSeparator(), expand = False)
+        hbox.pack_start(gtk.VSeparator(), False, False, 0)
         #add a PropertyTable to the hbox
         self.propview = PropertiesBox(self.model,
                                       prop_structure = self.program_table.program_keyword,
@@ -613,7 +613,7 @@ class ProgramDialog(gtk.Dialog):
         for (name, display) in self.program_table.program_keyword:
             expand = (display.type == Display.PHYSICAL_PROPERTIES_LIST)
             #True if there is only one physical ref
-        vbox2.pack_start(self.propview, expand = expand)
+        vbox2.pack_start(self.propview, expand, False, 0)
         hbox.add(vbox2)
         #connect signals
         new_button.connect('clicked', self.on_new_button_clicked)
@@ -774,10 +774,10 @@ class SetupDialog(gtk.Dialog):
         self.treeview.connect('button-press-event', self.on_button_press_event)
         
         default_time_box = gtk.HBox()
-        default_time_box.pack_start(gtk.Label(_("Default setup time:")))
-        default_time_box.pack_start(self.setup_default_spin)
-        self.vbox.pack_start(default_time_box, expand = False)
-        self.vbox.pack_start(self.treeview)
+        default_time_box.pack_start(gtk.Label(_("Default setup time:")), False, False, 0)
+        default_time_box.pack_start(self.setup_default_spin, False, False, 0)
+        self.vbox.pack_start(default_time_box, False, False, 0)
+        self.vbox.pack_start(self.treeview, False, False, 0)
         
         
         #rendering as combo for col 1
