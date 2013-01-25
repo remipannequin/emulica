@@ -62,8 +62,11 @@ class EmulicaControl:
             self.control_view.set_mark_category_background ("emulica_error", Gtk.gdk.Color(65000, 0, 0))
         debug_textview = self.main.builder.get_object('trace_textview')
         self.debug_buffer = LogBuffer(sys.stdout)
+        sys.stdout = self.debug_buffer
         debug_textview.set_buffer(self.debug_buffer)
         self.control_view.show()
+        #hide trace window by default
+        self.main.builder.get_object('hboxdebug').hide()
         control_viewport.add(self.control_view)
     
     def reset(self, model, text = ""):
@@ -117,21 +120,17 @@ class EmulicaControl:
     def on_debug_togglebutton_toggled(self, button, data = None):
         """Called when the trace togglebutton is toggled."""
         arrow = self.main.builder.get_object('trace_arrow')
-        sw = self.main.builder.get_object('trace_scrolledwindow')
-        debug_textview = self.main.builder.get_object('trace_textview')
+        box = self.main.builder.get_object('hboxdebug')
         if button.get_active():
             arrow.set(Gtk.ArrowType.DOWN, Gtk.ShadowType.NONE)
-            sw.show()
-            debug_textview.show()
+            box.show_all()
         else:
             arrow.set(Gtk.ArrowType.RIGHT, Gtk.ShadowType.NONE)
-            sw.hide()
-            debug_textview.hide()
+            box.hide()
 
     def debug_clear(self):
         """Clear the debug textview buffer. Called when a new sim begin"""
-        #TODO
-        raise NotImplemented
+        self.debug_buffer.clear()
 
     def undo(self):
         """Undo"""
@@ -509,31 +508,38 @@ class EmulicaControl:
 class LogBuffer(Gtk.TextBuffer):
     """A TextBuffer, that can be displayed by a TextView, and can be used as a 
     logging handler. When created it must have the original stdout.
+    
+    Attributes:
+        * tee : boolean, if true, write out message to the buffer.
+    
     """
     
     def __init__(self, out):
         self.stdout = out
+        Gtk.TextBuffer.__init__(self)
+        self.tee = False
         
     def start_tee(self):
         """Start intercepting all messages to stdout, and write them to the 
         TextBuffer
         """
-        sys.stdout = self.stdout
         self.tee = True;
-        
+        self.write_to_buffer("emulation started\n")
     
     def stop_tee(self):
         """Stop intercepting all messages to stdout.
         """
-        sys.stdout = self.stdout
         self.tee = False;
-        
+        self.write_to_buffer("emulation stopped\n")
+    
+    def write_to_buffer(self, message):
+        end_iter = self.get_end_iter()
+        self.insert(end_iter, message)
     
     def write(self, message):
         """Write message into the buffer"""
         if self.tee:
-            end_iter = self.get_end_iter()
-            self.insert(end_iter, message)
+            self.write_to_buffer(message)
         self.stdout.write(message)
         
         

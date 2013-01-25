@@ -62,18 +62,22 @@
     <signal name="toggled" handler="on_add_unassy_toggled" swapped="no"/>
   </object>
   <object class="GtkAction" id="control_add_snippet">
-    <property name="label">Add code snippet...</property>
+    <property name="label">Add snippet...</property>
+    <property name="tooltip" translatable="yes">Add various code snipets in the control code editor</property>
     <property name="stock_id">gtk-add</property>
+    <property name="always_show_image">True</property>
     <signal name="activate" handler="on_control_add_snippet_activate" swapped="no"/>
   </object>
   <object class="GtkAction" id="control_check">
-    <property name="label">Check Syntax</property>
-    <property name="stock_id">gtk-ok</property>
+    <property name="label" translatable="yes">Check code syntax</property>
+    <property name="short_label" translatable="yes">Check code</property>
+    <property name="stock_id">gtk-dialog-info</property>
     <signal name="activate" handler="on_control_check_activate" swapped="no"/>
   </object>
   <object class="GtkAction" id="control_update">
     <property name="label">Update initialization function</property>
     <property name="stock_id">gtk-refresh</property>
+    <property name="always_show_image">True</property>
     <signal name="activate" handler="on_control_update_activate" swapped="no"/>
   </object>
   <object class="GtkAction" id="copy">
@@ -246,6 +250,8 @@
   <object class="EmulicaWindow" id="emulica_window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Emulica</property>
+    <property name="default_width">1000</property>
+    <property name="default_height">800</property>
     <property name="icon">../media/emulica.svg</property>
     <child>
       <object class="GtkVBox" id="vbox1">
@@ -760,7 +766,6 @@
                     </child>
                     <child>
                       <object class="GtkImageMenuItem" id="control_check_menuitem">
-                        <property name="related_action">control_check</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
@@ -1568,37 +1573,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <child>
-                          <object class="GtkHBox" id="hbox8">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <child>
-                              <object class="GtkImage" id="image13">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="stock">gtk-add</property>
-                              </object>
-                              <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label3">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="xpad">5</property>
-                                <property name="label" translatable="yes">Add Snippet...</property>
-                              </object>
-                              <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1612,37 +1586,6 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <child>
-                          <object class="GtkHBox" id="hbox9">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <child>
-                              <object class="GtkImage" id="image14">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="stock">gtk-refresh</property>
-                              </object>
-                              <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label2">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="xpad">5</property>
-                                <property name="label" translatable="yes">Update initialization function</property>
-                              </object>
-                              <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
-                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1657,36 +1600,7 @@
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <child>
-                          <object class="GtkHBox" id="hbox7">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <child>
-                              <object class="GtkImage" id="syntax_check_image">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="stock">gtk-dialog-question</property>
-                              </object>
-                              <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkLabel" id="label4">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="xalign">1</property>
-                                <property name="xpad">5</property>
-                                <property name="label" translatable="yes">Check syntax</property>
-                              </object>
-                              <packing>
-                                <property name="expand">True</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
-                            </child>
-                          </object>
+                          <placeholder/>
                         </child>
                       </object>
                       <packing>
@@ -1765,18 +1679,39 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkScrolledWindow" id="trace_scrolledwindow">
+                      <object class="GtkBox" id="hboxdebug">
                         <property name="width_request">200</property>
+                        <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="no_show_all">True</property>
                         <child>
-                          <object class="GtkTextView" id="trace_textview">
-                            <property name="width_request">200</property>
+                          <object class="GtkVSeparator" id="trace_separator">
+                            <property name="can_focus">False</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkScrolledWindow" id="trace_scrolledwindow">
                             <property name="can_focus">True</property>
                             <property name="no_show_all">True</property>
-                            <property name="editable">False</property>
-                            <property name="cursor_visible">False</property>
+                            <child>
+                              <object class="GtkTextView" id="trace_textview">
+                                <property name="width_request">200</property>
+                                <property name="can_focus">True</property>
+                                <property name="no_show_all">True</property>
+                                <property name="editable">False</property>
+                                <property name="cursor_visible">False</property>
+                              </object>
+                            </child>
                           </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
                         </child>
                       </object>
                       <packing>
@@ -2022,10 +1957,20 @@
       </object>
     </child>
   </object>
-  <object class="GtkImage" id="image2">
+  <object class="GtkImage" id="image10">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-help</property>
+    <property name="pixbuf">../media/emulica-shape.svg</property>
+  </object>
+  <object class="GtkImage" id="image11">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">../media/emulica-disassemble.svg</property>
+  </object>
+  <object class="GtkImage" id="image12">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="pixbuf">../media/emulica-fifo.svg</property>
   </object>
   <object class="GtkImage" id="image3">
     <property name="visible">True</property>
@@ -2067,19 +2012,9 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-execute</property>
   </object>
-  <object class="GtkImage" id="image10">
+  <object class="GtkImage" id="image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="pixbuf">../media/emulica-shape.svg</property>
-  </object>
-  <object class="GtkImage" id="image11">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">../media/emulica-disassemble.svg</property>
-  </object>
-  <object class="GtkImage" id="image12">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="pixbuf">../media/emulica-fifo.svg</property>
+    <property name="stock">gtk-help</property>
   </object>
 </interface>

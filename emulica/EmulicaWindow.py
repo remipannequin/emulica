@@ -225,6 +225,8 @@ class EmulicaWindow(Window):
     def on_start_activate(self, widget, data = None):
         #clean results
         
+        #start input redirection
+        self.emulica_control.tee_stdout_to_log()
         self.emulica_control.prepare_control()
         #get parameter from preference (self.props dictionary)
         kwargs = {'until': self.props['exec']['limit'],
@@ -269,8 +271,6 @@ class EmulicaWindow(Window):
         gobject.idle_add(self.builder.get_object('start').set_sensitive, False)
         gobject.idle_add(self.builder.get_object('reinit').set_sensitive, False)       
         gobject.idle_add(self.status_set_progress, _("starting"))
-        #start input redirection
-        gobject.idle_add(self.emulica_control.tee_stdout_to_log)
     
     def on_emulation_finish(self, model):
         """Callback activated when emulation finish. use add_idle, because this 
