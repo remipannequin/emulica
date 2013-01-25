@@ -32,7 +32,7 @@ import dialogs, modelling, control, results
 application = 'emulica'
 import gettext
 gettext.install(application)
-gtk.gdk.threads_init()
+
 logger = logging.getLogger('emulica.emulicapp')    
 
 class Emulica:
@@ -270,6 +270,8 @@ class Emulica:
         gobject.idle_add(self.builder.get_object('start').set_sensitive, False)
         gobject.idle_add(self.builder.get_object('reinit').set_sensitive, False)       
         gobject.idle_add(self.status.set_progress, _("starting"))
+        #start input redirection
+        gobject.idle_add(self.emulica_control.tee_stdout_to_log)
     
     def on_emulation_finish(self, model):
         """Callback activated when emulation finish. use add_idle, because this 
@@ -277,7 +279,8 @@ class Emulica:
         gobject.idle_add(self.reset_execution)
         gobject.idle_add(self.status.set_progress, _("finished"), model.current_time(), model.current_time())
         gobject.idle_add(self.builder.get_object('reinit').set_sensitive, True)
-    
+        #stop input redirection
+        gobject.idle_add(self.emulica_control.tee_stdout_to_log, False)
         
     def on_emulation_exception(self, exception, trace):
         """Callback activated when the simulation run encounters an exception.
