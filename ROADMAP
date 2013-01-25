@@ -1,24 +1,4 @@
-==================bêta=================
-undefined future:
-    * use simpy 2 object-oriented features (when its deb package is released)
-    * migrate this ROADMAP to launchpad blueprints
-    * GTK3 transition (nearly over)
-    * quickly as a "build"/project management system
-    * python3 transition
-    * completely separate gtk-related code (gtk, goocanvas, etc) and pure python libs (modelling and actual simulation)
-
-milestone 7:
-    * inspection modules (i.e. observation of product physical properties)
-    * associate resources to each programs
-    * apply failure on resources
-    * introduce resource management ?
-    * add a product-data observer
-    * gui integration in server mode
-    * model printing (as pdf) (with selectable categories: model graphics, properties, control code, results, etc...)
-    * logging facility for the control system
-    * display prop window when double clicking a module
-    * prop editing of space act : 
-
+New items in the roadmap are now managed in Launchpad as blueprints. 
 
 milestone 6 (version 0.6):
     * break gsemeapp into 4 parts : main, modelling, execution and results : OK
