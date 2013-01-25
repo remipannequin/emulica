@@ -61,7 +61,7 @@ class EmulicaControl:
         if 'set_mark_category_background' in dir(self.control_view):
             self.control_view.set_mark_category_background ("emulica_error", Gtk.gdk.Color(65000, 0, 0))
         debug_textview = self.main.builder.get_object('trace_textview')
-        self.debug_buffer = LogBuffer()
+        self.debug_buffer = LogBuffer(sys.stdout)
         debug_textview.set_buffer(self.debug_buffer)
         self.control_view.show()
         control_viewport.add(self.control_view)
@@ -431,8 +431,19 @@ class EmulicaControl:
         else:
             img.set_from_stock(Gtk.STOCK_DIALOG_QUESTION, Gtk.IconSize.BUTTON)
             
+    def tee_stdout_to_log(self, do_redirect = True):
+        """This method should be called when emulation start and stop. It will
+        redirect the standard output of the whole application (including 'print'
+        statement in the control code) to the log buffer. If do_redirect is 
+        false, it will reset the redirection back to normal.
+        
+        Keyword arguments:
+            * do_redirect: defaults to True, set to False to end redirection
             
-            
+        """
+        if do_redirect : self.debug_buffer.start_tee()
+        else: self.debug_buffer.stop_tee()
+    
     def prepare_control(self):
         """compile code in the control buffer. Display error message in case of
         error and return False. Return True if no error are found."""
@@ -497,21 +508,38 @@ class EmulicaControl:
         
 class LogBuffer(Gtk.TextBuffer):
     """A TextBuffer, that can be displayed by a TextView, and can be used as a 
-    logging handler."""
+    logging handler. When created it must have the original stdout.
+    """
+    
+    def __init__(self, out):
+        self.stdout = out
         
+    def start_tee(self):
+        """Start intercepting all messages to stdout, and write them to the 
+        TextBuffer
+        """
+        sys.stdout = self.stdout
+        self.tee = True;
+        
+    
+    def stop_tee(self):
+        """Stop intercepting all messages to stdout.
+        """
+        sys.stdout = self.stdout
+        self.tee = False;
+        
+    
     def write(self, message):
         """Write message into the buffer"""
-        end_iter = self.get_end_iter()
-        self.insert(end_iter, message)
+        if self.tee:
+            end_iter = self.get_end_iter()
+            self.insert(end_iter, message)
+        self.stdout.write(message)
         
-        
-    def flush(self):
-        """Flush the buffer"""
-        pass
         
     def clear(self):
         """Clear the buffer"""
         end_iter = self.get_end_iter()
         start_iter = self.get_start_iter()
         self.delete(start_iter, end_iter)
-        
+
