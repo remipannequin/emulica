@@ -570,6 +570,8 @@ def compile_control(model, source, **kwargs):
     
     """
     code = compile(source,'<control buffer>', 'exec')
+    #TODO: improve safety ? we execute code that is included in .emu file or 
+    #from the control editor... It migth contain malicious code...
     g = globals()
     l = locals()
     exec code in g, l
@@ -577,8 +579,9 @@ def compile_control(model, source, **kwargs):
     if not 'initialize_control' in dir():
         raise EmuMLError(_("initialization function have not been implemented"))
     model.control_classes = []
+    #This function come from the code we just compiled and executed
     initialize_control(l, model, **kwargs)
-        
+    
         
 
         

@@ -18,6 +18,10 @@
 ### END LICENSE
 
 
+import gettext
+from gettext import gettext as _
+gettext.textdomain('emulica')
+
 
 class CommandManager:
     """This class implements the pattern Command to access to create destroy and
