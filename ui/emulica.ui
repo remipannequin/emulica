@@ -1455,23 +1455,45 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkScrolledWindow" id="trace_scrolledwindow">
+                      <object class="GtkHBox" id="hboxdebug">
+                        <property name="visible">False</property>
+                        <property name="orientation">horizontal</property>
                         <property name="width_request">200</property>
-                        <property name="can_focus">True</property>
-                        <property name="no_show_all">True</property>
-                        <property name="hscrollbar_policy">automatic</property>
-                        <property name="vscrollbar_policy">automatic</property>
                         <child>
-                          <object class="GtkTextView" id="trace_textview">
-                            <property name="width_request">200</property>
+                          <object class="GtkScrolledWindow" id="trace_scrolledwindow">
+                            
                             <property name="can_focus">True</property>
                             <property name="no_show_all">True</property>
-                            <property name="editable">False</property>
-                            <property name="cursor_visible">False</property>
+                            <property name="hscrollbar_policy">automatic</property>
+                            <property name="vscrollbar_policy">automatic</property>
+                            <child>
+                              <object class="GtkTextView" id="trace_textview">
+                                
+                                <property name="can_focus">True</property>
+                                <property name="width_request">200</property>
+                                <property name="no_show_all">True</property>
+                                <property name="editable">False</property>
+                                <property name="cursor_visible">False</property>
+                              </object>
+                            </child>
                           </object>
+                          <packing>
+                            <property name="position">1</property>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkVSeparator" id="trace_separator">
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                          </packing>
                         </child>
                       </object>
-                      <packing>
+                    <packing>
                         <property name="resize">False</property>
                         <property name="shrink">True</property>
                       </packing>
