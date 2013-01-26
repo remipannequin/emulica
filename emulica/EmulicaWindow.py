@@ -318,18 +318,18 @@ class EmulicaWindow(Window):
                                         Gtk.FileChooserAction.SAVE,
                                         (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, 
                                          Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
+        chooser.set_do_overwrite_confirmation(True)
         filter_emulica = Gtk.FileFilter()
         filter_emulica.set_name("Emulica files")
         filter_emulica.add_pattern("*.emu")
-        filter_all = Gtk.FileFilter()
-        filter_all.set_name("All files")
         chooser.add_filter(filter_emulica)
-        chooser.add_filter(filter_all)
         response = chooser.run()
         if response == Gtk.ResponseType.OK: 
             filename = chooser.get_filename()
         chooser.destroy()
-        
+        extension = os.path.splitext(filename)[1]
+        if not extension:
+	        filename = filename + '.emu'
         return filename
     
     def update_undo_redo_menuitem(self, *args):
