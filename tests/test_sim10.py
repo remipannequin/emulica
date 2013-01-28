@@ -89,14 +89,18 @@ EMULATE_UNTIL = 100;
 
 class ControlCreate(emulation.Process):
     def run(self, model):
-        create1 = model.modules["create1"] 
-        create2 = model.modules["create2"] 
+        create1 = model.modules["create1"]
+        create2 = model.modules["create2"]
+        rp_crea1 = create1.create_report_socket()
+        rp_crea2 = create2.create_report_socket()
         dates1 = [0, 1, 3, 7, 12, 20, 30]
         requests1 = [emulation.Request("create1", "create",params={'productType':'type1', 'date': d}) for d in dates1]
         dates2 = [5, 6, 7, 9, 11, 23, 35]
         requests2 = [emulation.Request("create2", "create",params={'productType':'type1', 'date': d}) for d in dates2]
         yield emulation.put, self, create1.request_socket, requests1
+        yield emulation.get, self, rp_crea1, 7
         yield emulation.put, self, create2.request_socket, requests2
+        yield emulation.get, self, rp_crea2, 7
 
 class ControlAssy(emulation.Process):
     def run(self, model):

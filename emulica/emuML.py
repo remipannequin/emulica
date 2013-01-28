@@ -19,7 +19,7 @@ This module contains utilities to load and save emulica models in XML format.
 Only module *configuration* is written : the state of a particular module 
 is ignored.
 """
-
+import os.path
 from xml.etree.ElementTree import ElementTree, Element, SubElement
 #ElementTree._namespace_map["http://www.w3.org/2001/XMLSchema"] = 'xs'
 import emulation, properties
@@ -51,9 +51,9 @@ class EmuFile:
                 namelist = self.zfile.namelist()
                 if 'emulation.xml' in namelist:
                     model_xml = self.zfile.read('emulation.xml')
-                    self.efile = EmulationParser(model_xml, 
-                                                 name = name, 
-                                                 path = self.filename, 
+                    self.efile = EmulationParser(model_xml,
+                                                 name = name,
+                                                 path = self.filename,
                                                  parent = parent_model)
                     #TODO: get submodels properties
                 else:
@@ -329,7 +329,7 @@ class EmulationParser:
         """Create a new instance of a emuML.EmulationParser. When the object is 
         created, the string is parsed, and submodels list is built. Beware: the
         submodels files are opened at this stage ! If the model argument is 
-        specified, it is used to laod modules into, else a new model is created 
+        specified, it is used to load modules into, else a new model is created 
         using the kwargs.
         
         Arguments:
@@ -348,6 +348,10 @@ class EmulationParser:
         for submodel_elt in mod_root.findall("submodel"):
             #try loading emu file for every submodels
             sub_path = submodel_elt.get('path')
+            #TODO If sub_path is a relative pathname, interpret it where the current model is
+            if not os.path.isabs(sub_path):
+                base = os.path.dirname(path)
+                sub_path = os.path.join(base, sub_path)
             sub_name = submodel_elt.get('name')
             gsf = EmuFile(sub_path, 'r', parent_model = self.model, name = sub_name)
             #TODO: if opening fails, add name to a list of broken submodels
@@ -635,7 +639,7 @@ def load(filename):
     f = open(filename, 'r')
     content = f.read()
     f.close()
-    efile = EmulationParser(content)
+    efile = EmulationParser(content, path = filename)
     efile.parse()
     return efile.model
 

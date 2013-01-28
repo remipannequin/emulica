@@ -117,6 +117,10 @@ class TestCanvas(unittest.TestCase):
                              model.get_module('dispose1'): (250, 60)})
         canvas.set_size_request(320, 200)
         canvas.write_pdf("sim1.pdf")
+        return_code = subprocess.call(["diff", 'sim1.pdf', 'tests/data/sim1.pdf'])
+        self.assertEqual(return_code, 0)
+        os.remove('sim1.pdf')
+        
 
 if __name__ == '__main__':    
     unittest.main()

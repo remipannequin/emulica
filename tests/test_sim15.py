@@ -26,6 +26,58 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), ".."
 from emulica.emulation import *
 from emulica.properties import SetupMatrix
 
+EXP_RESULT_PRODUCT = [(1, [(3, 7, 'cell.machine', 'p1')], 
+                          [(0, 'cell.source'), 
+                           (0, 'cell.transporter'), 
+                           (2, 'cell.espaceMachine'), 
+                           (7, 'cell.transporter'), 
+                           (9, 'cell.sink')], 0, 9), 
+                      (2, [(13, 19,'cell.machine', 'p3')], 
+                          [(0, 'cell.source'),
+                           (9, 'cell.transporter'), 
+                           (11, 'cell.espaceMachine'), 
+                           (19, 'cell.transporter'), 
+                           (21, 'cell.sink')], 0, 21), 
+                      (3, [(24, 29, 'cell.machine', 'p2')],
+                          [(0, 'cell.source'),
+                           (21, 'cell.transporter'), 
+                           (23, 'cell.espaceMachine'), 
+                           (29, 'cell.transporter'), 
+                           (31, 'cell.sink')], 0, 31), 
+                      (4, [(34, 38, 'cell.machine', 'p1')],
+                          [(0, 'cell.source'),
+                           (31, 'cell.transporter'), 
+                           (33, 'cell.espaceMachine'), 
+                           (38, 'cell.transporter'), 
+                           (40, 'cell.sink')], 0, 40)] 
+                      
+EXP_RESULT_RESOURCE = [[(0, 0, 'setup'), 
+                        (0, 2, 'load'), 
+                        (7, 7, 'setup'), 
+                        (7, 9, 'unload'), 
+                        (9, 9, 'setup'), 
+                        (9, 11, 'load'), 
+                        (19, 19, 'setup'), 
+                        (19, 21, 'unload'), 
+                        (21, 21, 'setup'), 
+                        (21, 23, 'load'), 
+                        (29, 29, 'setup'), 
+                        (29, 31, 'unload'), 
+                        (31, 31, 'setup'), 
+                        (31, 33, 'load'), 
+                        (38, 38, 'setup'), 
+                        (38, 40, 'unload')], 
+                       [(2, 3, 'setup'), 
+                        (3, 7, 'p1'), 
+                        (11, 13, 'setup'), 
+                        (13, 19, 'p3'), 
+                        (23, 24, 'setup'), 
+                        (24, 29, 'p2'), 
+                        (33, 34, 'setup'), 
+                        (34, 38, 'p1')]]
+
+EMULATE_UNTIL = 50
+
 class ControlCreate(Process):
     def run(self, model):
         n = 0
@@ -120,59 +172,6 @@ class TestSim15(unittest.TestCase):
     a create actuator put some product in a holder. These product trigger 
     a dispose actuator thanks to a product observer on the holder.
     """
-    
-    def setUp(self): 
-        self.exp_result_product = [(1, [(3, 7, 'cell.machine', 'p1')], 
-                          [(0, 'cell.source'), 
-                           (0, 'cell.transporter'), 
-                           (2, 'cell.espaceMachine'), 
-                           (7, 'cell.transporter'), 
-                           (9, 'cell.sink')], 0, 9), 
-                      (2, [(13, 19,'cell.machine', 'p3')], 
-                          [(0, 'cell.source'),
-                           (9, 'cell.transporter'), 
-                           (11, 'cell.espaceMachine'), 
-                           (19, 'cell.transporter'), 
-                           (21, 'cell.sink')], 0, 21), 
-                      (3, [(24, 29, 'cell.machine', 'p2')],
-                          [(0, 'cell.source'),
-                           (21, 'cell.transporter'), 
-                           (23, 'cell.espaceMachine'), 
-                           (29, 'cell.transporter'), 
-                           (31, 'cell.sink')], 0, 31), 
-                      (4, [(34, 38, 'cell.machine', 'p1')],
-                          [(0, 'cell.source'),
-                           (31, 'cell.transporter'), 
-                           (33, 'cell.espaceMachine'), 
-                           (38, 'cell.transporter'), 
-                           (40, 'cell.sink')], 0, 40)] 
-                      
-        self.exp_result_resource = [[(0, 0, 'setup'), 
-                        (0, 2, 'load'), 
-                        (7, 7, 'setup'), 
-                        (7, 9, 'unload'), 
-                        (9, 9, 'setup'), 
-                        (9, 11, 'load'), 
-                        (19, 19, 'setup'), 
-                        (19, 21, 'unload'), 
-                        (21, 21, 'setup'), 
-                        (21, 23, 'load'), 
-                        (29, 29, 'setup'), 
-                        (29, 31, 'unload'), 
-                        (31, 31, 'setup'), 
-                        (31, 33, 'load'), 
-                        (38, 38, 'setup'), 
-                        (38, 40, 'unload')], 
-                       [(2, 3, 'setup'), 
-                        (3, 7, 'p1'), 
-                        (11, 13, 'setup'), 
-                        (13, 19, 'p3'), 
-                        (23, 24, 'setup'), 
-                        (24, 29, 'p2'), 
-                        (33, 34, 'setup'), 
-                        (34, 38, 'p1')]]
-    
-    
 
         
     def test_ModelCreate(self):
@@ -180,18 +179,18 @@ class TestSim15(unittest.TestCase):
 
     def test_Start(self):
         model = get_model()
-        model.emulate(until = 50)
+        model.emulate(until = EMULATE_UNTIL)
 
     def test_RunResults(self):
         model = get_model()
-        model.emulate(until = 50)
+        model.emulate(until = EMULATE_UNTIL)
         result_product = [(pid, p.shape_history, 
                        p.space_history, 
                        p.create_time, 
                        p.dispose_time) for (pid, p) in model.products.items()]
         result_resource = [model.get_module("cell.transporter").trace, model.get_module("cell.machine").trace]
-        self.assertEqual(result_product, self.exp_result_product)
-        self.assertEqual(result_resource, self.exp_result_resource)
+        self.assertEqual(result_product, EXP_RESULT_PRODUCT)
+        self.assertEqual(result_resource, EXP_RESULT_RESOURCE)
 
 
 if __name__ == '__main__':    

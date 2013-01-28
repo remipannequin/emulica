@@ -25,41 +25,51 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), ".."
 from emulica.emulation import *
 from emulica.properties import SetupMatrix, ProgramTable
 
-EXP_RESULT_PRODUCT = [(1, [(3, 7, 'cell.machine', 'p1')], [(0, 'cell.source'),
+EXP_RESULT_PRODUCT = [(1, [(3, 9, 'cell.machine', 'p1')], [(0, 'cell.source'),
                                                            (0, 'cell.transporter'),
                                                            (2, 'cell.espaceMachine'),
-                                                           (7, 'cell.transporter'),
-                                                           (9, 'cell.sink')], 0, 9),
-                      (2, [(21, 27, 'cell.machine', 'p3')], [(0, 'cell.source'),
-                                                             (17, 'cell.transporter'),
-                                                             (19, 'cell.espaceMachine'),
-                                                             (27, 'cell.transporter'),
-                                                             (29, 'cell.sink')], 0, 29),
-                      (3, [(40, 45, 'cell.machine', 'p2')], [(0, 'cell.source'),
+                                                           (9, 'cell.transporter'),
+                                                           (11, 'cell.sink')], 0, 11),
+                      (2, [(15, 23, 'cell.machine', 'p3')], [(0, 'cell.source'),
+                                                             (11, 'cell.transporter'),
+                                                             (13, 'cell.espaceMachine'),
+                                                             (23, 'cell.transporter'),
+                                                             (25, 'cell.sink')], 0, 25),
+                      (3, [(28, 35, 'cell.machine', 'p2')], [(0, 'cell.source'),
+                                                             (25, 'cell.transporter'),
+                                                             (27, 'cell.espaceMachine'),
+                                                             (35, 'cell.transporter'),
+                                                             (37, 'cell.sink')], 0, 37),
+                      (4, [(40, 46, 'cell.machine', 'p1')], [(0, 'cell.source'),
                                                              (37, 'cell.transporter'),
                                                              (39, 'cell.espaceMachine'),
-                                                             (45, 'cell.transporter'),
-                                                             (47, 'cell.sink')], 0, 47),
-                      (4, [], [(0, 'cell.source')], 0, 50)]
+                                                             (46, 'cell.transporter'),
+                                                             (48, 'cell.sink'),], 0, 48)]
                       
 EXP_RESULT_RESOURCE = [[(0, 0, 'setup'),
                         (0, 2, 'load'),
-                        (7, 7, 'setup'),
-                        (7, 9, 'unload'),
-                        (17, 17, 'setup'),
-                        (17, 19, 'load'),
-                        (27, 27, 'setup'),
-                        (27, 29, 'unload'),
+                        (9, 9, 'setup'),
+                        (9, 11, 'unload'),
+                        (11, 11, 'setup'),
+                        (11, 13, 'load'),
+                        (23, 23, 'setup'),
+                        (23, 25, 'unload'),
+                        (25, 25, 'setup'),
+                        (25, 27, 'load'),
+                        (35, 35, 'setup'),
+                        (35, 37, 'unload'),
                         (37, 37, 'setup'),
                         (37, 39, 'load'),
-                        (45, 45, 'setup'),
-                        (45, 47, 'unload')],
+                        (46, 46, 'setup'),
+                        (46, 48, 'unload')],
                        [(2, 3, 'setup'),
-                        (3, 7, 'p1'),
-                        (19, 21, 'setup'),
-                        (21, 27, 'p3'),
+                        (3, 9, 'p1'),
+                        (13, 15, 'setup'),
+                        (15, 23, 'p3'),
+                        (27, 28, 'setup'),
+                        (28, 35, 'p2'),
                         (39, 40, 'setup'),
-                        (40, 45, 'p2')]]
+                        (40, 46, 'p1')]]
 
 EMULATE_UNTIL = 50
 
@@ -140,11 +150,6 @@ def create_submodel(parent, name, delay):
     initialize_control_submodel(model)
     def set_delay(value):
         machine['program_table']['p2']
-    model.properties.add_with_display('delay', 'FLOAT', delay, "Delay")
-    p_table = model['p_table']
-    p_table.add_program('p1', 6)
-    p_table.add_program('p2', 7)
-    p_table.add_program('p3', 8)
     return model
     
 def initialize_control_submodel(model):
@@ -153,7 +158,10 @@ def initialize_control_submodel(model):
 def get_model():
     model = Model()
     submodel = create_submodel(model, "cell", 10)
-    submodel['delay'] = 7
+    p_table = submodel['p_table']
+    p_table.add_program('p1', 6)
+    p_table.add_program('p2', 7)
+    p_table.add_program('p3', 8)
     source = model.get_module("cell.source")
     CreateAct(model, "create", source)
     sink = model.get_module("cell.sink")

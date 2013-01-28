@@ -87,6 +87,7 @@ class ControlDispose(emu.Process):
 
 class ObsMonitor(emu.Process):
     def run(self, model):
+        del pos_list[:]
         obs = model.modules["observer2"]
         report = obs.create_report_socket()
         while True:
@@ -97,7 +98,6 @@ class ObsMonitor(emu.Process):
             
             
 def get_model(stepping = False):
-    pos_list = list()
     model = emu.Model()
     h = emu.Holder(model, "holder1")
     h['capacity'] = 5
@@ -119,13 +119,9 @@ def register_control(model):
 
 
 class TestSim8(unittest.TestCase):
-        
+    
     def test_ModelCreate(self):
         get_model()
-
-    def test_Start(self):
-        model = get_model()
-        model.emulate(until = EMULATE_UNTIL)
 
     def test_RunResults(self):
         model = get_model()

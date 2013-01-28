@@ -98,8 +98,9 @@ class TestSim6(unittest.TestCase):
         (l3, t3, m) = run(1.2, 1, 480972)
         self.assertNotEqual(t1, t3)
         self.assertNotEqual(l1, l3)
-
-    def test_RunResults(self):
+    
+    #remove toolong to run this test, but this may take several minutes, beware !
+    def toolongtest_RunResults(self):
         e = [(0.7, 976), (0.1, 6532109)]
         s = list()
         replication = 10

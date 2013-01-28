@@ -177,12 +177,12 @@ class TestCommandManager(unittest.TestCase):
         p1 = machine.properties['program_table']['p1']
         p3 = machine.properties['program_table']['p3']
         m = machine.properties['setup']
-        cmd.change_setup(m, p1, p3, new_time = 5)
-        self.assertEqual(m.get(p1, p3), 5)
+        cmd.change_setup(m, 'p1', 'p3', new_time = 5)
+        self.assertEqual(m.get('p1', 'p3'), 5)
         cmd.undo()
-        self.assertEqual(m.get(p1, p3), 2)
+        self.assertEqual(m.get('p1', 'p3'), 2)
         cmd.redo()
-        self.assertEqual(m.get(p1, p3), 5)
+        self.assertEqual(m.get('p1', 'p3'), 5)
         
     def test_RemoveSetup(self):
         cmd = CommandManager()
@@ -190,12 +190,13 @@ class TestCommandManager(unittest.TestCase):
         p1 = machine.properties['program_table']['p1']
         p3 = machine.properties['program_table']['p3']
         m = machine.properties['setup']
-        cmd.del_setup(m, p1, p3)
-        self.assertEqual(m.get(p1, p3), 2)
+        print m
+        cmd.del_setup(m, 'p1', 'p3')
+        self.assertEqual(m.get('p1', 'p3'), 1)
         cmd.undo()
-        self.assertEqual(m.get(p1, p3), 5)
+        self.assertEqual(m.get('p1', 'p3'), 2)
         cmd.redo()
-        self.assertEqual(m.get(p1, p3), 2)
+        self.assertEqual(m.get('p1', 'p3'), 1)
 
 if __name__ == '__main__':    
     unittest.main()
