@@ -659,8 +659,9 @@ class ModuleWidget(Goo.CanvasGroup):
                                            anchor = Goo.CanvasAnchorType.N,
                                            font = 'arial')
             else:
-                
+                self.name.props.text = name
                 self.name.props.visibility = Goo.CanvasItemVisibility.VISIBLE
+
     def __on_item_leave(self, item, t_item, event):
         """Callback called when the cursor leaves a ModuleWidget"""
         if self.name:

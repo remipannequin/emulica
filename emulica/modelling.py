@@ -311,7 +311,6 @@ class EmulicaModel:
         """Callback for change in the selection of modules.
         Change sensitivity of some buttons
         """
-        print source
         value = not (num_selected == 0)
         widgets_names = ['properties', 
                          'cut', 
@@ -323,7 +322,6 @@ class EmulicaModel:
     
     def on_emulation_add_done(self, source):
         """Callback connect to the add-done signal of the model canvas."""
-        print source
         act_list = ['add_create', 'add_dispose', 'add_shape', 'add_space', 'add_assy', 'add_unassy', 'add_holder', 'add_pushobs', 'add_pullobs']
         for act_name in act_list:
             act = self.builder.get_object(act_name)
