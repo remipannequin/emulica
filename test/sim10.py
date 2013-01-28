@@ -5,6 +5,23 @@
 In this test model, we use assemble actuators...
 two type of products are created, and then assembled, and finally put in inventory
 
+
+
+Create1----->source1----->assy_holder----->sink
+                             ^
+                             |
+                            Assy
+                             |
+          Create2---->source2+
+
+Control cycle:
+
+wait source1
+move from source1 to assy_space (load)
+wait source2
+wait assy_space
+assemble with source2
+move from assy_sapce to sink (unload)
 """
 
 import sys, logging
@@ -68,12 +85,16 @@ class ControlCreate(emulation.Process):
     def run(self, model):
         create1 = model.modules["create1"] 
         create2 = model.modules["create2"] 
+        rp_crea1 = create1.create_report_socket()
+        rp_crea2 = create2.create_report_socket()
         dates1 = [0, 1, 3, 7, 12, 20, 30]
         requests1 = [emulation.Request("create1", "create",params={'productType':'type1', 'date': d}) for d in dates1]
         dates2 = [5, 6, 7, 9, 11, 23, 35]
         requests2 = [emulation.Request("create2", "create",params={'productType':'type1', 'date': d}) for d in dates2]
         yield emulation.put, self, create1.request_socket, requests1
+        yield emulation.get, self, rp_crea1, 7
         yield emulation.put, self, create2.request_socket, requests2
+        yield emulation.get, self, rp_crea2, 7
 
 class ControlAssy(emulation.Process):
     def run(self, model):
