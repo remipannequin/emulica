@@ -18,18 +18,18 @@
 
 """This module allow to create various charts from emulica results."""
 
-from gi.repository import Gtk as gtk # pylint: disable=E0611
+from gi.repository import Gtk # pylint: disable=E0611
 from gi.repository import GooCanvas as goocanvas # pylint: disable=E0611
 import logging
 from matplotlib import figure, patches, colors, cm
-#from matplotlib.backends.backend_gtk3 import FigureCanvasGTK3 as FigureCanvas
+#from matplotlib.backends.backend_Gtk3 import FigureCanvasGTK3 as FigureCanvas
 
 logger = logging.getLogger('emulica.plot')
 
-class ResultSummary(gtk.Table):
+class ResultSummary(Gtk.Table):
     
     def __init__(self, model):
-        gtk.Table.__init__(self, 16, 3)
+        Gtk.Table.__init__(self, 16, 3)
         
         entries = []
         self.avg_occupation = dict()
@@ -42,13 +42,13 @@ class ResultSummary(gtk.Table):
                        (_("Products"), 10),
                        (_("Holders"), 14)]
         for (string, row) in self.categs:
-            label = gtk.Label()
+            label = Gtk.Label()
             label.set_markup('<b><big>{0}</big></b>'.format(string))
             self.attach(label, 0, 2, row, row + 1)
         
         separators = [6, 9, 13]
         for row in separators:
-            self.attach(gtk.HSeparator(), 1, 3, row, row + 1)
+            self.attach(Gtk.HSeparator(), 1, 3, row, row + 1)
         
         self.labels = [(_("Number of products:"), 1),
                        (_("Simulation length:"), 2),
@@ -59,38 +59,38 @@ class ResultSummary(gtk.Table):
                        (_("Lifetime:"), 11),
                        (_("Occupation:"),15)]
         for (string, row) in self.labels:
-            label = gtk.Label(string)
+            label = Gtk.Label(string)
             label.set_padding(10, 0)
             label.set_alignment(1, 0.5)
             self.attach(label, 1, 2, row, row + 1)
-            entry = gtk.Entry()
+            entry = Gtk.Entry()
             entry.set_property('editable', False)
             entries.append(entry)
             self.attach(entry, 2, 3, row, row + 1)
         
         #create a treeview for product's physical props
-        label = gtk.Label(_("Physical attributes:"))
+        label = Gtk.Label(_("Physical attributes:"))
         label.set_alignment(1, 0.1)
         label.set_padding(10, 0)
         self.attach(label, 1, 2, 12, 13)
-        self.phys_prop_model = gtk.ListStore(str, str)
-        phys_prop_tv = gtk.TreeView(self.phys_prop_model)
+        self.phys_prop_model = Gtk.ListStore(str, str)
+        phys_prop_tv = Gtk.TreeView(self.phys_prop_model)
         phys_prop_tv.set_size_request(-1, 50)
-        col_render = gtk.CellRendererText()
+        col_render = Gtk.CellRendererText()
         col_render.set_property('editable', False)
-        phys_prop_tv.append_column(gtk.TreeViewColumn('Name', col_render, text = 0))
-        phys_prop_tv.append_column(gtk.TreeViewColumn('Value', col_render, text = 1))
+        phys_prop_tv.append_column(Gtk.TreeViewColumn('Name', col_render, text = 0))
+        phys_prop_tv.append_column(Gtk.TreeViewColumn('Value', col_render, text = 1))
         phys_prop_tv.set_property('headers-visible', False)
         phys_prop_tv.set_property('rules-hint', True)
-        sw = gtk.ScrolledWindow()
-        sw.set_policy(gtk.ScrollablePolicy.NATURAL, gtk.ScrollablePolicy.NATURAL)
+        sw = Gtk.ScrolledWindow()
+        sw.set_policy(Gtk.ScrollablePolicy.NATURAL, Gtk.ScrollablePolicy.NATURAL)
         sw.add(phys_prop_tv)
-        frame = gtk.Frame()
+        frame = Gtk.Frame()
         frame.add(sw)
         self.attach(frame, 2, 3, 12, 13)
         
         #create the combo
-        combo = gtk.ComboBoxText()
+        combo = Gtk.ComboBoxText()
         for (name, module) in model.modules.items():
             if 'trace' in dir(module):
                 combo.append_text(name)
@@ -101,7 +101,7 @@ class ResultSummary(gtk.Table):
         combo.connect("changed", self.on_report_actuators_change, entries)
         self.attach(combo, 2, 3, 7, 8)
         
-        combo = gtk.ComboBoxText()
+        combo = Gtk.ComboBoxText()
         for (name, product) in model.products.items():
             combo.append_text(str(name))
             self.avg_lifetime[str(name)] = float(product.dispose_time - product.create_time)
@@ -109,7 +109,7 @@ class ResultSummary(gtk.Table):
         combo.connect("changed", self.on_report_product_change, entries)
         self.attach(combo, 2, 3, 10, 11)
         
-        combo = gtk.ComboBoxText()
+        combo = Gtk.ComboBoxText()
         for (name, module) in model.modules.items():
             if 'monitor' in dir(module):
                 combo.append_text(name)
@@ -472,7 +472,7 @@ class Legend(goocanvas.Canvas):
         Arguments:
             data --  a dictionary in which each item represent a legend item.
                      the keys are the legend strings, and value must be 
-                     gtk.gdk.Colors
+                     Gtk.gdk.Colors
             column -- the number of column to use to format the table 
         """
         def ceil(a, b):
@@ -511,7 +511,7 @@ class Legend(goocanvas.Canvas):
     def _legend_entry(self, string, color):
         """Return a new goocanvas Item that represents a legend item."""
         rgb = [int(c*65535) for c in color[:3]]
-        color = gtk.gdk.Color(*rgb)
+        color = Gtk.gdk.Color(*rgb)
         item = goocanvas.Table(parent = self.table)
         rect = goocanvas.Rect(parent = item,
                               x = 0,
@@ -537,7 +537,7 @@ class Legend(goocanvas.Canvas):
                               text = string,
                               x = 0,
                               y = 0,
-                              anchor = gtk.ANCHOR_W,
+                              anchor = Gtk.ANCHOR_W,
                               font = 'arial')
         item.set_child_properties(text, column = 1)
         return item

@@ -27,7 +27,7 @@ from gettext import gettext as _
 gettext.textdomain('emulica')
 
 from emulica import plot
-from gi.repository import Gtk as gtk # pylint: disable=E0611
+from gi.repository import Gtk # pylint: disable=E0611
 from gi.repository import GObject as gobject # pylint: disable=E0611
 from gi.repository import Pango as pango # pylint: disable=E0611
 
@@ -63,11 +63,11 @@ class EmulicaResults:
                                    lambda module: 'monitor' in dir(module))]
         self.charts = list()
         if combo.get_model() == None:
-            model = gtk.ListStore(str, str, object, object)    
+            model = Gtk.ListStore(str, str, object, object)    
             for row in self.results_template:
                 model.append(row)
             combo.set_model(model)
-            cell = gtk.CellRendererText()
+            cell = Gtk.CellRendererText()
             combo.pack_start(cell, True)
             combo.add_attribute(cell, 'text', 0)
         
@@ -90,36 +90,36 @@ class EmulicaResults:
     
     def on_export_results_menuitem_activate(self, menuitem, data = None):
         """Callback for the export result menuitem."""
-        chooser = gtk.FileChooserDialog(_("Export results..."), self.window,
-                                        gtk.FileChooserAction.SAVE,
-                                        (gtk.STOCK_CANCEL, gtk.ResponseType.CANCEL, 
-                                         gtk.STOCK_SAVE, gtk.ResponseType.OK))
+        chooser = Gtk.FileChooserDialog(_("Export results..."), self.window,
+                                        Gtk.FileChooserAction.SAVE,
+                                        (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, 
+                                         Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
         response = chooser.run()
-        if response == gtk.ResponseType.OK: 
+        if response == Gtk.ResponseType.OK: 
             raise NotImplemented()
         chooser.destroy()
 
     def on_result_add_activate(self, widget, data = None):
         """Callback for the add button in the result menu. Display a dialog to
         let the user choose the new graph he want to add"""
-        dialog = gtk.Dialog("Add a Result Chart",
+        dialog = Gtk.Dialog("Add a Result Chart",
                             self.main.window,
-                            gtk.DialogFlags.MODAL | gtk.DialogFlags.DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CANCEL, gtk.ResponseType.REJECT,
-                             gtk.STOCK_ADD, gtk.ResponseType.ACCEPT))
+                            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                             Gtk.STOCK_ADD, Gtk.ResponseType.ACCEPT))
         
-        combo = gtk.ComboBox()
-        model = gtk.ListStore(str, str, object, object)    
+        combo = Gtk.ComboBox()
+        model = Gtk.ListStore(str, str, object, object)    
         for row in self.results_template:
             model.append(row)
         combo.set_model(model)
-        cell = gtk.CellRendererText()
+        cell = Gtk.CellRendererText()
         combo.pack_start(cell, True, False, 0)
         combo.add_attribute(cell, 'text', 0)
-        all_mod_cb = gtk.CheckButton(label = _("Include all"))
+        all_mod_cb = Gtk.CheckButton(label = _("Include all"))
         all_mod_cb.set_active(True)
-        hbox = gtk.HBox()
-        label = gtk.Label(_("Type of chart"))
+        hbox = Gtk.HBox()
+        label = Gtk.Label(_("Type of chart"))
         label.set_alignment(1, 0.5)
         label.set_padding(8, 0)
         hbox.pack_start(label, False, False, 0)
@@ -127,7 +127,7 @@ class EmulicaResults:
         dialog.vbox.pack_start(hbox, False, False, 0)
         dialog.vbox.pack_start(all_mod_cb, Fasle, False, 0)
         dialog.show_all()
-        if (dialog.run() == gtk.ResponseType.ACCEPT):
+        if (dialog.run() == Gtk.ResponseType.ACCEPT):
             (chart_name, chart_type, elt, elt_filter) = combo.get_model().get(combo.get_active_iter(), 0, 1, 2, 3)
             self.add_result(chart_name, chart_type, elt, elt_filter, all_mod_cb.get_active())
             
@@ -152,16 +152,16 @@ class EmulicaResults:
     def on_result_saveas_activate(self, widget, data = None):
         """Callback for the save button in the result menu. Display a dialog 
         that ask the file name, file format, etc..."""
-        dialog = gtk.Dialog("Save Results",
+        dialog = Gtk.Dialog("Save Results",
                             self.main.window,
-                            gtk.DialogFlags.MODAL | gtk.DialogFlags.DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CANCEL, gtk.ResponseType.REJECT,
-                             gtk.STOCK_SAVE, gtk.ResponseType.ACCEPT))
-        hbox1 = gtk.HBox()
-        label = gtk.Label(_("Save Results as:"))
+                            Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                            (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                             Gtk.STOCK_SAVE, Gtk.ResponseType.ACCEPT))
+        hbox1 = Gtk.HBox()
+        label = Gtk.Label(_("Save Results as:"))
         label.set_alignment(0, 0.5)
         label.set_padding(8, 0)
-        combo = gtk.combo_box_new_text()
+        combo = Gtk.combo_box_new_text()
         combo.append_text('pdf')
         combo.append_text('png')
         combo.append_text('eps')
@@ -171,26 +171,26 @@ class EmulicaResults:
         hbox1.pack_start(label, False, False, 0)
         hbox1.pack_start(combo, False, False, 0)
         dialog.vbox.pack_start(hbox1, False, False, 0)
-        cb1 = gtk.CheckButton(_("Include raw result (csv)"))
-        cb2 = gtk.CheckButton(_("Include summary (txt)"))
+        cb1 = Gtk.CheckButton(_("Include raw result (csv)"))
+        cb2 = Gtk.CheckButton(_("Include summary (txt)"))
         dialog.vbox.pack_start(cb1, False, False, 0)
         dialog.vbox.pack_start(cb2, False, False, 0)
-        hbox2 = gtk.HBox()
-        label2 = gtk.Label(_("File prefix:"))
+        hbox2 = Gtk.HBox()
+        label2 = Gtk.Label(_("File prefix:"))
         label2.set_alignment(0, 0.5)
         label2.set_padding(8, 0)
-        entry = gtk.Entry()
+        entry = Gtk.Entry()
         
         base = self.main.filename[:-6]
         entry.set_text(base)
-        dir_button = gtk.FileChooserButton(_("Saving Directory"))
-        dir_button.set_action(gtk.FileChooserAction.SELECT_FOLDER)
+        dir_button = Gtk.FileChooserButton(_("Saving Directory"))
+        dir_button.set_action(Gtk.FileChooserAction.SELECT_FOLDER)
         hbox2.pack_start(label2, False, False, 0)
         hbox2.pack_start(entry, False, False, 0)
         hbox2.pack_start(dir_button, False, False, 0)
         dialog.vbox.pack_start(hbox2, False, False, 0)
         dialog.show_all()
-        if (dialog.run() == gtk.ResponseType.ACCEPT):
+        if (dialog.run() == Gtk.ResponseType.ACCEPT):
             #iterate on charts...
             frm = combo.get_active_text()
             for i in range(len(self.charts)):
@@ -259,7 +259,7 @@ class EmulicaResults:
             dialog.set_modules(dic, mod_filter = elt_filter)
             response = dialog.run()
             dialog.destroy()
-            if response == gtk.ResponseType.ACCEPT:
+            if response == Gtk.ResponseType.ACCEPT:
                 if (chart_type == 'ProductChart'):
                     #for products, key is int(name)
                     mod_list = [(name, dic[int(name)]) for name in dialog.selected()]
@@ -280,14 +280,14 @@ class EmulicaResults:
         """add a new result as a new tab in the results notebook (usuallly 
         called by add_result)"""
         notebook = self.builder.get_object('results_notebook')
-        hbox = gtk.HBox()
+        hbox = Gtk.HBox()
         hbox.pack_start(result, True, True, 0)
         hbox.show_all()
         if legend:
-            sw = gtk.ScrolledWindow()
+            sw = Gtk.ScrolledWindow()
             sw.add_with_viewport(legend)
-            sw.set_policy (hscrollbar_policy=gtk.ScrollablePolicy.MINIMUM,
-                           vscrollbar_policy=gtk.ScrollablePolicy.NATURAL)
+            sw.set_policy (hscrollbar_policy=Gtk.ScrollablePolicy.MINIMUM,
+                           vscrollbar_policy=Gtk.ScrollablePolicy.NATURAL)
             self.legends[hbox] = sw
             hbox.pack_start(sw, False, False, 0)
             legend.show()
@@ -300,12 +300,12 @@ class EmulicaResults:
             num = notebook.page_num(child)
             notebook.remove_page(num)
             child.destroy()
-        label = gtk.HBox()
-        label.pack_start(gtk.Label(name), False, False, 0)
-        close_page_button = gtk.Button()
-        close_page_button.set_relief(gtk.ReliefStyle.NONE)
-        img = gtk.Image()
-        img.set_from_stock(gtk.STOCK_CLOSE, gtk.IconSize.MENU)
+        label = Gtk.HBox()
+        label.pack_start(Gtk.Label(name), False, False, 0)
+        close_page_button = Gtk.Button()
+        close_page_button.set_relief(Gtk.ReliefStyle.NONE)
+        img = Gtk.Image()
+        img.set_from_stock(Gtk.STOCK_CLOSE, Gtk.IconSize.MENU)
         close_page_button.add(img)
         close_page_button.connect('clicked', on_close_page_button, notebook, hbox)
         label.pack_end(close_page_button, False, False, 0)

@@ -31,7 +31,7 @@ from CommandManager import CommandManager
 from propertiesDialog import PropertiesDialog
 from emulica.ModelPropertiesDialog import ModelPropertiesDialog
 
-from gi.repository import Gtk as gtk # pylint: disable=E0611
+from gi.repository import Gtk # pylint: disable=E0611
 from gi.repository import Gdk as gdk # pylint: disable=E0611
 from gi.repository import GObject as gobject # pylint: disable=E0611
 
@@ -58,8 +58,8 @@ class EmulicaModel:
         self.canvas = canvas.EmulicaCanvas(self.model, self.cmd_manager)
         self.canvas.connect('selection-changed', self.on_emulation_selection_changed)
         self.canvas.connect('add-done', self.on_emulation_add_done)
-        #self.clipboard = gtk.Clipboard(selection = '_SEME_MODULE_CLIPBOARD')
-        self.clipboard = gtk.Clipboard.get(gdk.SELECTION_CLIPBOARD)
+        #self.clipboard = Gtk.Clipboard(selection = '_SEME_MODULE_CLIPBOARD')
+        self.clipboard = Gtk.Clipboard.get(gdk.SELECTION_CLIPBOARD)
         gobject.timeout_add(1500, self.check_clipboard)
         model_view = self.builder.get_object('model_view')
         #TODO: connect signal changed
@@ -102,12 +102,12 @@ class EmulicaModel:
     
     def on_import_emulation_menuitem_activate(self, menuitem, data = None):
         """Callback for the imports emulation model menuitem."""
-        chooser = gtk.FileChooserDialog(_("Import emulation model..."), self.main,
-                                        gtk.FileChooserAction.OPEN,
-                                        (gtk.STOCK_CANCEL, gtk.ResponseType.CANCEL, 
-                                         gtk.STOCK_SAVE, gtk.ResponseType.OK))
+        chooser = Gtk.FileChooserDialog(_("Import emulation model..."), self.main,
+                                        Gtk.FileChooserAction.OPEN,
+                                        (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, 
+                                         Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
         response = chooser.run()
-        if response == gtk.ResponseType.OK:
+        if response == Gtk.ResponseType.OK:
             #change dir to the dir of the imported model
             filename = chooser.get_filename()
             os.chdir(os.path.dirname(filename))
@@ -117,14 +117,14 @@ class EmulicaModel:
         
     def on_export_emulation_menuitem_activate(self, menuitem, data = None):
         """Callback for the export emulation menuitem."""
-        chooser = gtk.FileChooserDialog(_("Export emulation model..."), self.main,
-                                        gtk.FileChooserAction.SAVE,
-                                        (gtk.STOCK_CANCEL, gtk.ResponseType.CANCEL, 
-                                         gtk.STOCK_SAVE, gtk.ResponseType.OK))
+        chooser = Gtk.FileChooserDialog(_("Export emulation model..."), self.main,
+                                        Gtk.FileChooserAction.SAVE,
+                                        (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, 
+                                         Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
         if self.main.filename:
             chooser.set_filename(os.path.splitext(self.main.filename)[0]+'.xml')
         response = chooser.run()
-        if response == gtk.ResponseType.OK: 
+        if response == Gtk.ResponseType.OK: 
             emuML.save(self.model, chooser.get_filename())
         chooser.destroy()
 
@@ -203,10 +203,10 @@ class EmulicaModel:
         palette_actuator_arrow = self.builder.get_object('arrow_actuator')
         if palette_actuator_table.props.visible:
             palette_actuator_table.hide()
-            palette_actuator_arrow.set(gtk.ArrowType.RIGHT, gtk.ShadowType.OUT)
+            palette_actuator_arrow.set(Gtk.ArrowType.RIGHT, Gtk.ShadowType.OUT)
         else:
             palette_actuator_table.show()
-            palette_actuator_arrow.set(gtk.ArrowType.DOWN, gtk.ShadowType.OUT)
+            palette_actuator_arrow.set(Gtk.ArrowType.DOWN, Gtk.ShadowType.OUT)
     
     def on_button_holder_activate(self, widget, data = None):
         """Change arrow orientation and change visibility of table"""
@@ -215,10 +215,10 @@ class EmulicaModel:
         
         if palette_holder_table.props.visible:
             palette_holder_table.hide()
-            palette_holder_arrow.set(gtk.ArrowType.RIGHT, gtk.ShadowType.OUT)
+            palette_holder_arrow.set(Gtk.ArrowType.RIGHT, Gtk.ShadowType.OUT)
         else:
             palette_holder_table.show()
-            palette_holder_arrow.set(gtk.ArrowType.DOWN, gtk.ShadowType.OUT)
+            palette_holder_arrow.set(Gtk.ArrowType.DOWN, Gtk.ShadowType.OUT)
     
     def on_button_observer_activate(self, widget, data = None):
         """Change arrow orientation and change visibility of table"""
@@ -226,10 +226,10 @@ class EmulicaModel:
         palette_observer_table = self.builder.get_object('table_observer')
         if palette_observer_table.props.visible:
             palette_observer_table.hide()
-            palette_observer_arrow.set(gtk.ArrowType.RIGHT, gtk.ShadowType.OUT)
+            palette_observer_arrow.set(Gtk.ArrowType.RIGHT, Gtk.ShadowType.OUT)
         else:
             palette_observer_table.show()
-            palette_observer_arrow.set(gtk.ArrowType.DOWN, gtk.ShadowType.OUT)
+            palette_observer_arrow.set(Gtk.ArrowType.DOWN, Gtk.ShadowType.OUT)
     
     def on_add_submodel_activate(self, button):
         """Callback for the 'add submodel' button"""
@@ -307,11 +307,12 @@ class EmulicaModel:
         self.changed = True
         response = dialog.run()
             
-    def on_emulation_selection_changed(self, selection):
+    def on_emulation_selection_changed(self, source, num_selected):
         """Callback for change in the selection of modules.
         Change sensitivity of some buttons
         """
-        value = not len(selection) == 0
+        print source
+        value = not (num_selected == 0)
         widgets_names = ['properties', 
                          'cut', 
                          'copy',
@@ -320,8 +321,9 @@ class EmulicaModel:
             widget = self.builder.get_object(name)
             widget.set_sensitive(value)
     
-    def on_emulation_add_done(self):
+    def on_emulation_add_done(self, source):
         """Callback connect to the add-done signal of the model canvas."""
+        print source
         act_list = ['add_create', 'add_dispose', 'add_shape', 'add_space', 'add_assy', 'add_unassy', 'add_holder', 'add_pushobs', 'add_pullobs']
         for act_name in act_list:
             act = self.builder.get_object(act_name)

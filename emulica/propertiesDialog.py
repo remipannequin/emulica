@@ -24,14 +24,14 @@ import gettext
 from gettext import gettext as _
 gettext.textdomain('emulica')
 
-from gi.repository import Gtk as gtk # pylint: disable=E0611
+from gi.repository import Gtk # pylint: disable=E0611
 import emulation
 from properties import *
 gettext.install('emulica')
 logger = logging.getLogger('emulica.properties')
 
 
-class PropertiesDialog(gtk.Dialog):
+class PropertiesDialog(Gtk.Dialog):
     """A window that shows modules properties.
     
     Attributes:
@@ -51,19 +51,19 @@ class PropertiesDialog(gtk.Dialog):
             cmd_manager -- the undo/redo manager
             
         """
-        gtk.Dialog.__init__(self, _("Properties of {0}").format(module.name),
+        Gtk.Dialog.__init__(self, _("Properties of {0}").format(module.name),
                             parent,
-                            gtk.DialogFlags.DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CLOSE, gtk.ResponseType.CLOSE))
+                            Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
         self.commands = cmd_manager
         self.properties = module.properties
         #add name-editing widget
         if 'name' in dir (module):
-            hbox = gtk.HBox()
-            label = gtk.Label(_("Module Name")+' :  ')
+            hbox = Gtk.HBox()
+            label = Gtk.Label(_("Module Name")+' :  ')
             label.set_alignment(1, 0.5)
             hbox.pack_start(label, False, False, 0)
-            name_entry = gtk.Entry()   
+            name_entry = Gtk.Entry()   
             name_entry.set_text(module.name)
             hbox.pack_start(name_entry, False, False, 0)
             def apply_change(entry):
@@ -73,23 +73,23 @@ class PropertiesDialog(gtk.Dialog):
             name_entry.connect('changed', apply_change)
             hbox.set_border_width(5)
             self.vbox.pack_start(hbox,False, False, 0)
-            self.vbox.pack_start(gtk.HSeparator(),False, False, 0)
+            self.vbox.pack_start(Gtk.HSeparator(),False, False, 0)
             
         #add properties editing table
         self.props_table = PropertiesBox(model, 
                                     properties = module.properties, 
                                     cmd_manager = cmd_manager, 
                                     module = module)
-        hbox = gtk.HBox()
+        hbox = Gtk.HBox()
         
         hbox.set_border_width(5)
         hbox.pack_start(self.props_table, False, False, 0)
         self.vbox.pack_start(hbox, False, False, 0)
         
-        bbox = gtk.HButtonBox()
-        bbox.set_property('layout-style', gtk.ButtonBoxStyle.END)
+        bbox = Gtk.HButtonBox()
+        bbox.set_property('layout-style', Gtk.ButtonBoxStyle.END)
         bbox.set_border_width(5)
-        add_button = gtk.Button(_("Add Property..."))
+        add_button = Gtk.Button(_("Add Property..."))
         
         self.action_area.pack_start(add_button, False, False, 0)
         self.action_area.reorder_child(add_button, 0) 
@@ -110,29 +110,29 @@ class PropertiesDialog(gtk.Dialog):
         
     def on_add_property_activate(self, button, module):
         """Called when the add property button is clicked: show an "add property dialog" and update the prop view"""
-        dialog = gtk.Dialog(_("Add a new property to {0}").format(module.name),
+        dialog = Gtk.Dialog(_("Add a new property to {0}").format(module.name),
                             self,
-                            gtk.DialogFlags.DESTROY_WITH_PARENT | gtk.DialogFlags.MODAL,
-                            (gtk.STOCK_ADD, gtk.ResponseType.ACCEPT,
-                             gtk.STOCK_CANCEL, gtk.ResponseType.CANCEL))
-        table = gtk.Table(rows = 2, columns = 2)
+                            Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL,
+                            (Gtk.STOCK_ADD, Gtk.ResponseType.ACCEPT,
+                             Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL))
+        table = Gtk.Table(rows = 2, columns = 2)
         dialog.vbox.pack_start(table, False, False, 0)
         #Get Name
-        label_name = gtk.Label(_("Name:"))
+        label_name = Gtk.Label(_("Name:"))
         label_name.set_alignment(1, 0.5)
         label_name.set_padding(5, 0)
-        entry_name = gtk.Entry()
+        entry_name = Gtk.Entry()
         table.attach(label_name, 0, 1, 0, 1)
         table.attach(entry_name, 1, 2, 0, 1)
         #get Type
-        label_type = gtk.Label(_("Type:"))
+        label_type = Gtk.Label(_("Type:"))
         label_type.set_alignment(1, 0.5)
         label_type.set_padding(5, 0)
-        type_list = gtk.ListStore(int, str)
+        type_list = Gtk.ListStore(int, str)
         for (name, num) in Display.type_names.items():
             type_list.append([name, num])
-        combo_type = gtk.ComboBox(type_list)
-        cell = gtk.CellRendererText()
+        combo_type = Gtk.ComboBox(type_list)
+        cell = Gtk.CellRendererText()
         combo_type.pack_start(cell, True, False, 0)
         combo_type.add_attribute(cell, 'text', 1)
         table.attach(label_type, 0, 1, 1, 2)
@@ -140,7 +140,7 @@ class PropertiesDialog(gtk.Dialog):
         
         dialog.show_all()
         
-        if dialog.run() == gtk.ResponseType.ACCEPT:
+        if dialog.run() == Gtk.ResponseType.ACCEPT:
             #get name and type values
             new_name = entry_name.get_text()
             new_type = type_list[combo_type.get_active()][0]
@@ -163,8 +163,8 @@ class PropertiesDialog(gtk.Dialog):
         
         
 
-class PropertiesBox(gtk.Table):
-    """A gtk Table that display a properties.Registry
+class PropertiesBox(Gtk.Table):
+    """A Gtk Table that display a properties.Registry
     
     Attributes:
         
@@ -205,13 +205,13 @@ class PropertiesBox(gtk.Table):
         
         
         if len(prop_structure) != 0:
-            gtk.Table.__init__(self, rows = len(prop_structure), columns = 2, homogeneous = False)
+            Gtk.Table.__init__(self, rows = len(prop_structure), columns = 2, homogeneous = False)
             self.row = 0
             for (name, display) in prop_structure:
                 self.display_property(name, display)
         else:
-            gtk.Table.__init__(self, rows = 1, columns = 2, homogeneous = False)
-            label = gtk.Label()
+            Gtk.Table.__init__(self, rows = 1, columns = 2, homogeneous = False)
+            label = Gtk.Label()
             label.set_markup(_("<i>No properties to display</i>"))
             self.attach(label, 0, 2, 0, 1)
             
@@ -226,18 +226,18 @@ class PropertiesBox(gtk.Table):
         if display.type in [Display.PHYSICAL_PROPERTIES_LIST,
                          Display.REFERENCE_LIST]:
             #treeviews are displayed in a special manner...
-            frame = gtk.Frame(display.name)
+            frame = Gtk.Frame(display.name)
             widget.set_size_request(-1, 100)
             frame.add(widget)
             frame.show()
-            self.attach(frame, 0, 2, self.row, self.row + 1, yoptions=gtk.EXPAND|gtk.FILL)
+            self.attach(frame, 0, 2, self.row, self.row + 1, yoptions=Gtk.EXPAND|Gtk.FILL)
         else:
-            label = gtk.Label(display.name+':')
+            label = Gtk.Label(display.name+':')
             label.set_padding(5, 0)
             label.set_alignment(1, 0.5)
             label.show()
-            self.attach(label, 0, 1, self.row, self.row + 1, yoptions=gtk.AttachOptions.FILL)
-            self.attach(widget, 1, 2, self.row, self.row + 1, yoptions=gtk.AttachOptions.FILL)
+            self.attach(label, 0, 1, self.row, self.row + 1, yoptions=Gtk.AttachOptions.FILL)
+            self.attach(widget, 1, 2, self.row, self.row + 1, yoptions=Gtk.AttachOptions.FILL)
         self.row += 1
         
         
@@ -265,8 +265,8 @@ class PropertiesBox(gtk.Table):
         
 
     def __create_value_edit_widget(self, name, display):
-        """Return a gtk.Entry widget to display/set a VALUE property"""
-        entry = gtk.Entry()
+        """Return a Gtk.Entry widget to display/set a VALUE property"""
+        entry = Gtk.Entry()
         def apply_change(entry, name):
             new_value = entry.get_text()
             self.__set_prop_value(name, new_value)
@@ -279,15 +279,15 @@ class PropertiesBox(gtk.Table):
         """Return a combination of a checkbox & spinbutton to display/set a 
         numeric property
         """
-        hbox = gtk.HBox(False, 0)
-        check = gtk.CheckButton()
+        hbox = Gtk.HBox(False, 0)
+        check = Gtk.CheckButton()
         if display.is_int():
             i = 1.0
             d = 0
         else:
             i = 0.1
             d = 2
-        spin = gtk.SpinButton(adjustment=gtk.Adjustment(lower = display.lower, 
+        spin = Gtk.SpinButton(adjustment=Gtk.Adjustment(lower = display.lower, 
                                                         upper = display.upper, 
                                                         step_incr = i),
                                                         digits = d)
@@ -316,7 +316,7 @@ class PropertiesBox(gtk.Table):
 
     def __create_bool_edit_widget(self, name, display):
         """Return a toggle button to display/set boolean properties"""
-        check = gtk.CheckButton()
+        check = Gtk.CheckButton()
         def apply_change(check, name):
             new_value = check.get_active()
             self.__set_prop_value(name, new_value)
@@ -328,7 +328,7 @@ class PropertiesBox(gtk.Table):
     def __create_reference_edit_widget(self, name, display):
         """Return a combo box to display and set a module reference"""
         
-        combo = gtk.ComboBoxText()
+        combo = Gtk.ComboBoxText()
         index = -1
         for ref in [m.fullname() for m in self.model.module_list() if m.__class__.__name__ == 'Holder']:
             combo.append_text(ref)
@@ -360,7 +360,7 @@ class PropertiesBox(gtk.Table):
         """Return an entry to display/set an evaluable property (bg is yelllow
         if the text is not evaluable)
         """
-        entry = gtk.Entry()
+        entry = Gtk.Entry()
         def apply_change(entry, name):
             new_value = entry.get_text()
             self.__set_prop_value(name, new_value)
@@ -372,18 +372,18 @@ class PropertiesBox(gtk.Table):
     def __create_reference_list_edit_widget(self, name, display):
         """Return a treeview to display/set a list of references"""
         treeview = ReferenceListTreeView(self.model.modules, name, self.__set_prop_value, self.commands)
-        sw = gtk.ScrolledWindow()
+        sw = Gtk.ScrolledWindow()
         sw.add(treeview)
-        sw.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        sw.set_policy(Gtk.POLICY_NEVER, Gtk.POLICY_AUTOMATIC)
         return (sw, (treeview.set_value, ()))
 
     def __create_program_table_edit_widget(self, name, display):
         """Return a HBox that conatin a description label and an 'edit' button"""
-        hbox = gtk.HBox()
-        label = gtk.Label()
+        hbox = Gtk.HBox()
+        label = Gtk.Label()
         label.set_alignment(0, 0.5)
         label.set_padding(5, 0)
-        button = gtk.Button(_("Edit..."))
+        button = Gtk.Button(_("Edit..."))
         def on_button_clicked(button, name):
             ProgramDialog(None, self.properties[name], self.model, self.commands)
         def set_value(value, widget):
@@ -400,11 +400,11 @@ class PropertiesBox(gtk.Table):
 
     def __create_setup_edit_widget(self, name, display):
         """Return a HBox that contain a description label and an 'edit' button"""
-        hbox = gtk.HBox()
-        label = gtk.Label()
+        hbox = Gtk.HBox()
+        label = Gtk.Label()
         label.set_alignment(0, 0.5)
         label.set_padding(5, 0)
-        button = gtk.Button(_("Edit..."))
+        button = Gtk.Button(_("Edit..."))
         def on_button_clicked(button, name):
             SetupDialog(None, self.properties[name], self.model, self.module, self.commands)
         def set_value(value, widget):
@@ -422,11 +422,11 @@ class PropertiesBox(gtk.Table):
         return (tree, (tree.set_value, ()))
         
         
-class ReferenceListTreeView(gtk.TreeView):
+class ReferenceListTreeView(Gtk.TreeView):
     
     def __init__(self, modules, prop_name, set_val_fn, command_manager = None):
         self.cmd = command_manager
-        self.model = gtk.ListStore(bool, str, object)
+        self.model = Gtk.ListStore(bool, str, object)
         self.prop_name = prop_name
         self.modules = modules
         self.set_value_fn = set_val_fn
@@ -436,18 +436,18 @@ class ReferenceListTreeView(gtk.TreeView):
         for name in sorted_mod_list:
             if 'degrade' in dir(modules[name]):
                 self.model.append((False, name, modules[name]))
-        gtk.TreeView.__init__(self, self.model)
+        Gtk.TreeView.__init__(self, self.model)
         self.set_property('headers-visible', False)
         #rendering as toggle for col 1
-        col_cb_render = gtk.CellRendererToggle()
+        col_cb_render = Gtk.CellRendererToggle()
         col_cb_render.set_property('activatable', True)
-        column = gtk.TreeViewColumn(None,  col_cb_render, active = 0)
+        column = Gtk.TreeViewColumn(None,  col_cb_render, active = 0)
         column.set_expand(True)
         self.append_column(column)
         col_cb_render.connect('toggled', self.on_check_toggled)
         #rendering as text for col 2
-        render = gtk.CellRendererText()
-        column = gtk.TreeViewColumn(None, render, text = 1)
+        render = Gtk.CellRendererText()
+        column = Gtk.TreeViewColumn(None, render, text = 1)
         column.set_expand(True)
         self.append_column(column)
         
@@ -470,27 +470,27 @@ class ReferenceListTreeView(gtk.TreeView):
         self.set_value_fn(self.prop_name, self.reference_list)
             
         
-class PhysicalPropTreeView(gtk.TreeView):
+class PhysicalPropTreeView(Gtk.TreeView):
         
     def __init__(self, command_manager = None):
         self.cmd = command_manager
         
-        self.model = gtk.ListStore(str, str, bool)
-        gtk.TreeView.__init__(self, self.model)
+        self.model = Gtk.ListStore(str, str, bool)
+        Gtk.TreeView.__init__(self, self.model)
         #rendering column 1 as (simple) Entry
-        col_name_render = gtk.CellRendererText()
+        col_name_render = Gtk.CellRendererText()
         self.cell_renderer = col_name_render
         col_name_render.set_property('editable', True)
-        column = gtk.TreeViewColumn('Name', col_name_render, text = 0)
+        column = Gtk.TreeViewColumn('Name', col_name_render, text = 0)
         column.set_expand(True)
         self.append_column(column)
         col_name_render.connect('edited', self.apply_change_name) 
         
         #rendering column 2 as Entry, with validation
-        col_delay_render = gtk.CellRendererText()
+        col_delay_render = Gtk.CellRendererText()
         col_delay_render.set_property('editable', True)
         col_delay_render.set_property("background", "yellow")
-        column = gtk.TreeViewColumn('Value', col_delay_render, text = 1, background_set = 2)
+        column = Gtk.TreeViewColumn('Value', col_delay_render, text = 1, background_set = 2)
         column.set_expand(True)
         self.append_column(column)
         col_delay_render.connect('edited', self.apply_change_value)
@@ -509,7 +509,7 @@ class PhysicalPropTreeView(gtk.TreeView):
         
     def on_key_press_event(self, widget, event, selection = None):
         """Callback connected to button-clicks. Delete selected row on Del key."""
-        if event.type == gtk.gdk.KEY_PRESS and 'Delete' == gtk.gdk.keyval_name(event.keyval):
+        if event.type == Gtk.gdk.KEY_PRESS and 'Delete' == Gtk.gdk.keyval_name(event.keyval):
             #code adapted from pygtk faq
             model, treeiter, = selection.get_selected()
             if treeiter:
@@ -529,7 +529,7 @@ class PhysicalPropTreeView(gtk.TreeView):
 
     def on_button_press_event(self, widget, event):
         """Callback connected to mouse-click. Add a new row on double click."""
-        if event.type == gtk.gdk._2BUTTON_PRESS:
+        if event.type == Gtk.gdk._2BUTTON_PRESS:
             row = self.model.append()
             physical_prop_name = _("property{0}").format(self.model.get_string_from_iter(row))
             self.model.set(row, 0, physical_prop_name)
@@ -565,14 +565,14 @@ class PhysicalPropTreeView(gtk.TreeView):
         self.model.set(treeiter, 1, new_text)
 
 
-class ProgramDialog(gtk.Dialog):
+class ProgramDialog(Gtk.Dialog):
     """This class is used by PropertiesWindow to display and let the user edit the program table."""
     
     def __init__(self, parent, p_table, model, cmd_manager = None):
-        gtk.Dialog.__init__(self, _("Edit program table"),
+        Gtk.Dialog.__init__(self, _("Edit program table"),
                             parent,
-                            gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
+                            Gtk.DIALOG_DESTROY_WITH_PARENT,
+                            (Gtk.STOCK_CLOSE, Gtk.RESPONSE_CLOSE))
         self.program_table = p_table
         self.model = model
         self.cmd = cmd_manager
@@ -580,34 +580,34 @@ class ProgramDialog(gtk.Dialog):
         #create the treeview
         treeview = self.__create_treeview()
         #create a big HBox
-        hbox = gtk.HBox()
+        hbox = Gtk.HBox()
         self.vbox.add(hbox)
         #create a vbox into the hbox
-        vbox = gtk.VBox()
+        vbox = Gtk.VBox()
         vbox.set_border_width(5)
         hbox.pack_start(vbox, False, False, 0)
         #create a SW, put the treeview into it, add it to the vbox
-        sw = gtk.ScrolledWindow()
-        sw.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        sw = Gtk.ScrolledWindow()
+        sw.set_policy(Gtk.POLICY_AUTOMATIC, Gtk.POLICY_AUTOMATIC)
         sw.add(treeview)
         vbox.pack_start(sw, False, False, 0)
         #add a separator
-        vbox.pack_start(gtk.HSeparator(), False, False, 0)
+        vbox.pack_start(Gtk.HSeparator(), False, False, 0)
         #creates some buttons to add and remove the programs
-        buttons = gtk.HButtonBox()
+        buttons = Gtk.HButtonBox()
         buttons.set_border_width(5)
-        new_button = gtk.Button(stock = gtk.STOCK_ADD)
+        new_button = Gtk.Button(stock = Gtk.STOCK_ADD)
         buttons.pack_start(new_button, False, False, 0)
-        del_button = gtk.Button(stock = gtk.STOCK_REMOVE)
+        del_button = Gtk.Button(stock = Gtk.STOCK_REMOVE)
         buttons.pack_start(del_button, False, False, 0)
         vbox.pack_start(buttons, False, False, 0)
         #add a Vertical separator
-        hbox.pack_start(gtk.VSeparator(), False, False, 0)
+        hbox.pack_start(Gtk.VSeparator(), False, False, 0)
         #add a PropertyTable to the hbox
         self.propview = PropertiesBox(self.model,
                                       prop_structure = self.program_table.program_keyword,
                                       cmd_manager = self.cmd)
-        vbox2 = gtk.VBox()
+        vbox2 = Gtk.VBox()
         vbox2.set_border_width(5)
         expand = False
         for (name, display) in self.program_table.program_keyword:
@@ -634,24 +634,24 @@ class ProgramDialog(gtk.Dialog):
         
     def __create_treeview(self):
         """Create treeview"""
-        self.program_model = gtk.ListStore(str, str, bool)
+        self.program_model = Gtk.ListStore(str, str, bool)
         for (name, program) in self.program_table.items():
             row = [name, program.time_law, False]
             self.program_model.append(row)
-        treeview = gtk.TreeView(self.program_model)
+        treeview = Gtk.TreeView(self.program_model)
         treeview.set_size_request(-1, 150)
         #rendering column 1 as (simple) Entry
-        col_name_render = gtk.CellRendererText()
+        col_name_render = Gtk.CellRendererText()
         col_name_render.set_property('editable', True)
-        column = gtk.TreeViewColumn('Program Name', col_name_render, text = 0)
+        column = Gtk.TreeViewColumn('Program Name', col_name_render, text = 0)
         column.set_expand(True)
         treeview.append_column(column)
         col_name_render.connect('edited', self.apply_change_name) 
         #rendering column 2 as Text (may be a formula)
-        col_delay_render = gtk.CellRendererText()
+        col_delay_render = Gtk.CellRendererText()
         col_delay_render.set_property('editable', True)
         col_delay_render.set_property("background", "yellow")
-        column = gtk.TreeViewColumn('Delay', col_delay_render, text = 1, background_set = 2)
+        column = Gtk.TreeViewColumn('Delay', col_delay_render, text = 1, background_set = 2)
         column.set_expand(True)
         treeview.append_column(column)
         col_delay_render.connect('edited', self.apply_change_delay) 
@@ -718,7 +718,7 @@ class ProgramDialog(gtk.Dialog):
 
     def on_key_press_event(self, widget, event, selection = None):
         """Callback connected to button-clicks. Delete selected row on Del key."""
-        if event.type == gtk.gdk.KEY_PRESS and 'Delete' == gtk.gdk.keyval_name(event.keyval):
+        if event.type == Gtk.gdk.KEY_PRESS and 'Delete' == Gtk.gdk.keyval_name(event.keyval):
             self.__del_row(selection)
     
     def apply_change_name(self, cellrenderer, path, new_text):
@@ -746,67 +746,67 @@ class ProgramDialog(gtk.Dialog):
         self.program_model.set(treeiter, 1, new_text)
 
 
-class SetupDialog(gtk.Dialog):
+class SetupDialog(Gtk.Dialog):
     """This class is used by PropertiesWindow to display and let the user edit the setup table."""
     
     def __init__(self, parent, setup_table, model, module, cmd_manager = None):
         """Create an new instance of a SetupDialog."""
-        gtk.Dialog.__init__(self, _("Edit Setup Matrix"),
+        Gtk.Dialog.__init__(self, _("Edit Setup Matrix"),
                             parent,
-                            gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
+                            Gtk.DIALOG_DESTROY_WITH_PARENT,
+                            (Gtk.STOCK_CLOSE, Gtk.RESPONSE_CLOSE))
         self.setup_table = setup_table
         self.cmd = cmd_manager
-        self.setup_model = gtk.ListStore(str, str, str)
-        program_model = gtk.ListStore(str)
+        self.setup_model = Gtk.ListStore(str, str, str)
+        program_model = Gtk.ListStore(str)
         for p in module.properties['program_table'].keys():
             program_model.append([p])
-        self.setup_default_spin = gtk.SpinButton(digits = 1, 
-                                                 adjustment = gtk.Adjustment(value = float(self.setup_table.default_time), 
+        self.setup_default_spin = Gtk.SpinButton(digits = 1, 
+                                                 adjustment = Gtk.Adjustment(value = float(self.setup_table.default_time), 
                                                                              lower = 0., 
                                                                              upper = 10000., 
                                                                              step_incr = 1.))
         self.setup_default_spin.connect('changed', self.apply_change)
         for row in self.setup_table.items():
             self.setup_model.append(row)
-        self.treeview = gtk.TreeView(self.setup_model)
+        self.treeview = Gtk.TreeView(self.setup_model)
         self.treeview.connect('key-press-event', self.on_key_pressed_event, self.treeview.get_selection())
         self.treeview.connect('button-press-event', self.on_button_press_event)
         
-        default_time_box = gtk.HBox()
-        default_time_box.pack_start(gtk.Label(_("Default setup time:")), False, False, 0)
+        default_time_box = Gtk.HBox()
+        default_time_box.pack_start(Gtk.Label(_("Default setup time:")), False, False, 0)
         default_time_box.pack_start(self.setup_default_spin, False, False, 0)
         self.vbox.pack_start(default_time_box, False, False, 0)
         self.vbox.pack_start(self.treeview, False, False, 0)
         
         
         #rendering as combo for col 1
-        col_init_render = gtk.CellRendererCombo()
+        col_init_render = Gtk.CellRendererCombo()
         col_init_render.set_property('editable',True)
         col_init_render.set_property('text-column', 0)
         col_init_render.set_property('model', program_model)
-        column = gtk.TreeViewColumn('Initial', col_init_render, text = 0)
+        column = Gtk.TreeViewColumn('Initial', col_init_render, text = 0)
         column.set_expand(True)
         self.treeview.append_column(column)
         col_init_render.connect('edited', self.apply_change_init)
 
         #rendering as combo for col 2
-        col_final_render = gtk.CellRendererCombo()
+        col_final_render = Gtk.CellRendererCombo()
         col_final_render.set_property('editable',True)
         col_final_render.set_property('text-column', 0)
         col_final_render.set_property('model', program_model)
-        column = gtk.TreeViewColumn('Final', col_final_render, text = 1)
+        column = Gtk.TreeViewColumn('Final', col_final_render, text = 1)
         column.set_expand(True)
         self.treeview.append_column(column)
         col_final_render.connect("edited", self.apply_change_final)
 
         #rendering with spin for col 3
-        spin_cell_render = gtk.CellRendererSpin()
+        spin_cell_render = Gtk.CellRendererSpin()
         spin_cell_render.set_property('editable', True)
         spin_cell_render.set_property('digits', 1)
-        adjust = gtk.Adjustment(lower = 0, step_incr = 0.1, page_incr = 1, upper = 10000)
+        adjust = Gtk.Adjustment(lower = 0, step_incr = 0.1, page_incr = 1, upper = 10000)
         spin_cell_render.set_property('adjustment', adjust)
-        column = gtk.TreeViewColumn('Delay', spin_cell_render, text = 2)
+        column = Gtk.TreeViewColumn('Delay', spin_cell_render, text = 2)
         column.set_expand(True)
         self.treeview.append_column(column)
         spin_cell_render.connect('edited', self.apply_change_delay)
@@ -824,7 +824,7 @@ class SetupDialog(gtk.Dialog):
 
     def on_button_press_event(self, widget, event):
         """Callback connected to mouse-click. Add a new row on double click."""
-        if event.type == gtk.gdk._2BUTTON_PRESS:
+        if event.type == Gtk.gdk._2BUTTON_PRESS:
             row = (_("initial"), _("final"), '0')
             self.setup_model.append(row)
             if self.cmd:
@@ -835,7 +835,7 @@ class SetupDialog(gtk.Dialog):
 
     def on_key_pressed_event(self, widget, event, selection):
         """Callback connected to button-clicks. Delete selected row on Del key."""
-        if event.type == gtk.gdk.KEY_PRESS and 'Delete' == gtk.gdk.keyval_name(event.keyval):
+        if event.type == Gtk.gdk.KEY_PRESS and 'Delete' == Gtk.gdk.keyval_name(event.keyval):
             #code adapted from pygtk faq
             
             (model, treeiter,) = selection.get_selected()
