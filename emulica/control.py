@@ -66,7 +66,7 @@ class EmulicaControl:
         debug_textview.set_buffer(self.debug_buffer)
         self.control_view.show()
         #hide trace window by default
-        self.main.builder.get_object('hboxdebug').hide()
+        #self.main.builder.get_object('hboxdebug').hide()
         control_viewport.add(self.control_view)
     
     def reset(self, model, text = ""):
@@ -481,7 +481,7 @@ class EmulicaControl:
         #search the declaration line in the control buffer
         start_iter = self.buffer.get_start_iter()
         decl_line = "def initialize_control(locals_, model):\n"
-        position = Gtk.TextIter.forward_search(start_iter, decl_line, Gtk.TextSearchFlag.VISIBLE_ONLY)
+        position = Gtk.TextIter.forward_search(start_iter, decl_line, Gtk.TextSearchFlags.VISIBLE_ONLY)
         #if not found, add it
         if position == None:
             end_iter = self.buffer.get_end_iter()
