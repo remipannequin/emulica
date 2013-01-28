@@ -278,6 +278,7 @@ class EmulicaWindow(Window):
         gobject.idle_add(self.reset_execution)
         gobject.idle_add(self.status_set_progress, _("finished"), model.current_time(), model.current_time())
         gobject.idle_add(self.builder.get_object('reinit').set_sensitive, True)
+    
         #stop input redirection
         gobject.idle_add(self.emulica_control.tee_stdout_to_log, False)
         
@@ -289,7 +290,7 @@ class EmulicaWindow(Window):
         #TODO: format traceback using pango markup
         gobject.idle_add(self.error_message, _("Exception when runing emulation:\n") + str(exception), "".join(traceback.format_list(trace)))
         #self.error_message(_("Exception when runing emulation:\n") + str(exception))
-        
+    
     
     def on_reinit_activate(self, widget, data = None):
         """Callback for the clear button (both in menu and tool bar). Initialize
@@ -321,18 +322,18 @@ class EmulicaWindow(Window):
                                         Gtk.FileChooserAction.SAVE,
                                         (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, 
                                          Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
+        chooser.set_do_overwrite_confirmation(True)
         filter_emulica = Gtk.FileFilter()
         filter_emulica.set_name("Emulica files")
         filter_emulica.add_pattern("*.emu")
-        filter_all = Gtk.FileFilter()
-        filter_all.set_name("All files")
         chooser.add_filter(filter_emulica)
-        chooser.add_filter(filter_all)
         response = chooser.run()
         if response == Gtk.ResponseType.OK: 
             filename = chooser.get_filename()
         chooser.destroy()
-        
+        extension = os.path.splitext(filename)[1]
+        if not extension:
+	        filename = filename + '.emu'
         return filename
     
     def update_undo_redo_menuitem(self, *args):
