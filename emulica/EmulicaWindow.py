@@ -56,7 +56,11 @@ class EmulicaWindow(Window):
     """
     __gtype_name__ = "EmulicaWindow"
     
-    
+    def get_menubar(self):
+        return self.builder.get_object('menubar')
+        
+    def get_app_menu(self):
+        return None
     
     def finish_initializing(self, builder): # pylint: disable=E1002
         """Set up the main window"""

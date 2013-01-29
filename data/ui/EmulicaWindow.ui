@@ -302,7 +302,7 @@
         <property name="can_focus">False</property>
         <property name="spacing">5</property>
         <child>
-          <object class="GtkMenuBar" id="menubar1">
+          <object class="GtkMenuBar" id="menubar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
@@ -2027,10 +2027,10 @@
       </object>
     </child>
   </object>
-  <object class="GtkImage" id="image2">
+  <object class="GtkImage" id="image1">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-help</property>
+    <property name="stock">gtk-execute</property>
   </object>
   <object class="GtkImage" id="image10">
     <property name="visible">True</property>
@@ -2046,6 +2046,11 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">../media/emulica-fifo.svg</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-help</property>
   </object>
   <object class="GtkImage" id="image3">
     <property name="visible">True</property>
@@ -2081,10 +2086,5 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">../media/emulica-dispose.svg</property>
-  </object>
-  <object class="GtkImage" id="image1">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-execute</property>
   </object>
 </interface>

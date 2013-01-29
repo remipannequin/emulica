@@ -17,6 +17,7 @@
 import optparse
 from locale import gettext as _
 from gi.repository import Gtk # pylint: disable=E0611
+from gi.repository import Gio # pylint: disable=E0611
 from emulica import EmulicaWindow
 from emulica_lib import set_up_logging, get_version
 
@@ -30,12 +31,21 @@ def parse_options():
 
     set_up_logging(options)
 
+def on_activate(app, data = None):
+    window = EmulicaWindow.EmulicaWindow()
+    window.show()
+    app.add_window(window)
+    app.set_menubar = window.get_menubar()
+    app_menu = window.get_app_menu()
+    if app_menu:
+        app.set_app_menu = app_menu
+
 def main():
     'constructor for your class instances'
     parse_options()
     default_settings = Gtk.Settings.get_default();
     default_settings.set_property('gtk-button-images', True); 
-    # Run the application.    
-    window = EmulicaWindow.EmulicaWindow()
-    window.show()
-    Gtk.main()
+    app = Gtk.Application(application_id="net.launchpad.emulica",
+                          flags=Gio.ApplicationFlags.FLAGS_NONE)
+    app.connect("activate", on_activate)
+    app.run(None)
