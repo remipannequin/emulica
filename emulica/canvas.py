@@ -242,7 +242,7 @@ class EmulicaCanvas(Goo.Canvas):
         """Serialize to xml and add the modules in the clipboard."""
         modules = self.selection
         elt = emuML.save_modules(self.model, modules)
-        clipboard.set_text(elt)
+        clipboard.set_text(elt, -1)
         logger.debug("put {0} into (private) clipboard.".format(elt))
     
     def paste_clipboard(self, clipboard):

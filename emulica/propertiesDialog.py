@@ -131,9 +131,9 @@ class PropertiesDialog(Gtk.Dialog):
         type_list = Gtk.ListStore(int, str)
         for (name, num) in Display.type_names.items():
             type_list.append([name, num])
-        combo_type = Gtk.ComboBox(type_list)
+        combo_type = Gtk.ComboBox(model = type_list)
         cell = Gtk.CellRendererText()
-        combo_type.pack_start(cell, True, False, 0)
+        combo_type.pack_start(cell, True)
         combo_type.add_attribute(cell, 'text', 1)
         table.attach(label_type, 0, 1, 1, 2)
         table.attach(combo_type, 1, 2, 1, 2)

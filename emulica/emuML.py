@@ -240,7 +240,7 @@ class EmulationWriter:
         """
         if value is None:
             pass
-            print "marshalling a null value"
+            logger.warning("marshalling a null value")
         elif type(value) == list:
             list_root = SubElement(root, 'value-list')
             for v in value:
@@ -433,12 +433,12 @@ class EmulationParser:
         """Parse the children of element as values (or list of values)"""
         children = element.getchildren()
         if len(children) == 0:
-            print "returning None"
+            logger.warning("returning None when parsing element")
             return None
         elif len(children) == 1:
             return self.parse_value(props, root_prop_name, children[0])
         else:
-            print "wrong number of values"
+            logger.warning("wrong number of values")
     
 
     def parse_value(self, props, root_prop_name, element):
@@ -484,7 +484,7 @@ class EmulationParser:
         
         else:
             #error case
-            print "errror: unknow tag {0}".format(element.tag)
+            logger.warning("errror: unknow tag {0}".format(element.tag))
             
         
     def parse_prog(self, props, root_prop_name, element):
