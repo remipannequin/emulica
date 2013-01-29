@@ -1,12 +1,13 @@
-python-emulica (0.7pre2) unstable; urgency=low
+python-emulica (0.7ubuntu1) UNRELEASED; urgency=low
 
-  * new development version 0.7
+  * new (experimental) helper gui emulica-client to connect to emulica server
 
-  * associate resources to each programs
+  * get statndard output from control and display it on the main ui
 
   * define setup by final program only
 
- -- maintainer Rémi Pannequin <remi.pannequin@cran.uhp-nancy.fr>  Wed, 5 Jan 2011 09:30:00 +0200
+
+ -- Rémi Pannequin <remi@camberra>  Tue, 29 Jan 2013 09:53:26 +0100
 
 python-emulica (0.6ubuntu1) unstable; urgency=low
 
