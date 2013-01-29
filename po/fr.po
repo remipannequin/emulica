@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: Gseme 0.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-29 10:07+0100\n"
-"PO-Revision-Date: 2009-12-18 16:23+0100\n"
-"Last-Translator: Rémi Pannequin <Remi.Pannequin@cran.uhp-nancy.fr>\n"
+"PO-Revision-Date: 2013-01-29 10:15+0100\n"
+"Last-Translator: Rémi Pannequin <remi.pannequin@univ-lorraine.fr>\n"
 "Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,8 @@ msgstr "Résumé"
 msgid "Export results..."
 msgstr "Exporter les résultats..."
 
-#: src/emulica/emulicapp/results.py:116 ui/emulica.ui:1567
+#: src/emulica/emulicapp/results.py:116
+#: ui/emulica.ui:1567
 msgid "Include all"
 msgstr "Inclure tout"
 
@@ -67,7 +68,8 @@ msgstr "Préfixe des fichiers :"
 msgid "Saving Directory"
 msgstr "Répertoire de sauvegarde"
 
-#: src/emulica/emulicapp/modelling.py:97 src/emulica/emulicapp/control.py:88
+#: src/emulica/emulicapp/modelling.py:97
+#: src/emulica/emulicapp/control.py:88
 msgid "Import emulation model..."
 msgstr "Importer le modèle d'émulation..."
 
@@ -83,7 +85,8 @@ msgstr "Exporter le modèle de contrôle..."
 msgid "export failed"
 msgstr "échec de l'exportation"
 
-#: src/emulica/emulicapp/control.py:218 src/emulica/emulicapp/control.py:320
+#: src/emulica/emulicapp/control.py:218
+#: src/emulica/emulicapp/control.py:320
 #: src/emulica/emulicapp/control.py:402
 msgid "Select request parameters"
 msgstr "Choix des paramètres de la requête"
@@ -114,7 +117,7 @@ msgstr "Identifiant produits :"
 
 #: src/emulica/emulicapp/control.py:326
 msgid "Module to monitor:"
-msgstr ""
+msgstr "Module à surveiller:"
 
 #: src/emulica/emulicapp/control.py:352
 msgid "Control code compiled succefully."
@@ -164,7 +167,8 @@ msgstr "Récupérer les comptes-rendus d'un module :"
 msgid "{name}: {message}"
 msgstr "{name} : {message}"
 
-#: src/emulica/emulicapp/control.py:477 src/emulica/emuML.py:581
+#: src/emulica/emulicapp/control.py:477
+#: src/emulica/emuML.py:581
 msgid "control code compilation sucessfull"
 msgstr "compilation du code du système de contrôle réalisée avec succès"
 
@@ -198,9 +202,7 @@ msgstr "sans titre"
 
 #: src/emulica/emulicapp/__init__.py:385
 msgid "Do you want to save modifications in document {0} before closing?"
-msgstr ""
-"Voulez-vous sauvegarder les modifications du document « {0} » avant de le "
-"fermer ?"
+msgstr "Voulez-vous sauvegarder les modifications du document « {0} » avant de le fermer ?"
 
 #: src/emulica/emulicapp/__init__.py:386
 msgid "Close without saving"
@@ -220,7 +222,7 @@ msgstr "Chargement de {0}"
 
 #: src/emulica/emulicapp/__init__.py:467
 msgid "module {name} present in layout was not found. removing from layout."
-msgstr ""
+msgstr "le module {name} présent dans la disposition n'a pas été trouvé. Suppression de la disposition"
 
 #: src/emulica/emulicapp/__init__.py:483
 msgid "model did not have any layout."
@@ -234,7 +236,8 @@ msgstr ""
 "Ouverture impossible du fichier {filename}\n"
 "{warning}"
 
-#: src/emulica/emulicapp/__init__.py:510 src/emulica/emulicapp/__init__.py:512
+#: src/emulica/emulicapp/__init__.py:510
+#: src/emulica/emulicapp/__init__.py:512
 msgid "Saving {0}"
 msgstr "Enregistrement de {0}"
 
@@ -318,15 +321,14 @@ msgstr "Événements discrets"
 msgid "Real-time"
 msgstr "Temps réel :"
 
-#: src/emulica/emulicapp/dialogs.py:303 ui/emulica.ui:6
+#: src/emulica/emulicapp/dialogs.py:303
+#: ui/emulica.ui:6
 msgid "Emulica"
 msgstr "Emulica"
 
 #: src/emulica/emulicapp/dialogs.py:307
 msgid "Interface to emulica, a emulation modelling and execution environment."
-msgstr ""
-"Une interface à Emulica, l'environnement de création et d'exécution de "
-"modèles d'émulation systémiques."
+msgstr "Une interface à Emulica, l'environnement de création et d'exécution de modèles d'émulation systémiques."
 
 #: src/emulica/emulicapp/dialogs.py:341
 msgid "File: {0}"
@@ -340,24 +342,22 @@ msgstr "Fichier : (Sans titre)"
 msgid "Model input interface"
 msgstr "Interface d'entrée du modèle"
 
-#: src/emulica/emulicapp/dialogs.py:449 src/emulica/properties.py:1010
+#: src/emulica/emulicapp/dialogs.py:449
+#: src/emulica/properties.py:1010
 msgid "property{0}"
 msgstr "propriété{0}"
 
 #: src/emulica/properties.py:271
 msgid "changing setup: ({initial}, {final}) -> ({new_init}, {new_final})"
-msgstr ""
-"modification du changement de série : ({initial}, {final}) -> ({new_init}, "
-"{new_final})"
+msgstr "modification du changement de série : ({initial}, {final}) -> ({new_init}, {new_final})"
 
 #: src/emulica/properties.py:278
 msgid "changing setup time: {0:f}) -> {1:f}"
 msgstr "Modification du délai du changement de série {0:f} -> {1:f}"
 
 #: src/emulica/properties.py:419
-#, fuzzy
 msgid "could not evaluate expression {0}"
-msgstr "impossible d'évaluer '{0}'"
+msgstr "impossible d'évaluer l'expression {0}"
 
 #: src/emulica/properties.py:459
 msgid "Module"
@@ -383,8 +383,10 @@ msgstr "Nombre à virgule flotante"
 msgid "List of modules"
 msgstr "Liste de modules"
 
-#: src/emulica/properties.py:465 src/emulica/emulation.py:1132
-#: src/emulica/emulation.py:1259 src/emulica/emulation.py:1406
+#: src/emulica/properties.py:465
+#: src/emulica/emulation.py:1132
+#: src/emulica/emulation.py:1259
+#: src/emulica/emulation.py:1406
 #: src/emulica/emulation.py:1546
 msgid "Program table"
 msgstr "Programmes"
@@ -417,7 +419,8 @@ msgstr "Ajouter une propriété..."
 msgid "Add a new property to {0}"
 msgstr "Ajouter une nouvelle propriété à {0}"
 
-#: src/emulica/properties.py:597 src/emulica/plot.py:182
+#: src/emulica/properties.py:597
+#: src/emulica/plot.py:182
 #: src/emulica/plot.py:192
 msgid "Name:"
 msgstr "Nom :"
@@ -430,11 +433,13 @@ msgstr "Type :"
 msgid "<i>No properties to display</i>"
 msgstr "<i>Aucune propriété à afficher</i>"
 
-#: src/emulica/properties.py:862 src/emulica/properties.py:883
+#: src/emulica/properties.py:862
+#: src/emulica/properties.py:883
 msgid "Edit..."
 msgstr "Éditer"
 
-#: src/emulica/properties.py:866 src/emulica/properties.py:871
+#: src/emulica/properties.py:866
+#: src/emulica/properties.py:871
 #: src/emulica/properties.py:887
 msgid "{0:d} programs"
 msgstr "{0:d} programmes"
@@ -468,20 +473,13 @@ msgid "final"
 msgstr "final"
 
 #: src/emulica/emulation.py:168
-msgid ""
-"Cannot rename module {name} in {new_name}: there is already a module of this "
-"name."
-msgstr ""
-"Impossible de renommer le module {name} en {new_name} : il existe déjà un "
-"module ayant ce nom"
+msgid "Cannot rename module {name} in {new_name}: there is already a module of this name."
+msgstr "Impossible de renommer le module {name} en {new_name} : il existe déjà un module ayant ce nom"
 
-#: src/emulica/emulation.py:199 src/emulica/emulation.py:222
-msgid ""
-"A new request_socket must be created, but there is already one, and the "
-"multiple_observation parameter was not set to True"
-msgstr ""
-"Un nouveau canal de compte-rendu doit être créé, mais il en existe déjà un, "
-"et le paramètre d'observation multiple n'a pas été mis à vrai"
+#: src/emulica/emulation.py:199
+#: src/emulica/emulation.py:222
+msgid "A new request_socket must be created, but there is already one, and the multiple_observation parameter was not set to True"
+msgstr "Un nouveau canal de compte-rendu doit être créé, mais il en existe déjà un, et le paramètre d'observation multiple n'a pas été mis à vrai"
 
 #: src/emulica/emulation.py:302
 msgid "a default path will be used"
@@ -489,18 +487,17 @@ msgstr "un chemin par défaut sera utilisé"
 
 #: src/emulica/emulation.py:332
 msgid "get_module returned None because name was None or ''"
-msgstr ""
+msgstr "get_module à retourné None parce que le nom de module était None ou ''"
 
-#: src/emulica/emulation.py:341 src/emulica/emulation.py:358
+#: src/emulica/emulation.py:341
+#: src/emulica/emulation.py:358
 msgid "Invalid module name: {0}"
 msgstr "Nom de module invalide: {0}"
 
-#: src/emulica/emulation.py:393 src/emulica/emulation.py:434
-msgid ""
-"Submodels cannot use this method. Only the top level model can be executed."
-msgstr ""
-"Les sous-models ne peuvent pas utiliser cette méthode. Seuls le modèles de "
-"plus haut niveau peut l'exécuter."
+#: src/emulica/emulation.py:393
+#: src/emulica/emulation.py:434
+msgid "Submodels cannot use this method. Only the top level model can be executed."
+msgstr "Les sous-models ne peuvent pas utiliser cette méthode. Seuls le modèles de plus haut niveau peut l'exécuter."
 
 #: src/emulica/emulation.py:435
 msgid "simulation stopped at t={0}"
@@ -508,17 +505,15 @@ msgstr "simulation stoppée à t={0}"
 
 #: src/emulica/emulation.py:483
 msgid "Cannot create module {0}: there is already a module of this name"
-msgstr ""
-"Impossible de créer le module {0} : il existe déjà un module ayant ce nom"
+msgstr "Impossible de créer le module {0} : il existe déjà un module ayant ce nom"
 
 #: src/emulica/emulation.py:486
 msgid "'main' is a reserved name"
 msgstr "'main' est un nom réservé"
 
 #: src/emulica/emulation.py:512
-#, fuzzy
 msgid "inserting request for module {0}"
-msgstr "début du réglage sur le module {0}"
+msgstr "Insertion d'une requête au module {0}"
 
 #: src/emulica/emulation.py:524
 msgid "registering control process {0}"
@@ -540,15 +535,18 @@ msgstr "le produit {pid} est prêt à t={time}"
 msgid "Request {what} to {who} at t={when}"
 msgstr "Requête au module {whO} d'exécuter {what} à t={when} "
 
-#: src/emulica/emulation.py:752 src/emulica/emulation.py:803
+#: src/emulica/emulation.py:752
+#: src/emulica/emulation.py:803
 msgid "parameters={0}"
 msgstr "paramètres={0}"
 
-#: src/emulica/emulation.py:754 src/emulica/emulation.py:805
+#: src/emulica/emulation.py:754
+#: src/emulica/emulation.py:805
 msgid "location={0}"
 msgstr "emplacement={0}"
 
-#: src/emulica/emulation.py:756 src/emulica/emulation.py:807
+#: src/emulica/emulation.py:756
+#: src/emulica/emulation.py:807
 msgid "comment={0}"
 msgstr "comment={0}"
 
@@ -557,12 +555,11 @@ msgid "Report {what} from {who} at t={when}"
 msgstr "Compte-Rendu de l'état {what} provenant du module {who} à t={when} "
 
 #: src/emulica/emulation.py:889
-msgid ""
-"Can not add programs to actuator without program tables (create and dispose "
-"actuators)"
-msgstr ""
+msgid "Can not add programs to actuator without program tables (create and dispose actuators)"
+msgstr "Impossible d'ajouter des programmes à un actionneur sans table de programmes (actionneurs de création et destruction)"
 
-#: src/emulica/emulation.py:914 ui/emulica.ui:988
+#: src/emulica/emulation.py:914
+#: ui/emulica.ui:988
 msgid "Processes"
 msgstr "Process"
 
@@ -582,8 +579,10 @@ msgstr "Dégradation de performance"
 msgid "Repeat"
 msgstr "Répéter"
 
-#: src/emulica/emulation.py:1014 src/emulica/emulation.py:1124
-#: src/emulica/emulation.py:1532 src/emulica/emuML.py:504
+#: src/emulica/emulation.py:1014
+#: src/emulica/emulation.py:1124
+#: src/emulica/emulation.py:1532
+#: src/emulica/emuML.py:504
 msgid "Destination"
 msgstr "Destination"
 
@@ -592,32 +591,28 @@ msgid "Products properties"
 msgstr "Propriétés des produits"
 
 #: src/emulica/emulation.py:1031
-msgid ""
-"This module has not be properly initialized: destination has not been set"
-msgstr ""
-"Ce module n'a pas été correctement initialisé : la destination n'a pas été "
-"précisée"
+msgid "This module has not be properly initialized: destination has not been set"
+msgstr "Ce module n'a pas été correctement initialisé : la destination n'a pas été précisée"
 
 #: src/emulica/emulation.py:1057
-msgid ""
-"physical property {0} from create request supersedes property from module"
-msgstr ""
-"l'affectation de la propriété physique {0} par une requête écrase celle du "
-"module"
+msgid "physical property {0} from create request supersedes property from module"
+msgstr "l'affectation de la propriété physique {0} par une requête écrase celle du module"
 
-#: src/emulica/emulation.py:1083 src/emulica/emulation.py:1123
-#: src/emulica/emulation.py:1395 src/emulica/emuML.py:503
+#: src/emulica/emulation.py:1083
+#: src/emulica/emulation.py:1123
+#: src/emulica/emulation.py:1395
+#: src/emulica/emuML.py:503
 msgid "Source"
 msgstr "Source"
 
 #: src/emulica/emulation.py:1090
 msgid "This module has not be properly initialized: source has not been set"
-msgstr ""
-"Ce module n'a pas été correctement initialisé : la source n'a pas été "
-"précisée"
+msgstr "Ce module n'a pas été correctement initialisé : la source n'a pas été précisée"
 
-#: src/emulica/emulation.py:1136 src/emulica/emulation.py:1263
-#: src/emulica/emulation.py:1410 src/emulica/emulation.py:1542
+#: src/emulica/emulation.py:1136
+#: src/emulica/emulation.py:1263
+#: src/emulica/emulation.py:1410
+#: src/emulica/emulation.py:1542
 msgid "Setup matrix"
 msgstr "Matrice de réglage"
 
@@ -625,28 +620,32 @@ msgstr "Matrice de réglage"
 msgid "program {0} is not in the program table"
 msgstr "le programme {0} n'est pas dans la table"
 
-#: src/emulica/emulation.py:1154 src/emulica/emulation.py:1287
-#: src/emulica/emulation.py:1433 src/emulica/emulation.py:1435
+#: src/emulica/emulation.py:1154
+#: src/emulica/emulation.py:1287
+#: src/emulica/emulation.py:1433
+#: src/emulica/emulation.py:1435
 #: src/emulica/emulation.py:1570
 msgid "module {name} doing setup at {t}"
 msgstr "module {name} effectue un réglage à {t}"
 
-#: src/emulica/emulation.py:1251 src/emulica/emuML.py:505
+#: src/emulica/emulation.py:1251
+#: src/emulica/emuML.py:505
 msgid "Physical changes"
 msgstr "Modifications Physiques"
 
-#: src/emulica/emulation.py:1264 src/emulica/emulation.py:1401
-#: src/emulica/emulation.py:1538 src/emulica/emulation.py:1885
+#: src/emulica/emulation.py:1264
+#: src/emulica/emulation.py:1401
+#: src/emulica/emulation.py:1538
+#: src/emulica/emulation.py:1885
 #: src/emulica/emulation.py:1978
 msgid "Holder"
 msgstr "Conteneur"
 
-#: src/emulica/emulation.py:1272 src/emulica/emulation.py:1417
+#: src/emulica/emulation.py:1272
+#: src/emulica/emulation.py:1417
 #: src/emulica/emulation.py:1554
 msgid "This module has not be properly initialized: holder has not been set"
-msgstr ""
-"Ce module n'a pas été correctement initialisé : le conteneur n'a pas été "
-"précisé"
+msgstr "Ce module n'a pas été correctement initialisé : le conteneur n'a pas été précisé"
 
 #: src/emulica/emulation.py:1330
 msgid "cannot treat more than one product at once"
@@ -692,7 +691,8 @@ msgstr "verrouillage du conteneur sur le module {0}"
 msgid "fetching products to assemble in module {0}"
 msgstr "obtention des produits à assembler sur le module {0}"
 
-#: src/emulica/emulation.py:1491 src/emulica/emulation.py:1617
+#: src/emulica/emulation.py:1491
+#: src/emulica/emulation.py:1617
 msgid "ignoring product in holder {0} other than the first one"
 msgstr "les produits du conteneur {0} autre que le premier sont ignorés"
 
@@ -710,8 +710,7 @@ msgstr "début de l'assemblage sur le module {0}"
 
 #: src/emulica/emulation.py:1622
 msgid "ignoring request to disassemble: no product in holder {0}"
-msgstr ""
-"la requête de désassemblage est ignorée: pas de produit dans le conteneur {0}"
+msgstr "la requête de désassemblage est ignorée: pas de produit dans le conteneur {0}"
 
 #: src/emulica/emulation.py:1665
 msgid "Capacity"
@@ -733,7 +732,8 @@ msgstr "t={now}: réactivation de l'observateur à {delayed}"
 msgid "product {pid} is ready at {time}"
 msgstr "le produit {pid} est prêt à t={time}"
 
-#: src/emulica/emulation.py:1884 src/emulica/emulation.py:1977
+#: src/emulica/emulation.py:1884
+#: src/emulica/emulation.py:1977
 msgid "Event Name"
 msgstr "Événement"
 
@@ -745,7 +745,8 @@ msgstr "Observer l'identité"
 msgid "Observe Type"
 msgstr "Observer le type"
 
-#: src/emulica/emulation.py:1911 src/emulica/emulation.py:2003
+#: src/emulica/emulation.py:1911
+#: src/emulica/emulation.py:2003
 msgid "t={0}: observation done!"
 msgstr "t={0}: observation réalisée !"
 
@@ -763,23 +764,19 @@ msgstr "(module {name}, t={time}) : {message}"
 
 #: src/emulica/controler.py:102
 msgid "a time limit must be set if executing in discrete-events mode"
-msgstr ""
-"une limite de temps doit être fixée en mode d'avance de temps par événement "
-"discret"
+msgstr "une limite de temps doit être fixée en mode d'avance de temps par événement discret"
 
 #: src/emulica/controler.py:174
-#, fuzzy
 msgid "Request {0.who} to {0.what}"
-msgstr "Requête au module {whO} d'exécuter {what} à t={when} "
+msgstr "Requête au module {who} d'exécuter {what} à t={when} "
 
 #: src/emulica/controler.py:179
-#, fuzzy
 msgid "Unknown action {0}"
-msgstr "module {0} inconnu"
+msgstr "Action {0} inconnue"
 
 #: src/emulica/controler.py:182
 msgid "Inserting request for module {0.who} to do {0.what} into model"
-msgstr ""
+msgstr "Insertion dans le modèle de la requête de faire {0.who} au module {0.who}"
 
 #: src/emulica/controler.py:189
 msgid "unknown module {0}"
@@ -821,7 +818,8 @@ msgstr "module {0} supprimé"
 msgid "General"
 msgstr "Résultats généraux"
 
-#: src/emulica/plot.py:41 ui/emulica.ui:776
+#: src/emulica/plot.py:41
+#: ui/emulica.ui:776
 msgid "Actuators"
 msgstr "Actionneurs"
 
@@ -910,44 +908,32 @@ msgid "unable to find props.db"
 msgstr "impossible de charger props.db"
 
 #: src/emulica/emuML.py:76
-msgid ""
-"Invalid opening mode, only 'r' (for reading) and 'w' (for writing) are valid "
-"modes."
-msgstr ""
-"Mode d'ouverture invalide, seul les modes 'r' (pour la lecture) et 'w' (pour "
-"l'écriture) sont valides."
+msgid "Invalid opening mode, only 'r' (for reading) and 'w' (for writing) are valid modes."
+msgstr "Mode d'ouverture invalide, seul les modes 'r' (pour la lecture) et 'w' (pour l'écriture) sont valides."
 
 #: src/emulica/emuML.py:510
 msgid "unable to determine program schema"
-msgstr ""
+msgstr "Impossible de déterminer le schéma du programme"
 
 #: src/emulica/emuML.py:583
 msgid "initialization function have not been implemented"
 msgstr "Attention : la fonction d'initialisation n'a pas été déclarée"
 
 #: src/emulica.py:38
-#, fuzzy
-msgid ""
-"emulica is a GTK interface to emulica, an emulation modelling and execution "
-"framework"
-msgstr ""
-"gseme  est une interface graphique basée sur GTK pour seme, un environnement "
-"de création et d'exécution de modèles d'émulation."
+msgid "emulica is a GTK interface to emulica, an emulation modelling and execution framework"
+msgstr "emulica est une interface graphique basée sur GTK pour le framework emulica, un environnement de création et d'exécution de modèles d'émulation."
 
 #: src/emulica.py:39
-#, fuzzy
 msgid "usage: emulica -hd [emulica_file]"
-msgstr "usage : gseme -hd [fichier gseme]"
+msgstr "usage : emulica -hd [fichier emulica]"
 
 #: src/emulica.py:40
-#, fuzzy
 msgid "usage: emulica --server --port num_port emulica_model.xml"
-msgstr "usage: gseme --server --port numéro_port modèle.xml"
+msgstr "usage: emulica --server --port numéro_port modèle.xml"
 
 #: src/emulica.py:52
-#, fuzzy
 msgid "unable to find emulica.ui file, exiting."
-msgstr "impossible de charger gseme.ui, fin du programme"
+msgstr "impossible de charger emulica.ui, fin du programme"
 
 #: src/emulica.py:88
 msgid "in server mode, a model name must be provided"
@@ -961,11 +947,13 @@ msgstr "_Fichier"
 msgid "Export"
 msgstr "Exporter"
 
-#: ui/emulica.ui:80 ui/emulica.ui:116
+#: ui/emulica.ui:80
+#: ui/emulica.ui:116
 msgid "Emulation Model..."
 msgstr "Modèle d'émulation..."
 
-#: ui/emulica.ui:88 ui/emulica.ui:124
+#: ui/emulica.ui:88
+#: ui/emulica.ui:124
 msgid "Control System..."
 msgstr "Système de contrôle..."
 
@@ -1009,7 +997,8 @@ msgstr "Exécution"
 msgid "Execution settings..."
 msgstr "Paramètres d'exécution..."
 
-#: ui/emulica.ui:549 ui/emulica.ui:1662
+#: ui/emulica.ui:549
+#: ui/emulica.ui:1662
 msgid "Results"
 msgstr "Résultats"
 
@@ -1067,7 +1056,7 @@ msgstr "Vérifier la syntaxe"
 
 #: ui/emulica.ui:1415
 msgid "Trace"
-msgstr ""
+msgstr "Trace"
 
 #: ui/emulica.ui:1516
 msgid "Control system"
