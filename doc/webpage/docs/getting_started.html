@@ -1,26 +1,32 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>A short modelling tutorial &mdash; emulica v0.6 documentation</title>
+    <title>A short modelling tutorial &mdash; emulica 0.8 documentation</title>
+    
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.6',
-        COLLAPSE_MODINDEX: false,
+        VERSION:     '0.8',
+        COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.png"/>
-    <link rel="top" title="emulica v0.6 documentation" href="index.html" />
+    <link rel="top" title="emulica 0.8 documentation" href="index.html" />
     <link rel="next" title="Concepts" href="concepts.html" />
     <link rel="prev" title="What is Emulica, and why use it ?" href="introduction.html" /> 
   </head>
@@ -37,7 +43,7 @@
         <li class="right" >
           <a href="introduction.html" title="What is Emulica, and why use it ?"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">emulica v0.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">emulica 0.8 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -112,12 +118,12 @@ We add them to the program table of <cite>machine</cite>. To each program, we ca
 delay, and a set of physical changes on the product properties. The delay can be
 either a numerical value, or an expression. Some token can be used to bouild expressions:</p>
 <blockquote>
-<ul class="simple">
+<div><ul class="simple">
 <li><cite>rng</cite>: the model&#8217;s random number generator, a random.Random instance</li>
 <li><cite>product</cite>: the current product that is worked on</li>
 <li><cite>model</cite>: the model where the module is.</li>
 </ul>
-</blockquote>
+</div></blockquote>
 <p>So, program p1 will have the delay &#8220;1.7&#8221;, program p2 will have the delay
 &#8220;rng.normvariate(2, 0.5)&#8221;, to get a stochastic delay following a normal
 distribution. Finally program p3&#8217;s delay will be &#8220;product[&#8216;mass&#8217;] * 0.4&#8221;, to
@@ -171,13 +177,13 @@ initialization function.</p>
 <p>It is time now to actually write the control algorithm;
 The control process behave according to these steps:</p>
 <blockquote>
-<ol class="arabic simple">
+<div><ol class="arabic simple">
 <li>When a product arrives, load it</li>
 <li>When the loading is finished, examine the product to get its type</li>
 <li>setup the machine according to the product&#8217;s type, and begin machining</li>
 <li>when finished, unload the product</li>
 </ol>
-</blockquote>
+</div></blockquote>
 <p>Each module has a request and a report socket. The report_socket is used to get
 event or, more precisely <em>Reports</em> from the module, while the request_socket is
 used to send Request to it. To get a report socket of a module, the
@@ -204,14 +210,14 @@ events from both observers, machine and loader:</p>
 </div>
 <p>Now  we must wait for a product to arrive the input buffer: This is done using SimPy&#8217;s
 yiend get instruction, where rp_in_obs is the Store where to pick events:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">yield</span> <span class="n">get</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">rp_in_obs</span><span class="p">,</span> <span class="mf">1</span>
-<span class="n">ev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">yield</span> <span class="n">get</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">rp_in_obs</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">ev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>&#8216;ev&#8217; is the Report object corresponding to the arrival of a product at the first position
 of the holder. A Report has six attributes:</p>
 <blockquote>
-<ul class="simple">
+<div><ul class="simple">
 <li><em>who</em> the entity in the model that must execute the action</li>
 <li><em>what</em> the name of the action to be executed</li>
 <li><em>how</em> a dictionary of parameters to configure the action</li>
@@ -219,7 +225,7 @@ of the holder. A Report has six attributes:</p>
 <li><em>where</em> the location where the action must be executed (i.e. the same as who in most cases)</li>
 <li><em>why</em> a human-readable comment string</li>
 </ul>
-</blockquote>
+</div></blockquote>
 <p>When a product arrives, it must be loaded into machine_buf; that the &#8216;load&#8217;
 program of the actuator loader is for. So we create a request, and sent it to the
 actuator using a &#8216;yield put&#8217; statement:</p>
@@ -267,9 +273,9 @@ let&#8217;s consider that we have three types of product, with type 1 correspond
 program <cite>p1</cite>, type 2 to <cite>p2</cite>, etc...</p>
 <p>Let&#8217;s code ths part:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">machine_obs</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;machine_obs&#39;</span><span class="p">,</span> <span class="s">&#39;observe&#39;</span><span class="p">)]</span>
-<span class="k">yield</span> <span class="n">get</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">rp_machine_obs</span><span class="p">,</span> <span class="mf">1</span>
-<span class="n">ev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span>
-<span class="n">product_type</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">how</span><span class="p">[</span><span class="s">&#39;Type_by_position&#39;</span><span class="p">][</span><span class="mf">0</span><span class="p">]</span>
+<span class="k">yield</span> <span class="n">get</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">rp_machine_obs</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">ev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">product_type</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">how</span><span class="p">[</span><span class="s">&#39;Type_by_position&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">prog</span> <span class="o">=</span> <span class="s">&quot;p{0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">product_type</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -291,7 +297,7 @@ request must be modified so as to use the value we have just computed from the t
 
         <span class="k">while</span><span class="p">(</span><span class="bp">True</span><span class="p">):</span>
             <span class="c">#1 we wait for a product to be ready</span>
-            <span class="k">yield</span> <span class="n">get</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">rp_in_obs</span><span class="p">,</span> <span class="mf">1</span>
+            <span class="k">yield</span> <span class="n">get</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">rp_in_obs</span><span class="p">,</span> <span class="mi">1</span>
             <span class="c">#2 we request the loader to execute the load program</span>
             <span class="n">request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="s">&#39;loader&#39;</span><span class="p">,</span> <span class="s">&#39;move&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;program&#39;</span><span class="p">:</span> <span class="s">&#39;load&#39;</span><span class="p">})</span>
             <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">loader</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">request</span><span class="p">]</span>
@@ -299,9 +305,9 @@ request must be modified so as to use the value we have just computed from the t
             <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">wait_idle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rp_loader</span><span class="p">):</span> <span class="k">yield</span> <span class="n">e</span>
             <span class="c">#we send an observation request to machin_obs, and we wait the answer</span>
             <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">machine_obs</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;machine_obs&#39;</span><span class="p">,</span> <span class="s">&#39;observe&#39;</span><span class="p">)]</span>
-            <span class="k">yield</span> <span class="n">get</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">rp_machine_obs</span><span class="p">,</span> <span class="mf">1</span>
-            <span class="n">ev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span>
-            <span class="n">product_type</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">how</span><span class="p">[</span><span class="s">&#39;Type_by_position&#39;</span><span class="p">][</span><span class="mf">0</span><span class="p">]</span>
+            <span class="k">yield</span> <span class="n">get</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">rp_machine_obs</span><span class="p">,</span> <span class="mi">1</span>
+            <span class="n">ev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">product_type</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">how</span><span class="p">[</span><span class="s">&#39;Type_by_position&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">prog</span> <span class="o">=</span> <span class="s">&quot;p{0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">product_type</span><span class="p">)</span>
             <span class="k">print</span> <span class="n">prog</span>
             <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">machine</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;machine&#39;</span><span class="p">,</span> <span class="s">&#39;make&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;program&#39;</span><span class="p">:</span> <span class="n">prog</span><span class="p">})]</span>
@@ -325,11 +331,11 @@ in_buf, and write a simple control process that creates 5 products:</p>
         <span class="kn">from</span> <span class="nn">emulation</span> <span class="kn">import</span> <span class="n">Process</span><span class="p">,</span> <span class="n">put</span><span class="p">,</span> <span class="n">get</span><span class="p">,</span> <span class="n">Report</span><span class="p">,</span> <span class="n">Request</span><span class="p">,</span> <span class="n">wait_idle</span>
         <span class="n">CreateAct5</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_module</span><span class="p">(</span><span class="s">&#39;CreateAct5&#39;</span><span class="p">)</span>
         <span class="n">create</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_module</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">)</span>
-        <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">create</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;productType&#39;</span><span class="p">:</span> <span class="mf">1</span><span class="p">})]</span>
-        <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">create</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;productType&#39;</span><span class="p">:</span> <span class="mf">2</span><span class="p">})]</span>
-        <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">create</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;productType&#39;</span><span class="p">:</span> <span class="mf">3</span><span class="p">})]</span>
-        <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">create</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;productType&#39;</span><span class="p">:</span> <span class="mf">2</span><span class="p">})]</span>
-        <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">create</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;productType&#39;</span><span class="p">:</span> <span class="mf">1</span><span class="p">})]</span>
+        <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">create</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;productType&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})]</span>
+        <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">create</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;productType&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})]</span>
+        <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">create</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;productType&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})]</span>
+        <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">create</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;productType&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})]</span>
+        <span class="k">yield</span> <span class="n">put</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">create</span><span class="o">.</span><span class="n">request_socket</span><span class="p">,</span> <span class="p">[</span><span class="n">Request</span><span class="p">(</span><span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="s">&#39;create&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;productType&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">})]</span>
 </pre></div>
 </div>
 <p>After updating the initilisation function (so that our new ControlCreate process
@@ -359,44 +365,44 @@ ratio is 2, which means that one time unit in emulation elapses in 2 seconds.</p
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/logo-dense.png" alt="Logo"/>
             </a></p>
-            <h3><a href="index.html">Table Of Contents</a></h3>
-            <ul>
-<li><a class="reference external" href="">A short modelling tutorial</a><ul>
-<li><a class="reference external" href="#modelling-a-simple-cell">Modelling a (simple) cell</a><ul>
-<li><a class="reference external" href="#emulation-model">Emulation Model</a></li>
-<li><a class="reference external" href="#control-system">Control System</a></li>
-<li><a class="reference external" href="#experiments">Experiments</a></li>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">A short modelling tutorial</a><ul>
+<li><a class="reference internal" href="#modelling-a-simple-cell">Modelling a (simple) cell</a><ul>
+<li><a class="reference internal" href="#emulation-model">Emulation Model</a></li>
+<li><a class="reference internal" href="#control-system">Control System</a></li>
+<li><a class="reference internal" href="#experiments">Experiments</a></li>
 </ul>
 </li>
-<li><a class="reference external" href="#modelling-several-cells-and-the-routing-system">Modelling several cells and the routing system</a></li>
+<li><a class="reference internal" href="#modelling-several-cells-and-the-routing-system">Modelling several cells and the routing system</a></li>
 </ul>
 </li>
 </ul>
 
-            <h4>Previous topic</h4>
-            <p class="topless"><a href="introduction.html"
-                                  title="previous chapter">What is Emulica, and  why use it ?</a></p>
-            <h4>Next topic</h4>
-            <p class="topless"><a href="concepts.html"
-                                  title="next chapter">Concepts</a></p>
-            <h3>This Page</h3>
-            <ul class="this-page-menu">
-              <li><a href="_sources/getting_started.txt"
-                     rel="nofollow">Show Source</a></li>
-            </ul>
-          <div id="searchbox" style="display: none">
-            <h3>Quick search</h3>
-              <form class="search" action="search.html" method="get">
-                <input type="text" name="q" size="18" />
-                <input type="submit" value="Go" />
-                <input type="hidden" name="check_keywords" value="yes" />
-                <input type="hidden" name="area" value="default" />
-              </form>
-              <p class="searchtip" style="font-size: 90%">
-              Enter search terms or a module, class or function name.
-              </p>
-          </div>
-          <script type="text/javascript">$('#searchbox').show(0);</script>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="previous chapter">What is Emulica, and  why use it ?</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="concepts.html"
+                        title="next chapter">Concepts</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/getting_started.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -413,12 +419,12 @@ ratio is 2, which means that one time unit in emulation elapses in 2 seconds.</p
         <li class="right" >
           <a href="introduction.html" title="What is Emulica, and why use it ?"
              >previous</a> |</li>
-        <li><a href="index.html">emulica v0.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">emulica 0.8 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-      &copy; Copyright 2009, Rémi Pannequin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.2.
+        &copy; Copyright 2013, Rémi Pannequin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

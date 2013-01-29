@@ -7,9 +7,9 @@
   <title type="text">Emulica</title>
   <desc>The <app>Emulica</app> help.</desc>
   <credit type="author">
-    <name>Your Name</name>
-    <email>Your E-mail</email>
-    <years>2010</years>
+    <name>Rémi Pannequin</name>
+    <email>Remi.Pannequin@univ-lorraine.fr</email>
+    <years>2013</years>
   </credit>
   <license href="http://creativecommons.org/licenses/by-sa/3.0/">
   <p>Creative Commons Attribution-Share Alike 3.0 Unported License</p>

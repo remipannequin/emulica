@@ -1,26 +1,32 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Emulation Modules &mdash; emulica v0.6 documentation</title>
+    <title>Emulation Modules &mdash; emulica 0.8 documentation</title>
+    
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.6',
-        COLLAPSE_MODINDEX: false,
+        VERSION:     '0.8',
+        COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.png"/>
-    <link rel="top" title="emulica v0.6 documentation" href="index.html" />
+    <link rel="top" title="emulica 0.8 documentation" href="index.html" />
     <link rel="next" title="Products" href="products.html" />
     <link rel="prev" title="Concepts" href="concepts.html" /> 
   </head>
@@ -37,7 +43,7 @@
         <li class="right" >
           <a href="concepts.html" title="Concepts"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">emulica v0.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">emulica 0.8 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -62,7 +68,7 @@
 <div class="section" id="create">
 <h3>Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<p>The create actuator (seme.emulation.CreateAct) creates new products and put them
+<div><p>The create actuator (seme.emulation.CreateAct) creates new products and put them
 into a holder.
 When emulation begins, the create actuator wait for requests to arrive
 on its request_socket. When a request arrives, it verify that the requested action
@@ -141,12 +147,12 @@ physical properties:</p>
         request_list.append(r)
         yield put, self, createModule.request_socket, request_list</pre>
 </div>
-</blockquote>
+</div></blockquote>
 </div>
 <div class="section" id="dispose">
 <h3>Dispose<a class="headerlink" href="#dispose" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<p>The dispose actuator (seme.emulation.DisposeAct) disposes the
+<div><p>The dispose actuator (seme.emulation.DisposeAct) disposes the
 first product of a holder.
 When emulation begins, the dispose actuator waits for requests to arrive
 on its request socket. When a request arrives, it verify that the requested action
@@ -177,12 +183,12 @@ Finally, a report (&#8216;dispose-done&#8217;) is sent in the module&#8217;s rep
 <span class="n">d</span> <span class="o">=</span> <span class="n">emulation</span><span class="o">.</span><span class="n">DisposeAct</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s">&quot;dispose1&quot;</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
 </pre></div>
 </div>
-</blockquote>
+</div></blockquote>
 </div>
 <div class="section" id="shape">
 <h3>Shape<a class="headerlink" href="#shape" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<p>A Shape Actuator (<tt class="xref docutils literal"><span class="pre">seme.emulation.ShapeAct</span></tt>) changes a set of
+<div><p>A Shape Actuator (<tt class="xref py py-class docutils literal"><span class="pre">seme.emulation.ShapeAct</span></tt>) changes a set of
 physical attributes of a product.
 A Shape actuator is associated with a Holder (its transformation holder),
 where products reside during their transformation (NB: a Shape Actuator
@@ -194,9 +200,9 @@ actuator is required to do that).</p>
 <dt><em>program_table</em></dt>
 <dd>A dictionary of available programs (i.e. program that can be run by this actuator).          |</dd>
 <dt><em>setup</em></dt>
-<dd>A <tt class="xref docutils literal"><span class="pre">SetupMatrix</span></tt> instance, that is used to compute setup delays.</dd>
+<dd>A <tt class="xref py py-class docutils literal"><span class="pre">SetupMatrix</span></tt> instance, that is used to compute setup delays.</dd>
 <dt><em>holder</em></dt>
-<dd>The <tt class="xref docutils literal"><span class="pre">Holder</span></tt> where the transformation is done.        |</dd>
+<dd>The <tt class="xref py py-class docutils literal"><span class="pre">Holder</span></tt> where the transformation is done.        |</dd>
 </dl>
 </dd>
 <dt><strong>Program parameters:</strong></dt>
@@ -235,21 +241,21 @@ requested program).</dd>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
 <span class="n">espaceMachine</span> <span class="o">=</span> <span class="n">Holder</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s">&quot;espaceMachine&quot;</span><span class="p">)</span>
 <span class="n">machine</span> <span class="o">=</span> <span class="n">ShapeAct</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s">&quot;machine&quot;</span><span class="p">,</span> <span class="n">espaceMachine</span><span class="p">)</span>
-<span class="n">machine</span><span class="p">[</span><span class="s">&#39;program_table&#39;</span><span class="p">][</span><span class="s">&#39;p1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Program</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mf">4</span><span class="p">)</span>
-<span class="n">machine</span><span class="p">[</span><span class="s">&#39;program_table&#39;</span><span class="p">][</span><span class="s">&#39;p2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Program</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mf">5</span><span class="p">)</span>
-<span class="n">machine</span><span class="p">[</span><span class="s">&#39;program_table&#39;</span><span class="p">][</span><span class="s">&#39;p3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Program</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mf">6</span><span class="p">)</span>
-<span class="n">m</span> <span class="o">=</span> <span class="n">SetupMatrix</span><span class="p">(</span><span class="mf">1</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;p1&#39;</span><span class="p">,</span><span class="s">&#39;p3&#39;</span><span class="p">,</span><span class="mf">2</span><span class="p">)</span>
-<span class="n">m</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;p3&#39;</span><span class="p">,</span><span class="s">&#39;p1&#39;</span><span class="p">,</span><span class="mf">3</span><span class="p">)</span>
+<span class="n">machine</span><span class="p">[</span><span class="s">&#39;program_table&#39;</span><span class="p">][</span><span class="s">&#39;p1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Program</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">machine</span><span class="p">[</span><span class="s">&#39;program_table&#39;</span><span class="p">][</span><span class="s">&#39;p2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Program</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">machine</span><span class="p">[</span><span class="s">&#39;program_table&#39;</span><span class="p">][</span><span class="s">&#39;p3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Program</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">SetupMatrix</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;p1&#39;</span><span class="p">,</span><span class="s">&#39;p3&#39;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;p3&#39;</span><span class="p">,</span><span class="s">&#39;p1&#39;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">machine</span><span class="p">[</span><span class="s">&#39;setup&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">m</span>
 </pre></div>
 </div>
-</blockquote>
+</div></blockquote>
 </div>
 <div class="section" id="space">
 <h3>Space<a class="headerlink" href="#space" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<p>A Space actuator (seme.emulation.SpaceAct) change the position of
+<div><p>A Space actuator (seme.emulation.SpaceAct) change the position of
 a product. The move is done according to the keys &#8216;source&#8217; and
 &#8216;destination&#8217; of the programs, that point to Holders. During its
 production cycle, this actuator fetch the first product of the &#8216;source&#8217;
@@ -306,17 +312,17 @@ requested program).</dd>
 
 <span class="n">sp</span> <span class="o">=</span> <span class="n">SpaceAct</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s">&quot;transporter&quot;</span><span class="p">)</span>
 <span class="n">sp</span><span class="p">[</span><span class="s">&#39;program_table&#39;</span><span class="p">][</span><span class="s">&#39;load&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Program</span><span class="p">({</span><span class="s">&#39;source&#39;</span><span class="p">:</span><span class="n">source</span><span class="p">,</span>
-                                       <span class="s">&#39;destination&#39;</span><span class="p">:</span><span class="n">espaceMachine</span><span class="p">},</span> <span class="mf">2</span><span class="p">)</span>
+                                       <span class="s">&#39;destination&#39;</span><span class="p">:</span><span class="n">espaceMachine</span><span class="p">},</span> <span class="mi">2</span><span class="p">)</span>
 <span class="n">sp</span><span class="p">[</span><span class="s">&#39;program_table&#39;</span><span class="p">][</span><span class="s">&#39;unload&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Program</span><span class="p">({</span><span class="s">&#39;source&#39;</span><span class="p">:</span><span class="n">espaceMachine</span><span class="p">,</span>
-                                         <span class="s">&#39;destination&#39;</span><span class="p">:</span><span class="n">sink</span><span class="p">},</span> <span class="mf">2</span><span class="p">)</span>
+                                         <span class="s">&#39;destination&#39;</span><span class="p">:</span><span class="n">sink</span><span class="p">},</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-</blockquote>
+</div></blockquote>
 </div>
 <div class="section" id="assemble">
 <h3>Assemble<a class="headerlink" href="#assemble" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<p>An assemble actuator assemble a product taken from a &#8216;source&#8217;
+<div><p>An assemble actuator assemble a product taken from a &#8216;source&#8217;
 holder, with the product currently present in an assembly holder.
 The incoming product is added as a component of the product that is in
 the assembly holder. Note that this actuator cannot load or unload the
@@ -370,16 +376,16 @@ requested program).</dd>
 <span class="n">source2</span> <span class="o">=</span> <span class="n">emulation</span><span class="o">.</span><span class="n">Holder</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s">&quot;source2&quot;</span><span class="p">)</span>
 <span class="n">assy_space</span> <span class="o">=</span> <span class="n">emulation</span><span class="o">.</span><span class="n">Holder</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s">&quot;assy_space&quot;</span><span class="p">)</span>
 <span class="n">assy</span> <span class="o">=</span> <span class="n">emulation</span><span class="o">.</span><span class="n">AssembleAct</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s">&quot;assy&quot;</span><span class="p">,</span> <span class="n">assy_holder</span> <span class="o">=</span> <span class="n">assy_space</span><span class="p">)</span>
-<span class="n">assy</span><span class="p">[</span><span class="s">&#39;program_table&#39;</span><span class="p">][</span><span class="s">&#39;p1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">emulation</span><span class="o">.</span><span class="n">Program</span><span class="p">({</span><span class="s">&#39;source&#39;</span><span class="p">:</span><span class="n">source2</span><span class="p">},</span> <span class="mf">5</span><span class="p">)</span>
-<span class="n">assy</span><span class="p">[</span><span class="s">&#39;program_table&#39;</span><span class="p">][</span><span class="s">&#39;p2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">emulation</span><span class="o">.</span><span class="n">Program</span><span class="p">({</span><span class="s">&#39;source&#39;</span><span class="p">:</span><span class="n">source1</span><span class="p">},</span> <span class="mf">3</span><span class="p">)</span>
+<span class="n">assy</span><span class="p">[</span><span class="s">&#39;program_table&#39;</span><span class="p">][</span><span class="s">&#39;p1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">emulation</span><span class="o">.</span><span class="n">Program</span><span class="p">({</span><span class="s">&#39;source&#39;</span><span class="p">:</span><span class="n">source2</span><span class="p">},</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">assy</span><span class="p">[</span><span class="s">&#39;program_table&#39;</span><span class="p">][</span><span class="s">&#39;p2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">emulation</span><span class="o">.</span><span class="n">Program</span><span class="p">({</span><span class="s">&#39;source&#39;</span><span class="p">:</span><span class="n">source1</span><span class="p">},</span> <span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
-</blockquote>
+</div></blockquote>
 </div>
 <div class="section" id="disassemble">
 <h3>Disassemble<a class="headerlink" href="#disassemble" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<p>A disassemble actuator take a product, and decompose it into
+<div><p>A disassemble actuator take a product, and decompose it into
 two products: one that stay in the disassembly holder, while the other
 one is put the &#8216;destination&#8217; holder.</p>
 <dl class="docutils">
@@ -425,7 +431,7 @@ requested program).</dd>
 </dd>
 </dl>
 <p>Instanciation of a Disassemble actuator</p>
-</blockquote>
+</div></blockquote>
 </div>
 </div>
 <div class="section" id="physical-processes">
@@ -443,7 +449,7 @@ When the capacity is degraded, the actuator is interrupted; the remaining time i
 new_time = remaining_time / new_capacity
 When the capcity is restored, a similar operation is done.</p>
 <blockquote>
-<dl class="docutils">
+<div><dl class="docutils">
 <dt><strong>Properties:</strong></dt>
 <dd><dl class="first last docutils">
 <dt><em>mtbf</em></dt>
@@ -473,12 +479,12 @@ When the capcity is restored, a similar operation is done.</p>
 </dl>
 </dd>
 </dl>
-</blockquote>
+</div></blockquote>
 </div>
 <div class="section" id="holder">
 <h3>Holder<a class="headerlink" href="#holder" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<p>a Holder contains products. It is associated with a place where products
+<div><p>a Holder contains products. It is associated with a place where products
 can be, for instance an inventory or the iner space of a machine of station.
 A Holder can contains several products, and behave like a simple FIFO queue.
 Space and create actuators can put product into an holder. The new product
@@ -500,11 +506,11 @@ an infinite speed.</dd>
 </dl>
 <p>Instanciation of a Holder:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">h</span> <span class="o">=</span> <span class="n">emulation</span><span class="o">.</span><span class="n">Holder</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s">&quot;holder1&quot;</span><span class="p">)</span>
-<span class="n">h</span><span class="p">[</span><span class="s">&#39;capacity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">4</span>
-<span class="n">h</span><span class="p">[</span><span class="s">&#39;speed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1</span>
+<span class="n">h</span><span class="p">[</span><span class="s">&#39;capacity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">h</span><span class="p">[</span><span class="s">&#39;speed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
-</blockquote>
+</div></blockquote>
 </div>
 </div>
 <div class="section" id="observers">
@@ -512,7 +518,7 @@ an infinite speed.</dd>
 <div class="section" id="pushobserver">
 <h3>PushObserver<a class="headerlink" href="#pushobserver" title="Permalink to this headline">¶</a></h3>
 <blockquote>
-<p>A Push Observer returns information on product. When a product is ready in
+<div><p>A Push Observer returns information on product. When a product is ready in
 the observed holder (i.e. the first product of the holder can be get), the
 module send a Report. The report attributes depends of the module
 properties. The reports are pushed into the control system.</p>
@@ -542,7 +548,7 @@ properties. The reports are pushed into the control system.</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">obs1</span> <span class="o">=</span> <span class="n">emulation</span><span class="o">.</span><span class="n">PushObserver</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s">&quot;observer1&quot;</span><span class="p">,</span> <span class="s">&quot;ev1&quot;</span><span class="p">,</span> <span class="n">observe_type</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">holder</span> <span class="o">=</span> <span class="n">h</span><span class="p">)</span>
 </pre></div>
 </div>
-</blockquote>
+</div></blockquote>
 </div>
 <div class="section" id="pullobserver">
 <h3>PullObserver<a class="headerlink" href="#pullobserver" title="Permalink to this headline">¶</a></h3>
@@ -559,56 +565,56 @@ properties. The reports are pushed into the control system.</p>
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/logo-dense.png" alt="Logo"/>
             </a></p>
-            <h3><a href="index.html">Table Of Contents</a></h3>
-            <ul>
-<li><a class="reference external" href="">Emulation Modules</a><ul>
-<li><a class="reference external" href="#actuators">Actuators</a><ul>
-<li><a class="reference external" href="#create">Create</a></li>
-<li><a class="reference external" href="#dispose">Dispose</a></li>
-<li><a class="reference external" href="#shape">Shape</a></li>
-<li><a class="reference external" href="#space">Space</a></li>
-<li><a class="reference external" href="#assemble">Assemble</a></li>
-<li><a class="reference external" href="#disassemble">Disassemble</a></li>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Emulation Modules</a><ul>
+<li><a class="reference internal" href="#actuators">Actuators</a><ul>
+<li><a class="reference internal" href="#create">Create</a></li>
+<li><a class="reference internal" href="#dispose">Dispose</a></li>
+<li><a class="reference internal" href="#shape">Shape</a></li>
+<li><a class="reference internal" href="#space">Space</a></li>
+<li><a class="reference internal" href="#assemble">Assemble</a></li>
+<li><a class="reference internal" href="#disassemble">Disassemble</a></li>
 </ul>
 </li>
-<li><a class="reference external" href="#physical-processes">Physical Processes</a><ul>
-<li><a class="reference external" href="#failure">Failure</a></li>
-<li><a class="reference external" href="#holder">Holder</a></li>
+<li><a class="reference internal" href="#physical-processes">Physical Processes</a><ul>
+<li><a class="reference internal" href="#failure">Failure</a></li>
+<li><a class="reference internal" href="#holder">Holder</a></li>
 </ul>
 </li>
-<li><a class="reference external" href="#observers">Observers</a><ul>
-<li><a class="reference external" href="#pushobserver">PushObserver</a></li>
-<li><a class="reference external" href="#pullobserver">PullObserver</a></li>
+<li><a class="reference internal" href="#observers">Observers</a><ul>
+<li><a class="reference internal" href="#pushobserver">PushObserver</a></li>
+<li><a class="reference internal" href="#pullobserver">PullObserver</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 
-            <h4>Previous topic</h4>
-            <p class="topless"><a href="concepts.html"
-                                  title="previous chapter">Concepts</a></p>
-            <h4>Next topic</h4>
-            <p class="topless"><a href="products.html"
-                                  title="next chapter">Products</a></p>
-            <h3>This Page</h3>
-            <ul class="this-page-menu">
-              <li><a href="_sources/emulation.txt"
-                     rel="nofollow">Show Source</a></li>
-            </ul>
-          <div id="searchbox" style="display: none">
-            <h3>Quick search</h3>
-              <form class="search" action="search.html" method="get">
-                <input type="text" name="q" size="18" />
-                <input type="submit" value="Go" />
-                <input type="hidden" name="check_keywords" value="yes" />
-                <input type="hidden" name="area" value="default" />
-              </form>
-              <p class="searchtip" style="font-size: 90%">
-              Enter search terms or a module, class or function name.
-              </p>
-          </div>
-          <script type="text/javascript">$('#searchbox').show(0);</script>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="concepts.html"
+                        title="previous chapter">Concepts</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="products.html"
+                        title="next chapter">Products</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/emulation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -625,12 +631,12 @@ properties. The reports are pushed into the control system.</p>
         <li class="right" >
           <a href="concepts.html" title="Concepts"
              >previous</a> |</li>
-        <li><a href="index.html">emulica v0.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">emulica 0.8 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-      &copy; Copyright 2009, Rémi Pannequin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.2.
+        &copy; Copyright 2013, Rémi Pannequin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>

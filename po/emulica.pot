@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-23 20:51+0100\n"
+"POT-Creation-Date: 2013-01-29 12:52+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -58,191 +58,191 @@ msgstr ""
 msgid "received request {0}"
 msgstr ""
 
-#: ../emulica/controler.py:289 ../scripts/emulica_client.py:38
+#: ../emulica/controler.py:289 ../scripts/emulica_client.py:49
 msgid "Error in processing message: {0}"
 msgstr ""
 
-#: ../emulica/results.py:55
+#: ../emulica/results.py:52
 msgid "Product Chart"
 msgstr ""
 
-#: ../emulica/results.py:58
+#: ../emulica/results.py:55
 msgid "Gantt Chart"
 msgstr ""
 
-#: ../emulica/results.py:61
+#: ../emulica/results.py:58
 msgid "Holder occupation"
 msgstr ""
 
-#: ../emulica/results.py:84
+#: ../emulica/results.py:81
 msgid "Summary"
 msgstr ""
 
-#: ../emulica/results.py:93
+#: ../emulica/results.py:90
 msgid "Export results..."
 msgstr ""
 
-#: ../emulica/results.py:119 ../data/ui/EmulicaWindow.ui.h:37
+#: ../emulica/results.py:116 ../data/ui/EmulicaWindow.ui.h:58
 msgid "Include all"
 msgstr ""
 
-#: ../emulica/results.py:122
+#: ../emulica/results.py:119
 msgid "Type of chart"
 msgstr ""
 
-#: ../emulica/results.py:161
+#: ../emulica/results.py:158
 msgid "Save Results as:"
 msgstr ""
 
-#: ../emulica/results.py:174
+#: ../emulica/results.py:171
 msgid "Include raw result (csv)"
 msgstr ""
 
-#: ../emulica/results.py:175
+#: ../emulica/results.py:172
 msgid "Include summary (txt)"
 msgstr ""
 
-#: ../emulica/results.py:179
+#: ../emulica/results.py:176
 msgid "File prefix:"
 msgstr ""
 
-#: ../emulica/results.py:186
+#: ../emulica/results.py:183
 msgid "Saving Directory"
 msgstr ""
 
-#: ../emulica/properties.py:273
+#: ../emulica/properties.py:270
 msgid "changing setup: ({initial}, {final}) -> ({new_init}, {new_final})"
 msgstr ""
 
-#: ../emulica/properties.py:280
+#: ../emulica/properties.py:277
 msgid "changing setup time: {0:f}) -> {1:f}"
 msgstr ""
 
-#: ../emulica/properties.py:421
+#: ../emulica/properties.py:418
 msgid "could not evaluate expression {0}"
 msgstr ""
 
-#: ../emulica/properties.py:461 ../data/ui/ModelPropertiesDialog.ui.h:2
+#: ../emulica/properties.py:458 ../data/ui/ModelPropertiesDialog.ui.h:2
 msgid "Module"
 msgstr ""
 
-#: ../emulica/properties.py:462
+#: ../emulica/properties.py:459
 msgid "String"
 msgstr ""
 
-#: ../emulica/properties.py:463
+#: ../emulica/properties.py:460
 msgid "Boolean"
 msgstr ""
 
-#: ../emulica/properties.py:464
+#: ../emulica/properties.py:461
 msgid "Integer"
 msgstr ""
 
-#: ../emulica/properties.py:465
+#: ../emulica/properties.py:462
 msgid "Float"
 msgstr ""
 
-#: ../emulica/properties.py:466
+#: ../emulica/properties.py:463
 msgid "List of modules"
 msgstr ""
 
-#: ../emulica/properties.py:467 ../emulica/emulation.py:1137
-#: ../emulica/emulation.py:1264 ../emulica/emulation.py:1411
-#: ../emulica/emulation.py:1551
+#: ../emulica/properties.py:464 ../emulica/emulation.py:1134
+#: ../emulica/emulation.py:1261 ../emulica/emulation.py:1408
+#: ../emulica/emulation.py:1548
 msgid "Program table"
 msgstr ""
 
-#: ../emulica/properties.py:468
+#: ../emulica/properties.py:465
 msgid "Setup table"
 msgstr ""
 
-#: ../emulica/properties.py:469
+#: ../emulica/properties.py:466
 msgid "Evaluable string"
 msgstr ""
 
-#: ../emulica/properties.py:470
+#: ../emulica/properties.py:467
 msgid "List of physical properties"
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:260
+#: ../emulica/EmulicaWindow.py:263
 msgid "running"
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:271
+#: ../emulica/EmulicaWindow.py:274
 msgid "starting"
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:277
+#: ../emulica/EmulicaWindow.py:280
 msgid "finished"
 msgstr ""
 
-#. TODO: format traceback using pango markup
-#: ../emulica/EmulicaWindow.py:287
+#. TODO: format traceback using Pango markup
+#: ../emulica/EmulicaWindow.py:292
 msgid "Exception when runing emulation:\n"
 msgstr ""
 
 #. we clear also statusbar !
-#: ../emulica/EmulicaWindow.py:300
+#: ../emulica/EmulicaWindow.py:305
 msgid "ready"
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:317
+#: ../emulica/EmulicaWindow.py:322
 msgid "Save File..."
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:376
+#: ../emulica/EmulicaWindow.py:381
 msgid "untitled"
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:381
+#: ../emulica/EmulicaWindow.py:386
 msgid "Do you want to save modifications in document {0} before closing?"
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:382
+#: ../emulica/EmulicaWindow.py:387
 msgid "Close without saving"
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:385
+#: ../emulica/EmulicaWindow.py:390
 msgid "If you don't save all modifications will be lost."
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:406
+#: ../emulica/EmulicaWindow.py:411
 msgid "Open File..."
 msgstr ""
 
 #. add Loading message to status bar and ensure GUI is current
-#: ../emulica/EmulicaWindow.py:444
+#: ../emulica/EmulicaWindow.py:449
 msgid "Loading {0}"
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:463
+#: ../emulica/EmulicaWindow.py:468
 msgid "module {name} present in layout was not found. removing from layout."
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:479
+#: ../emulica/EmulicaWindow.py:484
 msgid "model did not have any layout."
 msgstr ""
 
 #. error loading file, show message to user
-#: ../emulica/EmulicaWindow.py:494
+#: ../emulica/EmulicaWindow.py:499
 msgid ""
 "Could not open file: {filename}s\n"
 " {warning}"
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:506 ../emulica/EmulicaWindow.py:508
+#: ../emulica/EmulicaWindow.py:511 ../emulica/EmulicaWindow.py:513
 msgid "Saving {0}"
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:518
+#: ../emulica/EmulicaWindow.py:523
 msgid "Could not save file: {0}"
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:642
+#: ../emulica/EmulicaWindow.py:647
 msgid "File: {0}"
 msgstr ""
 
-#: ../emulica/EmulicaWindow.py:643
+#: ../emulica/EmulicaWindow.py:648
 msgid "File: (UNTITLED)"
 msgstr ""
 
@@ -322,27 +322,27 @@ msgstr ""
 msgid "Edit program table"
 msgstr ""
 
-#: ../emulica/propertiesDialog.py:663
+#: ../emulica/propertiesDialog.py:666
 msgid "program{0}"
 msgstr ""
 
-#: ../emulica/propertiesDialog.py:728
+#: ../emulica/propertiesDialog.py:731
 msgid "changing program {name} to {new_name}"
 msgstr ""
 
-#: ../emulica/propertiesDialog.py:754
+#: ../emulica/propertiesDialog.py:757
 msgid "Edit Setup Matrix"
 msgstr ""
 
-#: ../emulica/propertiesDialog.py:777
+#: ../emulica/propertiesDialog.py:780
 msgid "Default setup time:"
 msgstr ""
 
-#: ../emulica/propertiesDialog.py:828
+#: ../emulica/propertiesDialog.py:831
 msgid "initial"
 msgstr ""
 
-#: ../emulica/propertiesDialog.py:828
+#: ../emulica/propertiesDialog.py:831
 msgid "final"
 msgstr ""
 
@@ -370,316 +370,316 @@ msgid ""
 "# with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
 msgstr ""
 
-#: ../emulica/control.py:83 ../emulica/modelling.py:105
+#: ../emulica/control.py:86 ../emulica/modelling.py:102
 msgid "Import emulation model..."
 msgstr ""
 
-#: ../emulica/control.py:99
+#: ../emulica/control.py:102
 msgid "Export control model..."
 msgstr ""
 
-#: ../emulica/control.py:112
+#: ../emulica/control.py:115
 msgid "export failed"
 msgstr ""
 
 #. create dialog with combo to select the module to send request to and set the Request parameters.
 #. create dialog with combo to select the module frow which to get report
-#: ../emulica/control.py:218 ../emulica/control.py:320
-#: ../emulica/control.py:398
+#: ../emulica/control.py:217 ../emulica/control.py:319
+#: ../emulica/control.py:397
 msgid "Select request parameters"
 msgstr ""
 
-#: ../emulica/control.py:224
+#: ../emulica/control.py:223
 msgid "Receiver:"
 msgstr ""
 
-#: ../emulica/control.py:224
+#: ../emulica/control.py:223
 msgid "Action:"
 msgstr ""
 
-#: ../emulica/control.py:224
+#: ../emulica/control.py:223
 msgid "Date:"
 msgstr ""
 
 #. hidden widgets...
-#: ../emulica/control.py:245
+#: ../emulica/control.py:244
 msgid "Program:"
 msgstr ""
 
-#: ../emulica/control.py:245
+#: ../emulica/control.py:244
 msgid "Product type:"
 msgstr ""
 
-#: ../emulica/control.py:245
+#: ../emulica/control.py:244
 msgid "Product ID:"
 msgstr ""
 
-#: ../emulica/control.py:326
+#: ../emulica/control.py:325
 msgid "Module to monitor:"
 msgstr ""
 
-#: ../emulica/control.py:352
+#: ../emulica/control.py:351
 msgid "Control code compiled succefully."
 msgstr ""
 
-#: ../emulica/control.py:354
+#: ../emulica/control.py:353
 msgid "Control code compilation failed."
 msgstr ""
 
-#: ../emulica/control.py:359
+#: ../emulica/control.py:358
 msgid "Select control snippet to insert"
 msgstr ""
 
-#: ../emulica/control.py:364
+#: ../emulica/control.py:363
 msgid "Main Import"
 msgstr ""
 
-#: ../emulica/control.py:365
+#: ../emulica/control.py:364
 msgid "Empty control class"
 msgstr ""
 
-#: ../emulica/control.py:366
+#: ../emulica/control.py:365
 msgid "Emulation module"
 msgstr ""
 
-#: ../emulica/control.py:367
+#: ../emulica/control.py:366
 msgid "Put request"
 msgstr ""
 
-#: ../emulica/control.py:368
+#: ../emulica/control.py:367
 msgid "Get report"
 msgstr ""
 
-#: ../emulica/control.py:369
+#: ../emulica/control.py:368
 msgid "Wait idle state"
 msgstr ""
 
-#: ../emulica/control.py:375
+#: ../emulica/control.py:374
 msgid "Availlable Snippets"
 msgstr ""
 
-#: ../emulica/control.py:404
+#: ../emulica/control.py:403
 msgid "Get report from module:"
 msgstr ""
 
-#: ../emulica/control.py:454
+#: ../emulica/control.py:464
 msgid "{name}: {message}"
 msgstr ""
 
-#: ../emulica/control.py:462 ../emulica/emuML.py:576
+#: ../emulica/control.py:472 ../emulica/emuML.py:582
 msgid "control code compilation sucessfull"
 msgstr ""
 
-#: ../emulica/emulation.py:167
+#: ../emulica/emulation.py:164
 msgid ""
 "Cannot rename module {name} in {new_name}: there is already a module of this "
 "name."
 msgstr ""
 
-#: ../emulica/emulation.py:198 ../emulica/emulation.py:221
+#: ../emulica/emulation.py:195 ../emulica/emulation.py:218
 msgid ""
 "A new request_socket must be created, but there is already one, and the "
 "multiple_observation parameter was not set to True"
 msgstr ""
 
-#: ../emulica/emulation.py:301
+#: ../emulica/emulation.py:298
 msgid "a default path will be used"
 msgstr ""
 
-#: ../emulica/emulation.py:331
+#: ../emulica/emulation.py:328
 msgid "get_module returned None because name was None or ''"
 msgstr ""
 
-#: ../emulica/emulation.py:340 ../emulica/emulation.py:357
+#: ../emulica/emulation.py:337 ../emulica/emulation.py:354
 msgid "Invalid module name: {0}"
 msgstr ""
 
-#: ../emulica/emulation.py:392 ../emulica/emulation.py:433
+#: ../emulica/emulation.py:389 ../emulica/emulation.py:430
 msgid ""
 "Submodels cannot use this method. Only the top level model can be executed."
 msgstr ""
 
-#: ../emulica/emulation.py:434
+#: ../emulica/emulation.py:431
 msgid "simulation stopped at t={0}"
 msgstr ""
 
-#: ../emulica/emulation.py:482
+#: ../emulica/emulation.py:479
 msgid "Cannot create module {0}: there is already a module of this name"
 msgstr ""
 
-#: ../emulica/emulation.py:485
+#: ../emulica/emulation.py:482
 msgid "'main' is a reserved name"
 msgstr ""
 
-#: ../emulica/emulation.py:511
+#: ../emulica/emulation.py:508
 msgid "inserting request for module {0}"
 msgstr ""
 
-#: ../emulica/emulation.py:523
+#: ../emulica/emulation.py:520
 msgid "registering control process {0}"
 msgstr ""
 
-#: ../emulica/emulation.py:608
+#: ../emulica/emulation.py:605
 msgid "product ID {0} has already been used"
 msgstr ""
 
-#: ../emulica/emulation.py:623
+#: ../emulica/emulation.py:620
 msgid "product {pid} created at {time}"
 msgstr ""
 
-#: ../emulica/emulation.py:662
+#: ../emulica/emulation.py:659
 msgid "product {pid} disposed at {time}"
 msgstr ""
 
-#: ../emulica/emulation.py:748
+#: ../emulica/emulation.py:745
 msgid "Request {what} to {who} at t={when}"
 msgstr ""
 
-#: ../emulica/emulation.py:751 ../emulica/emulation.py:808
+#: ../emulica/emulation.py:748 ../emulica/emulation.py:805
 msgid "parameters={0}"
 msgstr ""
 
-#: ../emulica/emulation.py:753 ../emulica/emulation.py:810
+#: ../emulica/emulation.py:750 ../emulica/emulation.py:807
 msgid "location={0}"
 msgstr ""
 
-#: ../emulica/emulation.py:755 ../emulica/emulation.py:812
+#: ../emulica/emulation.py:752 ../emulica/emulation.py:809
 msgid "comment={0}"
 msgstr ""
 
-#: ../emulica/emulation.py:805
+#: ../emulica/emulation.py:802
 msgid "Report {what} from {who} at t={when}"
 msgstr ""
 
-#: ../emulica/emulation.py:894
+#: ../emulica/emulation.py:891
 msgid ""
 "Can not add programs to actuator without program tables (create and dispose "
 "actuators)"
 msgstr ""
 
-#: ../emulica/emulation.py:919 ../data/ui/EmulicaWindow.ui.h:26
+#: ../emulica/emulation.py:916 ../data/ui/EmulicaWindow.ui.h:52
 msgid "Processes"
 msgstr ""
 
-#: ../emulica/emulation.py:920
+#: ../emulica/emulation.py:917
 msgid "MTBF"
 msgstr ""
 
-#: ../emulica/emulation.py:921
+#: ../emulica/emulation.py:918
 msgid "MTTR"
 msgstr ""
 
-#: ../emulica/emulation.py:922
+#: ../emulica/emulation.py:919
 msgid "Performance Degradation"
 msgstr ""
 
-#: ../emulica/emulation.py:923
+#: ../emulica/emulation.py:920
 msgid "Repeat"
 msgstr ""
 
-#: ../emulica/emulation.py:1019 ../emulica/emulation.py:1129
-#: ../emulica/emulation.py:1537 ../emulica/emuML.py:499
+#: ../emulica/emulation.py:1016 ../emulica/emulation.py:1126
+#: ../emulica/emulation.py:1534 ../emulica/emuML.py:503
 msgid "Destination"
 msgstr ""
 
-#: ../emulica/emulation.py:1023
+#: ../emulica/emulation.py:1020
 msgid "Products properties"
 msgstr ""
 
-#: ../emulica/emulation.py:1036
+#: ../emulica/emulation.py:1033
 msgid ""
 "This module has not be properly initialized: destination has not been set"
 msgstr ""
 
-#: ../emulica/emulation.py:1062
+#: ../emulica/emulation.py:1059
 msgid ""
 "physical property {0} from create request supersedes property from module"
 msgstr ""
 
-#: ../emulica/emulation.py:1088 ../emulica/emulation.py:1128
-#: ../emulica/emulation.py:1400 ../emulica/emuML.py:498
+#: ../emulica/emulation.py:1085 ../emulica/emulation.py:1125
+#: ../emulica/emulation.py:1397 ../emulica/emuML.py:502
 msgid "Source"
 msgstr ""
 
-#: ../emulica/emulation.py:1095
+#: ../emulica/emulation.py:1092
 msgid "This module has not be properly initialized: source has not been set"
 msgstr ""
 
-#: ../emulica/emulation.py:1141 ../emulica/emulation.py:1268
-#: ../emulica/emulation.py:1415 ../emulica/emulation.py:1547
+#: ../emulica/emulation.py:1138 ../emulica/emulation.py:1265
+#: ../emulica/emulation.py:1412 ../emulica/emulation.py:1544
 msgid "Setup matrix"
 msgstr ""
 
-#: ../emulica/emulation.py:1157
+#: ../emulica/emulation.py:1154
 msgid "program {0} is not in the program table"
 msgstr ""
 
-#: ../emulica/emulation.py:1159 ../emulica/emulation.py:1292
-#: ../emulica/emulation.py:1438 ../emulica/emulation.py:1440
-#: ../emulica/emulation.py:1575
+#: ../emulica/emulation.py:1156 ../emulica/emulation.py:1289
+#: ../emulica/emulation.py:1435 ../emulica/emulation.py:1437
+#: ../emulica/emulation.py:1572
 msgid "module {name} doing setup at {t}"
 msgstr ""
 
-#: ../emulica/emulation.py:1256 ../emulica/emuML.py:500
+#: ../emulica/emulation.py:1253 ../emulica/emuML.py:504
 msgid "Physical changes"
 msgstr ""
 
-#: ../emulica/emulation.py:1269 ../emulica/emulation.py:1406
-#: ../emulica/emulation.py:1543 ../emulica/emulation.py:1890
-#: ../emulica/emulation.py:1983
+#: ../emulica/emulation.py:1266 ../emulica/emulation.py:1403
+#: ../emulica/emulation.py:1540 ../emulica/emulation.py:1887
+#: ../emulica/emulation.py:1980 ../data/ui/EmulicaWindow.ui.h:7
 msgid "Holder"
 msgstr ""
 
-#: ../emulica/emulation.py:1277 ../emulica/emulation.py:1422
-#: ../emulica/emulation.py:1559
+#: ../emulica/emulation.py:1274 ../emulica/emulation.py:1419
+#: ../emulica/emulation.py:1556
 msgid "This module has not be properly initialized: holder has not been set"
 msgstr ""
 
-#: ../emulica/emulation.py:1335
+#: ../emulica/emulation.py:1332
 msgid "cannot treat more than one product at once"
 msgstr ""
 
-#: ../emulica/emulation.py:1349
+#: ../emulica/emulation.py:1346
 msgid "could not find physical property {0}"
 msgstr ""
 
-#: ../emulica/emulation.py:1423
+#: ../emulica/emulation.py:1420
 msgid "starting assembleAct {0}"
 msgstr ""
 
-#: ../emulica/emulation.py:1429
+#: ../emulica/emulation.py:1426
 msgid "module {name} waiting {time}..."
 msgstr ""
 
-#: ../emulica/emulation.py:1444
+#: ../emulica/emulation.py:1441
 msgid "module {name} doing assembly at {t}"
 msgstr ""
 
-#: ../emulica/emulation.py:1447
+#: ../emulica/emulation.py:1444
 msgid "module {name} ready at {t}"
 msgstr ""
 
-#: ../emulica/emulation.py:1451
+#: ../emulica/emulation.py:1448
 msgid "begining setup on module {0}"
 msgstr ""
 
 #. report
-#: ../emulica/emulation.py:1465
+#: ../emulica/emulation.py:1462
 msgid "finished setup on module {0}"
 msgstr ""
 
 #. request own resource, record begining
-#: ../emulica/emulation.py:1472
+#: ../emulica/emulation.py:1469
 msgid "begining assembly on module {0}"
 msgstr ""
 
 #. first lock 'master' product
-#: ../emulica/emulation.py:1476
+#: ../emulica/emulation.py:1473
 msgid "locking holder on module {0}"
 msgstr ""
 
 #. then fetch product to assemble from holder
-#: ../emulica/emulation.py:1480
+#: ../emulica/emulation.py:1477
 msgid "fetching products to assemble in module {0}"
 msgstr ""
 
@@ -687,76 +687,76 @@ msgstr ""
 #. release resources and record end
 #. get component
 #. key = program.transform['key']
-#: ../emulica/emulation.py:1496 ../emulica/emulation.py:1622
+#: ../emulica/emulation.py:1493 ../emulica/emulation.py:1619
 msgid "ignoring product in holder {0} other than the first one"
 msgstr ""
 
-#: ../emulica/emulation.py:1500
+#: ../emulica/emulation.py:1497
 msgid "assembling with an empty product"
 msgstr ""
 
-#: ../emulica/emulation.py:1561
+#: ../emulica/emulation.py:1558
 msgid "starting diassembleAct {0}"
 msgstr ""
 
 #. request own resource, record begining
-#: ../emulica/emulation.py:1603
+#: ../emulica/emulation.py:1600
 msgid "begining diassembling on module {0}"
 msgstr ""
 
-#: ../emulica/emulation.py:1627
+#: ../emulica/emulation.py:1624
 msgid "ignoring request to disassemble: no product in holder {0}"
 msgstr ""
 
-#: ../emulica/emulation.py:1670
+#: ../emulica/emulation.py:1667
 msgid "Capacity"
 msgstr ""
 
-#: ../emulica/emulation.py:1671
+#: ../emulica/emulation.py:1668
 msgid "Speed"
 msgstr ""
 
-#: ../emulica/emulation.py:1708
+#: ../emulica/emulation.py:1705
 msgid "no product ready in this holder"
 msgstr ""
 
-#: ../emulica/emulation.py:1729
+#: ../emulica/emulation.py:1726
 msgid "t={now}: reactivating obs at {delayed}"
 msgstr ""
 
-#: ../emulica/emulation.py:1857
+#: ../emulica/emulation.py:1854
 msgid "product {pid} is ready at {time}"
 msgstr ""
 
-#: ../emulica/emulation.py:1889 ../emulica/emulation.py:1982
+#: ../emulica/emulation.py:1886 ../emulica/emulation.py:1979
 msgid "Event Name"
 msgstr ""
 
-#: ../emulica/emulation.py:1897
+#: ../emulica/emulation.py:1894
 msgid "Observe identity"
 msgstr ""
 
-#: ../emulica/emulation.py:1898
+#: ../emulica/emulation.py:1895
 msgid "Observe Type"
 msgstr ""
 
-#: ../emulica/emulation.py:1916 ../emulica/emulation.py:2008
+#: ../emulica/emulation.py:1913 ../emulica/emulation.py:2005
 msgid "t={0}: observation done!"
 msgstr ""
 
-#: ../emulica/emulation.py:1920
+#: ../emulica/emulation.py:1917
 msgid "t={0}: observator passivated..."
 msgstr ""
 
-#: ../emulica/emulation.py:1922
+#: ../emulica/emulation.py:1919
 msgid "t={0}: observator activated..."
 msgstr ""
 
-#: ../emulica/emulation.py:2026
+#: ../emulica/emulation.py:2023
 msgid "(module {name}, t={time}): {message}"
 msgstr ""
 
-#: ../emulica/modelling.py:120
+#: ../emulica/modelling.py:117
 msgid "Export emulation model..."
 msgstr ""
 
@@ -810,165 +810,249 @@ msgid ""
 "modes."
 msgstr ""
 
-#: ../emulica/emuML.py:505
+#: ../emulica/emuML.py:509
 msgid "unable to determine program schema"
 msgstr ""
 
-#: ../emulica/emuML.py:578
+#: ../emulica/emuML.py:584
 msgid "initialization function have not been implemented"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:1
-msgid "Create"
+msgid "Assemble"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:2
 msgid ""
-"Create new emulated products when creation request are sent by the control "
-"system"
+"Assemble the loaded product with another one taken according to programs"
 msgstr ""
 
-#: ../data/ui/EmulicaWindow.ui.h:3 ../emulica.desktop.in.h:1
-msgid "Emulica"
+#: ../data/ui/EmulicaWindow.ui.h:3
+msgid "Create"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:4
-msgid "_File"
+msgid "Create new emulated products into the specified holer"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:5
-msgid "Export"
+msgid "Dispose"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:6
-msgid "Emulation Model..."
-msgstr ""
-
-#: ../data/ui/EmulicaWindow.ui.h:7
-msgid "Control System..."
+msgid "Remove one product from the specified holder "
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:8
-msgid "Results..."
+msgid ""
+"Product holders contain products when they are transformed or are waiting"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:9
-msgid "Import"
+msgid "Manual"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:10
-msgid "_Edit"
+msgid ""
+"manual observer send a report about the product in a holder when requested"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:11
-msgid "_View"
+msgid "Automatic"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:12
-msgid "Modeling"
+msgid "Automatically reports on the first product in a holder when it changes"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:13
-msgid "Add actuator"
+msgid "Shape"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:14
-msgid "Add Process"
+msgid ""
+"Transform the physical properties (shape) of the products in the linked "
+"holder"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:15
-msgid "Add Observer"
+msgid "Space"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:16
-msgid "Execution"
+msgid "Move products from holder to holder"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:17
-msgid "Execution settings..."
+msgid "Add an emulica model in this model"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:18
-msgid "Results"
+msgid "Disassemble"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:19
-msgid "_Help"
+msgid "Remove one product part of an assembly, and send it to a holder"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:20
-msgid "Contents"
+msgid "Add various code snipets in the control code editor"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:21
-msgid "Simulate"
+msgid "Check code syntax"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:22
-msgid "Pause"
+msgid "Check code"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:23
-msgid "Stop"
+msgid "Verify the syntax of the control code"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:24
-msgid "Clear"
+msgid ""
+"Update the initialization funtion so that each control class is registered"
 msgstr ""
 
-#: ../data/ui/EmulicaWindow.ui.h:25 ../emulica/plot.py:41
-msgid "Actuators"
+#: ../data/ui/EmulicaWindow.ui.h:25
+msgid "Module documenation..."
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:26
+msgid "Module Doc..."
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:27
-msgid "Observers"
+msgid "Display help topic about this module type"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:28
-msgid "toolbutton11"
+msgid "Display help topic relative to this type of module"
 msgstr ""
 
-#: ../data/ui/EmulicaWindow.ui.h:29
-msgid "toolbutton12"
+#: ../data/ui/EmulicaWindow.ui.h:29 ../emulica.desktop.in.h:1
+msgid "Emulica"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:30
-msgid "Emulation model"
+msgid "_File"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:31
-msgid "Add Snippet..."
+msgid "Export"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:32
-msgid "Update initialization function"
+msgid "Emulation Model..."
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:33
-msgid "Check syntax"
+msgid "Control System..."
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:34
-msgid "Trace"
+msgid "Results..."
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:35
-msgid "Control system"
+msgid "Import"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:36
-msgid "Type of Chart:"
+msgid "_Edit"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:37
+msgid "_View"
 msgstr ""
 
 #: ../data/ui/EmulicaWindow.ui.h:38
+msgid "Modeling"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:39
+msgid "Add actuator"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:40
+msgid "Add Process"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:41
+msgid "Add Observer"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:42
+msgid "Execution"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:43
+msgid "Execution settings..."
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:44
+msgid "Results"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:45
+msgid "_Help"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:46
+msgid "Contents"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:47
+msgid "Simulate"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:48
+msgid "Pause"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:49
+msgid "Stop"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:50
+msgid "Clear"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:51 ../emulica/plot.py:41
+msgid "Actuators"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:53
+msgid "Observers"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:54
+msgid "Emulation model"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:55
+msgid "Trace"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:56
+msgid "Control system"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:57
+msgid "Type of Chart:"
+msgstr ""
+
+#: ../data/ui/EmulicaWindow.ui.h:59
 msgid "Legend"
 msgstr ""
 
-#: ../emulica/canvas.py:147
+#: ../emulica/canvas.py:151
 msgid "module {0} added"
 msgstr ""
 
-#: ../emulica/canvas.py:158
+#: ../emulica/canvas.py:162
 msgid "module {0} removed"
 msgstr ""
 

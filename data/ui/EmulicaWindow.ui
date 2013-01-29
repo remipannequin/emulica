@@ -4,20 +4,24 @@
   <!-- interface-requires emulica_window 1.0 -->
   <!-- interface-local-resource-path ../media -->
   <object class="GtkToggleAction" id="add_assy">
-    <property name="label">Assemble</property>
+    <property name="label">Add Assemble Actuator</property>
+    <property name="short_label" translatable="yes">Assemble</property>
+    <property name="tooltip" translatable="yes">Assemble the loaded product with another one taken according to programs</property>
     <property name="icon_name">emulica-assemble</property>
     <signal name="toggled" handler="on_add_assy_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="add_create">
-    <property name="label">Create</property>
+    <property name="label">Add Create Actuator</property>
     <property name="short_label" translatable="yes">Create</property>
-    <property name="tooltip" translatable="yes">Create new emulated products when creation request are sent by the control system</property>
+    <property name="tooltip" translatable="yes">Create new emulated products into the specified holer</property>
     <property name="icon_name">emulica-create</property>
     <property name="always_show_image">True</property>
     <signal name="toggled" handler="on_add_create_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="add_dispose">
-    <property name="label">Dispose</property>
+    <property name="label">Add Dispose Actuator</property>
+    <property name="short_label" translatable="yes">Dispose</property>
+    <property name="tooltip" translatable="yes">Remove one product from the specified holder </property>
     <property name="icon_name">emulica-dispose</property>
     <signal name="toggled" handler="on_add_dispose_toggled" swapped="no"/>
   </object>
@@ -27,37 +31,50 @@
     <signal name="toggled" handler="on_add_failure_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="add_holder">
-    <property name="label">Holder</property>
+    <property name="label">Add product holder</property>
+    <property name="short_label" translatable="yes">Holder</property>
+    <property name="tooltip" translatable="yes">Product holders contain products when they are transformed or are waiting</property>
     <property name="icon_name">emulica-fifo</property>
     <signal name="toggled" handler="on_add_holder_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="add_pullobs">
-    <property name="label">Manual</property>
+    <property name="label">Add manual observer</property>
+    <property name="short_label" translatable="yes">Manual</property>
+    <property name="tooltip" translatable="yes">manual observer send a report about the product in a holder when requested</property>
     <property name="icon_name">emulica-pullobs</property>
     <signal name="toggled" handler="on_add_pullobs_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="add_pushobs">
-    <property name="label">Automatic</property>
+    <property name="label">Add automatic observer</property>
+    <property name="short_label" translatable="yes">Automatic</property>
+    <property name="tooltip" translatable="yes">Automatically reports on the first product in a holder when it changes</property>
     <property name="icon_name">emulica-pushobs</property>
     <signal name="toggled" handler="on_add_pushobs_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="add_shape">
-    <property name="label">Shape</property>
+    <property name="label">Add shape actuator</property>
+    <property name="short_label" translatable="yes">Shape</property>
+    <property name="tooltip" translatable="yes">Transform the physical properties (shape) of the products in the linked holder</property>
     <property name="icon_name">emulica-shape</property>
     <signal name="toggled" handler="on_add_shape_toggled" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="add_space">
-    <property name="label">Space</property>
+    <property name="label">Add space actuator</property>
+    <property name="short_label" translatable="yes">Space</property>
+    <property name="tooltip" translatable="yes">Move products from holder to holder</property>
     <property name="icon_name">emulica-space</property>
     <signal name="toggled" handler="on_add_space_toggled" swapped="no"/>
   </object>
   <object class="GtkAction" id="add_submodel">
     <property name="label">Add submodel...</property>
+    <property name="tooltip" translatable="yes">Add an emulica model in this model</property>
     <property name="icon_name">emulica-file</property>
     <signal name="activate" handler="on_add_submodel_activate" swapped="no"/>
   </object>
   <object class="GtkToggleAction" id="add_unassy">
-    <property name="label">Disassemble</property>
+    <property name="label">Add disassemble actuator</property>
+    <property name="short_label" translatable="yes">Disassemble</property>
+    <property name="tooltip" translatable="yes">Remove one product part of an assembly, and send it to a holder</property>
     <property name="icon_name">emulica-disassemble</property>
     <signal name="toggled" handler="on_add_unassy_toggled" swapped="no"/>
   </object>
@@ -72,12 +89,14 @@
   <object class="GtkAction" id="control_check">
     <property name="label" translatable="yes">Check code syntax</property>
     <property name="short_label" translatable="yes">Check code</property>
+    <property name="tooltip" translatable="yes">Verify the syntax of the control code</property>
     <property name="stock_id">gtk-info</property>
     <property name="is_important">True</property>
     <signal name="activate" handler="on_control_check_activate" swapped="no"/>
   </object>
   <object class="GtkAction" id="control_update">
     <property name="label">Update initialization function</property>
+    <property name="tooltip" translatable="yes">Update the initialization funtion so that each control class is registered</property>
     <property name="stock_id">gtk-refresh</property>
     <property name="is_important">True</property>
     <property name="always_show_image">True</property>
@@ -99,6 +118,13 @@
     <property name="label">Model Interface...</property>
     <property name="stock_id">gtk-connect</property>
     <signal name="activate" handler="on_model_properties_activate" swapped="no"/>
+  </object>
+  <object class="GtkAction" id="modulehelp">
+    <property name="label" translatable="yes">Module documenation...</property>
+    <property name="short_label" translatable="yes">Module Doc...</property>
+    <property name="tooltip" translatable="yes">Display help topic about this module type</property>
+    <property name="stock_id">gtk-help</property>
+    <signal name="activate" handler="on_modulehelp_activate" swapped="no"/>
   </object>
   <object class="GtkAction" id="new">
     <property name="stock_id">gtk-new</property>
@@ -247,6 +273,20 @@
         <property name="can_focus">False</property>
         <property name="use_underline">True</property>
         <property name="use_stock">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="menuitem1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="help_contextmenuitem">
+        <property name="related_action">modulehelp</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="tooltip_text" translatable="yes">Display help topic relative to this type of module</property>
       </object>
     </child>
   </object>
@@ -1987,10 +2027,10 @@
       </object>
     </child>
   </object>
-  <object class="GtkImage" id="image1">
+  <object class="GtkImage" id="image2">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="stock">gtk-execute</property>
+    <property name="stock">gtk-help</property>
   </object>
   <object class="GtkImage" id="image10">
     <property name="visible">True</property>
@@ -2006,11 +2046,6 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">../media/emulica-fifo.svg</property>
-  </object>
-  <object class="GtkImage" id="image2">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="stock">gtk-help</property>
   </object>
   <object class="GtkImage" id="image3">
     <property name="visible">True</property>
@@ -2046,5 +2081,10 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="pixbuf">../media/emulica-dispose.svg</property>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-execute</property>
   </object>
 </interface>

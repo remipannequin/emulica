@@ -1,26 +1,32 @@
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Composite Modeling &mdash; emulica v0.6 documentation</title>
+    <title>Composite Modeling &mdash; emulica 0.8 documentation</title>
+    
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.6',
-        COLLAPSE_MODINDEX: false,
+        VERSION:     '0.8',
+        COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="shortcut icon" href="_static/favicon.png"/>
-    <link rel="top" title="emulica v0.6 documentation" href="index.html" />
+    <link rel="top" title="emulica 0.8 documentation" href="index.html" />
     <link rel="next" title="Emulica File Format" href="file_format.html" />
     <link rel="prev" title="Properties" href="properties.html" /> 
   </head>
@@ -37,7 +43,7 @@
         <li class="right" >
           <a href="properties.html" title="Properties"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">emulica v0.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">emulica 0.8 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -52,7 +58,7 @@
 <div class="section" id="rationale">
 <h2>Rationale:<a class="headerlink" href="#rationale" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<p>Some systems include control routine. For instance, in the tracilog assembly
+<div><p>Some systems include control routine. For instance, in the tracilog assembly
 cell, the PLC manage both a space transformation( station loading and unloading)
 and a shape transformation (station operation). Therefore, a set of modules must
 be able to receive Requests and to send Reports. Therefore, a new module:
@@ -62,12 +68,12 @@ submodel must be included.</p>
 includes its own control routine. Thus, we will be able to create some bigger
 modelling components to change the modelling granularity (in particular in case
 of routing/scheduling studies).</p>
-</blockquote>
+</div></blockquote>
 </div>
 <div class="section" id="implementation">
 <h2>Implementation:<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<p>So, a <tt class="xref docutils literal"><span class="pre">Model</span></tt> is a <tt class="xref docutils literal"><span class="pre">Module</span></tt>, and can be added in another model.
+<div><p>So, a <tt class="xref py py-class docutils literal"><span class="pre">Model</span></tt> is a <tt class="xref py py-class docutils literal"><span class="pre">Module</span></tt>, and can be added in another model.
 When a submodel is added to a model, all (or some, see below) the modules of
 the submodel are declared is the super model. As a model is a Module, a
 model must have a name. By convention, the default name for the top-level
@@ -83,7 +89,7 @@ interact between composed and composite models (for instance, some holders and
 observers must be public). However, some module should be private, to avoid
 potential conflict. This is not critical, through, because we can choose to
 trust the modeller.</p>
-</blockquote>
+</div></blockquote>
 </div>
 <div class="section" id="integration-in-gseme">
 <h2>Integration in gseme:<a class="headerlink" href="#integration-in-gseme" title="Permalink to this headline">¶</a></h2>
@@ -114,42 +120,42 @@ The main model create and dispose products.</p>
             <p class="logo"><a href="index.html">
               <img class="logo" src="_static/logo-dense.png" alt="Logo"/>
             </a></p>
-            <h3><a href="index.html">Table Of Contents</a></h3>
-            <ul>
-<li><a class="reference external" href="">Composite Modeling</a><ul>
-<li><a class="reference external" href="#rationale">Rationale:</a></li>
-<li><a class="reference external" href="#implementation">Implementation:</a></li>
-<li><a class="reference external" href="#integration-in-gseme">Integration in gseme:</a></li>
-<li><a class="reference external" href="#graphical-representation">Graphical representation:</a></li>
-<li><a class="reference external" href="#tests">Tests:</a></li>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Composite Modeling</a><ul>
+<li><a class="reference internal" href="#rationale">Rationale:</a></li>
+<li><a class="reference internal" href="#implementation">Implementation:</a></li>
+<li><a class="reference internal" href="#integration-in-gseme">Integration in gseme:</a></li>
+<li><a class="reference internal" href="#graphical-representation">Graphical representation:</a></li>
+<li><a class="reference internal" href="#tests">Tests:</a></li>
 </ul>
 </li>
 </ul>
 
-            <h4>Previous topic</h4>
-            <p class="topless"><a href="properties.html"
-                                  title="previous chapter">Properties</a></p>
-            <h4>Next topic</h4>
-            <p class="topless"><a href="file_format.html"
-                                  title="next chapter">Emulica File Format</a></p>
-            <h3>This Page</h3>
-            <ul class="this-page-menu">
-              <li><a href="_sources/composite.txt"
-                     rel="nofollow">Show Source</a></li>
-            </ul>
-          <div id="searchbox" style="display: none">
-            <h3>Quick search</h3>
-              <form class="search" action="search.html" method="get">
-                <input type="text" name="q" size="18" />
-                <input type="submit" value="Go" />
-                <input type="hidden" name="check_keywords" value="yes" />
-                <input type="hidden" name="area" value="default" />
-              </form>
-              <p class="searchtip" style="font-size: 90%">
-              Enter search terms or a module, class or function name.
-              </p>
-          </div>
-          <script type="text/javascript">$('#searchbox').show(0);</script>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="properties.html"
+                        title="previous chapter">Properties</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="file_format.html"
+                        title="next chapter">Emulica File Format</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/composite.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
@@ -166,12 +172,12 @@ The main model create and dispose products.</p>
         <li class="right" >
           <a href="properties.html" title="Properties"
              >previous</a> |</li>
-        <li><a href="index.html">emulica v0.6 documentation</a> &raquo;</li> 
+        <li><a href="index.html">emulica 0.8 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
-      &copy; Copyright 2009, Rémi Pannequin.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.2.
+        &copy; Copyright 2013, Rémi Pannequin.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
     </div>
   </body>
 </html>
