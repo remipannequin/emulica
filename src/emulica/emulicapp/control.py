@@ -521,7 +521,7 @@ class LogBuffer(gtk.TextBuffer):
     
     def __init__(self, out):
         self.stdout = out
-        Gtk.TextBuffer.__init__(self)
+        gtk.TextBuffer.__init__(self)
         self.tee = False
         
     def start_tee(self):
