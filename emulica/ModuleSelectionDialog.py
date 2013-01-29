@@ -67,7 +67,7 @@ class ModuleSelectionDialog(Gtk.Dialog):
 
     def selected(self):
         """Return the list of selected modules name"""
-        return [name for (checked, name) in self.model if checked]
+        return self.sel
 
     def select_all(self, button):
         """Select all the rows"""
@@ -87,15 +87,19 @@ class ModuleSelectionDialog(Gtk.Dialog):
     def on_btn_ok_clicked(self, widget, data=None):
         """The user has elected to save the changes.
 
-        Called before the dialog returns Gtk.ResponseType.OK from run().
+        Called before the dialog returns Gtk.ResponseType.ACCEPT from run().
         """
-        pass
+        selection = self.builder.get_object('treeview-selection')
+        (model, paths) = selection.get_selected_rows()
+        print paths
+        self.sel = [self.model[path][0] for path in paths]
 
     def on_btn_cancel_clicked(self, widget, data=None):
         """The user has elected cancel changes.
 
         Called before the dialog returns Gtk.ResponseType.CANCEL for run()
         """
+        self.sel = []
         pass
 
 

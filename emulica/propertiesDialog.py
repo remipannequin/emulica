@@ -25,6 +25,7 @@ from gettext import gettext as _
 gettext.textdomain('emulica')
 
 from gi.repository import Gtk # pylint: disable=E0611
+from gi.repository import Gdk # pylint: disable=E0611
 import emulation
 from properties import *
 gettext.install('emulica')
@@ -226,11 +227,11 @@ class PropertiesBox(Gtk.Table):
         if display.type in [Display.PHYSICAL_PROPERTIES_LIST,
                          Display.REFERENCE_LIST]:
             #treeviews are displayed in a special manner...
-            frame = Gtk.Frame(display.name)
+            frame = Gtk.Frame(label = display.name)
             widget.set_size_request(-1, 100)
             frame.add(widget)
             frame.show()
-            self.attach(frame, 0, 2, self.row, self.row + 1, yoptions=Gtk.EXPAND|Gtk.FILL)
+            self.attach(frame, 0, 2, self.row, self.row + 1, yoptions=Gtk.AttachOptions.EXPAND|Gtk.AttachOptions.FILL)
         else:
             label = Gtk.Label(display.name+':')
             label.set_padding(5, 0)
@@ -509,7 +510,7 @@ class PhysicalPropTreeView(Gtk.TreeView):
         
     def on_key_press_event(self, widget, event, selection = None):
         """Callback connected to button-clicks. Delete selected row on Del key."""
-        if event.type == Gtk.gdk.KEY_PRESS and 'Delete' == Gtk.gdk.keyval_name(event.keyval):
+        if event.type == Gdk.EventType.KEY_PRESS and Gdk.KEY_Delete == event.keyval:
             #code adapted from pygtk faq
             model, treeiter, = selection.get_selected()
             if treeiter:
@@ -529,7 +530,7 @@ class PhysicalPropTreeView(Gtk.TreeView):
 
     def on_button_press_event(self, widget, event):
         """Callback connected to mouse-click. Add a new row on double click."""
-        if event.type == Gtk.gdk._2BUTTON_PRESS:
+        if event.type == Gdk.EventType._2BUTTON_PRESS:
             row = self.model.append()
             physical_prop_name = _("property{0}").format(self.model.get_string_from_iter(row))
             self.model.set(row, 0, physical_prop_name)
@@ -721,7 +722,7 @@ class ProgramDialog(Gtk.Dialog):
 
     def on_key_press_event(self, widget, event, selection = None):
         """Callback connected to button-clicks. Delete selected row on Del key."""
-        if event.type == Gtk.gdk.KEY_PRESS and 'Delete' == Gtk.gdk.keyval_name(event.keyval):
+        if event.type == Gdk.EventType.KEY_PRESS and Gdk.KEY_Delete == event.keyval:
             self.__del_row(selection)
     
     def apply_change_name(self, cellrenderer, path, new_text):
@@ -827,7 +828,7 @@ class SetupDialog(Gtk.Dialog):
 
     def on_button_press_event(self, widget, event):
         """Callback connected to mouse-click. Add a new row on double click."""
-        if event.type == Gtk.gdk._2BUTTON_PRESS:
+        if event.type == Gdk.EventType._2BUTTON_PRESS:
             row = (_("initial"), _("final"), '0')
             self.setup_model.append(row)
             if self.cmd:
@@ -838,7 +839,7 @@ class SetupDialog(Gtk.Dialog):
 
     def on_key_pressed_event(self, widget, event, selection):
         """Callback connected to button-clicks. Delete selected row on Del key."""
-        if event.type == Gtk.gdk.KEY_PRESS and 'Delete' == Gtk.gdk.keyval_name(event.keyval):
+        if event.type == Gdk.EventType.KEY_PRESS and Gdk.KEY_Delete == event.keyval:
             #code adapted from pygtk faq
             
             (model, treeiter,) = selection.get_selected()
