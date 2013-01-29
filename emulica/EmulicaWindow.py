@@ -17,7 +17,9 @@
 from locale import gettext as _
 
 from gi.repository import Gtk # pylint: disable=E0611
-from gi.repository import GObject as gobject
+from gi.repository import Gio
+from gi.repository import GLib
+
 import logging
 logger = logging.getLogger('emulica')
 
@@ -26,8 +28,7 @@ from emulica.AboutEmulicaDialog import AboutEmulicaDialog
 from emulica.PreferencesEmulicaDialog import PreferencesEmulicaDialog
 from emulica.EmulicaExecDialog import EmulicaExecDialog
 
-from gi.repository import Pango as pango
-from gi.repository import Gio
+
 #my imports 
 import sys, os, pickle, zipfile, random
 import emuML, controler, emulation
@@ -259,7 +260,7 @@ class EmulicaWindow(Window):
     def on_emulation_step(self, model):
         """Callback called at regular interval during emulation. Update status 
         bar. use add_idle, because this function is called from another thread."""
-        gobject.idle_add(self.status_set_progress, _("running"), model.current_time(), self.props['exec']['limit'])
+        GLib.idle_add(self.status_set_progress, _("running"), model.current_time(), self.props['exec']['limit'])
         
     
     def on_emulation_start(self, model):
@@ -267,28 +268,28 @@ class EmulicaWindow(Window):
         sensible. use add_idle, because this function is called from another 
         thread."""
         for button in [self.builder.get_object(name) for name in ['pause', 'stop']]:
-            gobject.idle_add(button.set_sensitive, True)
-        gobject.idle_add(self.builder.get_object('start').set_sensitive, False)
-        gobject.idle_add(self.builder.get_object('reinit').set_sensitive, False)       
-        gobject.idle_add(self.status_set_progress, _("starting"))
+            GLib.idle_add(button.set_sensitive, True)
+        GLib.idle_add(self.builder.get_object('start').set_sensitive, False)
+        GLib.idle_add(self.builder.get_object('reinit').set_sensitive, False)       
+        GLib.idle_add(self.status_set_progress, _("starting"))
     
     def on_emulation_finish(self, model):
         """Callback activated when emulation finish. use add_idle, because this 
         function is called from another thread."""
-        gobject.idle_add(self.reset_execution)
-        gobject.idle_add(self.status_set_progress, _("finished"), model.current_time(), model.current_time())
-        gobject.idle_add(self.builder.get_object('reinit').set_sensitive, True)
+        GLib.idle_add(self.reset_execution)
+        GLib.idle_add(self.status_set_progress, _("finished"), model.current_time(), model.current_time())
+        GLib.idle_add(self.builder.get_object('reinit').set_sensitive, True)
     
         #stop input redirection
-        gobject.idle_add(self.emulica_control.tee_stdout_to_log, False)
+        GLib.idle_add(self.emulica_control.tee_stdout_to_log, False)
         
     def on_emulation_exception(self, exception, trace):
         """Callback activated when the simulation run encounters an exception.
         Warning!  This is called from an outside thread!!!"""
         #print _("Exception when runing emulation:\n") + str(exception)
         import traceback
-        #TODO: format traceback using pango markup
-        gobject.idle_add(self.error_message, _("Exception when runing emulation:\n") + str(exception), "".join(traceback.format_list(trace)))
+        #TODO: format traceback using Pango markup
+        GLib.idle_add(self.error_message, _("Exception when runing emulation:\n") + str(exception), "".join(traceback.format_list(trace)))
         #self.error_message(_("Exception when runing emulation:\n") + str(exception))
     
     

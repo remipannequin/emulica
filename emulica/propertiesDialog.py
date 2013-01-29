@@ -571,8 +571,8 @@ class ProgramDialog(Gtk.Dialog):
     def __init__(self, parent, p_table, model, cmd_manager = None):
         Gtk.Dialog.__init__(self, _("Edit program table"),
                             parent,
-                            Gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (Gtk.STOCK_CLOSE, Gtk.RESPONSE_CLOSE))
+                            Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
         self.program_table = p_table
         self.model = model
         self.cmd = cmd_manager
@@ -587,10 +587,13 @@ class ProgramDialog(Gtk.Dialog):
         vbox.set_border_width(5)
         hbox.pack_start(vbox, False, False, 0)
         #create a SW, put the treeview into it, add it to the vbox
-        sw = Gtk.ScrolledWindow()
-        sw.set_policy(Gtk.POLICY_AUTOMATIC, Gtk.POLICY_AUTOMATIC)
-        sw.add(treeview)
-        vbox.pack_start(sw, False, False, 0)
+        #TreeView is GtkScrollable
+        #sw = Gtk.ScrolledWindow()
+        #sw.set_policy(Gtk.POLICY_AUTOMATIC, Gtk.POLICY_AUTOMATIC)
+        #sw.add(treeview)
+        treeview.set_hscroll_policy(Gtk.ScrollablePolicy.MINIMUM)
+        treeview.set_vscroll_policy(Gtk.ScrollablePolicy.NATURAL)
+        vbox.pack_start(treeview, False, False, 0)
         #add a separator
         vbox.pack_start(Gtk.HSeparator(), False, False, 0)
         #creates some buttons to add and remove the programs
@@ -753,8 +756,8 @@ class SetupDialog(Gtk.Dialog):
         """Create an new instance of a SetupDialog."""
         Gtk.Dialog.__init__(self, _("Edit Setup Matrix"),
                             parent,
-                            Gtk.DIALOG_DESTROY_WITH_PARENT,
-                            (Gtk.STOCK_CLOSE, Gtk.RESPONSE_CLOSE))
+                            Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                            (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE))
         self.setup_table = setup_table
         self.cmd = cmd_manager
         self.setup_model = Gtk.ListStore(str, str, str)

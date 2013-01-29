@@ -28,7 +28,7 @@ gettext.textdomain('emulica')
 
 from emulica import plot
 from gi.repository import Gtk # pylint: disable=E0611
-from gi.repository import GObject as gobject # pylint: disable=E0611
+from gi.repository import GLib # pylint: disable=E0611
 from gi.repository import Pango as pango # pylint: disable=E0611
 
 logger = logging.getLogger('emulica.emulicapp.results')
@@ -86,7 +86,7 @@ class EmulicaResults:
     def on_emulation_finish(self, model):
         """Callback activated when emulation finish. use add_idle, because this 
         function is called from another thread."""
-        gobject.idle_add(self.prepare)
+        GLib.idle_add(self.prepare)
     
     def on_export_results_menuitem_activate(self, menuitem, data = None):
         """Callback for the export result menuitem."""

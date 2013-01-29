@@ -33,6 +33,7 @@ gettext.textdomain('emulica')
 
 from gi.repository import Gdk # pylint: disable=E0611
 from gi.repository import GObject # pylint: disable=E0611
+from gi.repository import GLib # pylint: disable=E0611
 import cairo
 from gi.repository import GooCanvas as Goo # pylint: disable=E0611
 
@@ -836,7 +837,7 @@ class Holder(ModuleWidget):
                 i += 1
             self.__text.props.text = str(state)
         if self.get_canvas().animate:
-            GObject.idle_add(change_widget, state)
+            GLib.idle_add(change_widget, state)
         
 
 class Connection(Goo.CanvasPolyline):
@@ -958,7 +959,7 @@ class PushObserver(ModuleWidget):
                 self.__ellipse.animate(-3, 5, 1.4, 0, True, 50, 25, Goo.CanvasAnimateType.RESET)
                 
         if self.get_canvas().animate:
-            GObject.idle_add(change_widget, state)
+            GLib.idle_add(change_widget, state)
 
 
 class PullObserver(ModuleWidget):
@@ -1018,7 +1019,7 @@ class PullObserver(ModuleWidget):
                 pass
                 #TODO: how to animate widget ?
         if self.get_canvas().animate:
-            GObject.idle_add(change_widget, state)
+            GLib.idle_add(change_widget, state)
 
 
 class Create(ModuleWidget):
@@ -1096,7 +1097,7 @@ class Create(ModuleWidget):
             self.__text.props.text = str(state)
             self.__num.props.text = str(self.module.quantity_created)
         if self.get_canvas().animate:
-            GObject.idle_add(change_widget, state)
+            GLib.idle_add(change_widget, state)
 
 class Dispose(ModuleWidget):
     def __init__(self, canvas, parent, holder = None, interactive = True):
@@ -1160,7 +1161,7 @@ class Dispose(ModuleWidget):
         def change_widget(state):
             self.__light.animate(-25, -5, 1.5, 0, True, 150, 25, Goo.CanvasAnimateType.RESET)
         if self.get_canvas().animate:
-            GObject.idle_add(change_widget, state)
+            GLib.idle_add(change_widget, state)
         
         
 class Space(ModuleWidget):
@@ -1253,7 +1254,7 @@ class Space(ModuleWidget):
                 self.__light.props.fill_color = COLOR_BUSY
             self.__text.props.text = str(state)
         if self.get_canvas().animate:
-            GObject.idle_add(change_widget, state)
+            GLib.idle_add(change_widget, state)
 
 class Shape(ModuleWidget):
     def __init__(self, canvas, parent, interactive = True):
@@ -1346,7 +1347,7 @@ class Shape(ModuleWidget):
                 self.__light.props.fill_color = COLOR_BUSY
             self.__text.props.text = str(state)
         if self.get_canvas().animate:
-            GObject.idle_add(change_widget, state)
+            GLib.idle_add(change_widget, state)
 
 
 class Assemble(ModuleWidget):
@@ -1461,7 +1462,7 @@ class Assemble(ModuleWidget):
                 self.__light.props.fill_color = COLOR_BUSY
             self.__text.props.text = str(state)
         if self.get_canvas().animate:
-            GObject.idle_add(change_widget, state)
+            GLib.idle_add(change_widget, state)
 
 
 class Disassemble(ModuleWidget):
@@ -1578,7 +1579,7 @@ class Disassemble(ModuleWidget):
                 self.__light.props.fill_color = COLOR_BUSY
             self.__text.props.text = str(state)
         if self.get_canvas().animate:
-            GObject.idle_add(change_widget, state)
+            GLib.idle_add(change_widget, state)
 
 class Failure(ModuleWidget):
     def __init__(self, canvas, parent, interactive = True):
