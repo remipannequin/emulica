@@ -363,7 +363,8 @@ class EmulicaControl:
                     params = params + "}"
                 else:
                     params = ""
-                snippet = """yield put, self, {name}.request_socket, [Request('{name}', '{action}'{date}{params})]""".format(name = combo.get_active_text(), action = action_entry.get_active_text(), date = date, params = params)
+                indent_level = self.move_iter_at_indent_level(iter_here)
+                snippet = """{indent}yield put, self, {name}.request_socket, [Request('{name}', '{action}'{date}{params})]\n""".format(name = combo.get_active_text(), action = action_entry.get_active_text(), date = date, params = params, indent = ' '*indent_level)
                 self.buffer.insert(iter_here, snippet)
         finally:
             dialog.destroy()
@@ -392,7 +393,8 @@ class EmulicaControl:
         dialog.destroy()
         if response == Gtk.ResponseType.ACCEPT:
             iter_here = self.buffer.get_iter_at_mark(self.buffer.get_insert())
-            snippet = "for e in wait_idle(self, rp_{name}): yield e".format(name = actuator)
+            indent_level = self.move_iter_at_indent_level(iter_here)
+            snippet = "{indent}for e in wait_idle(self, rp_{name}): yield e\n".format(name = actuator, indent = ' '*indent_level)
             self.buffer.insert(iter_here, snippet)
         
     
@@ -468,7 +470,8 @@ class EmulicaControl:
         dialog.destroy()
         if response == Gtk.ResponseType.ACCEPT:
             iter_here = self.buffer.get_iter_at_mark(self.buffer.get_insert())
-            snippet = """yield get, self, rp_{name}, 1\n            ev = self.got[0]""".format(name = selection)
+            indent_level = self.move_iter_at_indent_level(iter_here)
+            snippet = """{indent}yield get, self, rp_{name}, 1\n{indent}ev = self.got[0]\n""".format(name = selection, indent = ' '*indent_level)
             self.buffer.insert(iter_here, snippet)
         
     def update_control_state(self, compilation_done, sucessfull):
