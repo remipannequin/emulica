@@ -91,8 +91,7 @@ class ModuleSelectionDialog(Gtk.Dialog):
         """
         selection = self.builder.get_object('treeview-selection')
         (model, paths) = selection.get_selected_rows()
-        print paths
-        self.sel = [self.model[path][0] for path in paths]
+        self.sel = [model[path][0] for path in paths]
 
     def on_btn_cancel_clicked(self, widget, data=None):
         """The user has elected cancel changes.

@@ -56,10 +56,7 @@ class EmulicaControl:
         self.buffer.connect('changed', self.on_buffer_changed)
         self.buffer.connect('notify::can-undo', lambda o, p: self.main.update_undo_redo_menuitem())
         self.buffer.connect('notify::can-redo', lambda o, p: self.main.update_undo_redo_menuitem())
-        #self.control_view.set_mark_category_pixbuf("emulica_error", self.control_view.render_icon(Gtk.STOCK_NO, Gtk.ICON_SIZE_MENU))#TODO
-        #Work around win32 version
-        if 'set_mark_category_background' in dir(self.control_view):
-            self.control_view.set_mark_category_background ("emulica_error", Gtk.gdk.Color(65000, 0, 0))
+        self.tag_error = self.buffer.create_tag("error", background="red")
         debug_textview = self.main.builder.get_object('trace_textview')
         self.debug_buffer = LogBuffer(sys.stdout)
         sys.stdout = self.debug_buffer
@@ -167,6 +164,7 @@ class EmulicaControl:
     def on_control_view_clicked(self, view, ev):
         """Callback for click on the control view. Remove an error mark if the 
         left margin is clicked."""
+        #TODO : review this code, if source mark are not used...
         mark_type = "emulica_error"
         if not view.get_show_line_marks():
             return False
@@ -447,9 +445,7 @@ class EmulicaControl:
         """compile code in the control buffer. Display error message in case of
         error and return False. Return True if no error are found."""
         #first remove previous mark (if any)
-        mark = self.buffer.get_mark("emulica_syntax_error")
-        if not mark == None:
-            self.buffer.delete_mark(mark)
+        self.buffer.remove_tag(self.tag_error, self.buffer.get_start_iter(), self.buffer.get_end_iter())
         try:
             emuML.compile_control(self.model, self.buffer.props.text)
         except StandardError, e:
@@ -459,8 +455,11 @@ class EmulicaControl:
                     colno = max(e.offset - 1, 0)
                 else:
                     colno = 0
-                text_iter = self.buffer.get_iter_at_line_offset(lineno, colno)
-                self.buffer.create_source_mark("emulica_syntax_error", "emulica_error", text_iter)
+                error_start = self.buffer.get_iter_at_line_offset(lineno, colno)
+                error_end = self.buffer.get_iter_at_line_offset(lineno, colno)
+                error_end.forward_to_line_end()
+                self.buffer.apply_tag(self.tag_error, error_start, error_end)
+                
             self.main.error_message(_("{name}: {message}").format(name = e.__class__.__name__, message = str(e)))
             self.update_control_state(True, False)
             return False
@@ -480,8 +479,9 @@ class EmulicaControl:
         control_classes = rx.findall(self.buffer.props.text)
         #search the declaration line in the control buffer
         start_iter = self.buffer.get_start_iter()
+        end_iter = self.buffer.get_end_iter()
         decl_line = "def initialize_control(locals_, model):\n"
-        position = Gtk.TextIter.forward_search(start_iter, decl_line, Gtk.TextSearchFlags.VISIBLE_ONLY)
+        position = start_iter.forward_search(decl_line, Gtk.TextSearchFlags.VISIBLE_ONLY, end_iter)
         #if not found, add it
         if position == None:
             end_iter = self.buffer.get_end_iter()
