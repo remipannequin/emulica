@@ -169,7 +169,7 @@ class EmulicaControl:
         if not view.get_show_line_marks():
             return False
         # check that the click was on the left gutter
-        if ev.window == view.get_window(Gtk.TextWindowType.LEFT):#TODO Gtk.TEXT_WINDOW_LEFT
+        if ev.window == view.get_window(Gtk.TextWindowType.LEFT):
             x_buf, y_buf = view.window_to_buffer_coords(Gtk.TextWindowType.LEFT,
                                                         int(ev.x), int(ev.y))
             line_start = view.get_line_at_y(y_buf)[0]
@@ -195,6 +195,61 @@ class EmulicaControl:
         snippet = """class ControlProcess(Process):\n    def run(self, model):\n        from emulation import Process, put, get, Report, Request, wait_idle\n        """
         self.buffer.insert(iter_here, snippet)
     
+    def move_iter_at_indent_level(self, cursor_iter, num = 0):
+        """move text iter to the correct insertion position, and indentation level (in number of spaces)
+           Correct insertion position:
+            * if on a line with code : go to the next line, with good indent level
+            * if on a line with only whitespaces : move to the right indent level
+           Indent context is taken from the line above : if an empty line is above, level is zero
+           
+           Arguments:
+            * cursor-iter = a Text_iter where the text should be inserted
+            * num = number of line we have go up with recursive call
+            
+        codecodecode
+          codecodecdeo
+        X => returns 2
+        
+        codecodecode
+          deocodecodecode
+              X => still reurns 2
+              
+              
+        codeocedoceod
+          coedoedoeo
+          
+        X => returns 0
+        
+        """
+        lineno = cursor_iter.get_line()
+        start = self.buffer.get_iter_at_line(lineno)
+        end = start.copy()
+        end.forward_to_line_end()
+        line = self.buffer.get_text(start, end, False)
+        empty = not re.match(".*(\S).*", line)
+        if empty:
+            #TODO: if first line, move to the start of line and return 0
+            if lineno == 0:
+                insert_iter = cursor_iter.forward_lines(num)
+                return 0
+            #if num is below threshold, move up
+            if num < 5: # this is the number of line to look "up"
+                cursor_iter.backward_lines(1)
+                return self.move_iter_at_indent_level(cursor_iter, num + 1)
+            else:
+                insert_iter = cursor_iter.forward_lines(num)
+                return 0
+            #else, move forward num line, return 0
+        else:
+            regex = re.compile("^(\s*)(\S+)")
+            r = regex.search(line)
+            indent_level = len(r.groups()[0])
+            if num==0:#i.e. the insertion must be done on the next line
+                insert_iter = cursor_iter.forward_line()
+            else:
+                insert_iter = cursor_iter.forward_lines(num)
+            return indent_level
+    
     def control_add_modules(self):
         """Add some declaration useful to control some modules."""
         dialog = ModuleSelectionDialog()
@@ -205,8 +260,9 @@ class EmulicaControl:
             iter_here = self.buffer.get_iter_at_mark(self.buffer.get_insert())
             snippet = ""
             for name in dialog.selected():
-                #TODO: get indentation level...
-                snippet += """{name} = model.get_module('{name}')\nrp_{name} = {name}.create_report_socket()\n""".format(name = name)
+                #get indentation level...
+                indent_level = self.move_iter_at_indent_level(iter_here)
+                snippet += """{indent}{name} = model.get_module('{name}')\n{indent}rp_{name} = {name}.create_report_socket()\n""".format(name = name, indent = ' '*indent_level)
             self.buffer.insert(iter_here, snippet)
         
     def control_add_put_request(self):
