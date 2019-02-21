@@ -105,7 +105,7 @@ EXP_RESULT_RESOURCE = [[(0, 0, 'setup'),
 
 EMULATE_UNTIL = 80;
 
-class ControlCreate(Process):
+class ControlCreate:
     def run(self, model):
         n = 0
         i = 0
@@ -113,12 +113,12 @@ class ControlCreate(Process):
         pType = ['type1', 'type2', 'type3', 'type3']
         while n < 6:
             m = Request("create", "create",params={'productType':pType[i]})
-            yield put, self, create.request_socket, [m]
+            yield create.request_socket.put(m)
             i = (i+1)%4
             n += 1
 
 
-class ControlMachine(Process):
+class ControlMachine:
     def run(self, model):
         prog = {'type1':'p1','type2':'p3','type3':'p2'}
         sp = model.modules["transporter"]
@@ -130,24 +130,22 @@ class ControlMachine(Process):
         rp_obs2 = obs2.create_report_socket()
         while True:
             ##attente de l'arrivée d'un pièce
-            yield get, self, rp_obs1, 1
-            ev = self.got[0]
+            ev = yield rp_obs1.get()
             rq = Request("transporter","move",params={'program':'load'})
-            yield put, self, sp.request_socket, [rq]
+            yield sp.request_socket.put(rq)
             ##pièce prête
-            yield get, self, rp_obs2, 1
-            ev = self.got[0]
-            p = prog[ev.how['productType']]
-            yield put, self, machine.request_socket, [Request("machine","setup", params={"program":p})]
+            ev = yield rp_obs2.get()
+            p = prog[ev[0].how['productType']]
+            yield machine.request_socket.put(Request("machine","setup", params={"program":p}))
             ##début process
-            yield put, self, machine.request_socket, [Request("machine","make")]
+            yield machine.request_socket.put(Request("machine","make"))
             ##attente fin process
             fin = False
             while not fin:
-                yield get, self, rp_machine, 1
-                fin = self.got[0].what=="idle"
+                e = yield rp_machine.get()
+                fin = e.what=="idle"
             ##déchargement
-            yield put, self, sp.request_socket, [Request("transporter", "move", params={"program":'unload'})]
+            yield sp.request_socket.put(Request("transporter", "move", params={"program":'unload'}))
 
 
 def get_model():

@@ -127,28 +127,28 @@ EXP_RESULT_PRODUCT = [(1, [], [(0, 'holder1')], 0, 1),
               (98, [], [(96, 'holder1')], 96, 98), 
               (99, [], [(97, 'holder1')], 97, 99), 
               (100, [], [(98, 'holder1')], 98, 100), 
-              (101, [], [(99, 'holder1')], 99, 100), 
-              (102, [], [(100, 'holder1')], 100, 100)]
+              (101, [], [(99, 'holder1')], 99, 101), 
+              (102, [], [(100, 'holder1')], 100, 101)]
 
-EMULATE_UNTIL = 100;
+EMULATE_UNTIL = 101;
 
-class ControlCreate(Process):
+class ControlCreate:
     def run(self, model):
         createModule = model.modules["create1"]
         observerModule = model.modules["observer1"]
         rp_obs = observerModule.create_report_socket(multiple_observation = True)
         while True:
-            yield put, self, createModule.request_socket, [Request("create1", "create")]
-            yield get, self, rp_obs , 1
+            yield createModule.request_socket.put(Request("create1", "create"))
+            yield rp_obs.get()
 
-class ControlDispose(Process):
+class ControlDispose:
     def run(self, model):
         disposeModule = model.modules["dispose1"]
         observerModule = model.modules["observer1"]
         rp_obs = observerModule.create_report_socket(multiple_observation = True)
         while True:
-            yield get, self, rp_obs, 1
-            yield put, self, disposeModule.request_socket, [Request("dispose1","dispose",date=now()+1)]
+            yield rp_obs.get()
+            yield disposeModule.request_socket.put(Request("dispose1","dispose",date=model.get_sim().now+1))
 
 def get_model():
     model = Model()

@@ -40,37 +40,36 @@ EXP_RESULT_RESOURCE = [(0, 0, 'setup'),
                        
 EMULATE_UNTIL = 41;
 
-class ControlCreate(Process):
+class ControlCreate:
     def run(self, model):
         n = 0
         createModule = model.modules["create1"]
         report = createModule.create_report_socket()
         while n < 10:
             m = Request("create1", "create")
-            yield put, self, createModule.request_socket, [m]
-            yield get, self, report, 1
-            
-            yield hold, self, 10
+            yield createModule.request_socket.put(m)
+            yield report.get()
+            yield model.get_sim().timeout(10)
 
 
-class ControlSpace(Process):
+class ControlSpace:
     def run(self, model):
         sp = model.modules["space1"]
         obs1 = model.modules["observer1"]
         report = obs1.create_report_socket()
         while True:
-            yield get, self, report, 1
-            ev = self.got[0]
+            ev = yield report.get()
+            print ev
             rq = Request("space1","move",params={'program':'p1'})
-            yield put, self, sp.request_socket, [rq]
+            yield sp.request_socket.put(rq)
  
     
-class MonitorSpace(Process):
+class MonitorSpace:
     def run(self, model):
         sp = model.modules["space1"]
         report = sp.create_report_socket()
         while True:
-            yield get, self, report, 1
+            yield report.get()
             
 
 def get_model():

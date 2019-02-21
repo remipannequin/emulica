@@ -25,31 +25,31 @@ import unittest
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
 from emulica import emulation as emu
-from emulica.emulation import Report, Request, put, get, Process, hold
+from emulica.emulation import Report, Request
 
 EMULATE_UNTIL = 250;
 
-class ControlCreate(Process):
+class ControlCreate:
 
     def run(self, model, a):
         n = 0
         createModule = model.modules["create1"]
         while True:
             m = Request("create1", "create")
-            yield put, self, createModule.request_socket, [m]
-            yield hold, self, model.rng.expovariate(a)
+            yield createModule.request_socket.put(m)
+            yield model.get_sim().timeout(model.rng.expovariate(a))
             n += 1
 
 
-class ControlSpace(Process):
+class ControlSpace:
     def run(self, model):
         sp = model.modules["space1"]
         obs1 = model.modules["observer1"]
         rp_obs1 = obs1.create_report_socket()
         while True:
-            yield get, self, rp_obs1, 1
+            yield rp_obs1.get()
             rq = Request("space1","move",params={'program':'p1'})
-            yield put, self, sp.request_socket, [rq]
+            yield sp.request_socket.put(rq)
 
 
 def get_model(a, b):

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Gseme 0.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-23 20:51+0100\n"
-"PO-Revision-Date: 2013-01-24 07:59+0100\n"
+"PO-Revision-Date: 2013-01-31 10:17+0100\n"
 "Last-Translator: Rémi Pannequin <remi.pannequin@univ-lorraine.fr>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -24,9 +24,8 @@ msgid "a time limit must be set if executing in discrete-events mode"
 msgstr "une limite de temps doit être fixée en mode d'avance de temps par événement discret"
 
 #: ../emulica/controler.py:169
-#, fuzzy
 msgid "Request {0.who} to {0.what}"
-msgstr "Requête au module {whO} d'exécuter {what} à t={when} "
+msgstr "Requête au module {who} d'exécuter {what} à t={when} "
 
 #: ../emulica/controler.py:174
 #, fuzzy
