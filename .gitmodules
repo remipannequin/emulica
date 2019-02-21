@@ -1,0 +1,3 @@
+[submodule "emulica"]
+	path = emulica
+	url = https://github.com/remipannequin/emulica-core
