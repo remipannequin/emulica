@@ -1,4 +1,25 @@
-Seme is the Systemic Emulation and Modelling Environment.
+
+
+Emulica is an emulation framework that enable researchers or practitionners 
+to design and run emulation-based control experiments, in the context of 
+manufacturing and logistics systems.
+
+Emulica offers a small set of systemic-inspired generic constructs, that 
+enable the modelling of complex system. Because of the emulation approach 
+(i.e. only the physical system is represented, control functions are separated), 
+the modelling is simple and efficient.
+
+You can connect your emulated shopfloor to external systems by exenging XML 
+messages over TCP socket, or you can write control processes embebed in the 
+simulation engine in python. Simulation runs can be made in discrete event 
+time advance or in real-time.
+
+In addition to the core emulation fonctions, which can be embeded in any 
+custom application, emulica ships a graphical (gnome) application. with 
+visualisation and animation of the emulation model, comprehensive code 
+editing of the control processes, including iyntax highlight and with 
+automated code generation, and results generation, including gantt charts 
+for products and resources, holder occupation, etc...
 
 Copyright 2008, Rémi Pannequin
 remi.pannequin@cran.uhp-nancy.fr
