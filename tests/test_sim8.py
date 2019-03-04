@@ -17,14 +17,29 @@
 
 import sys
 import os.path
+import logging
 import unittest
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
+
+#logger = logging.getLogger('emulica.emulation')
+#logger.setLevel(logging.DEBUG)
+# create console handler and set level to debug
+#ch = logging.StreamHandler()
+#ch.setLevel(logging.DEBUG)
+# create formatter
+#formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# add formatter to ch
+#ch.setFormatter(formatter)
+# add ch to logger
+#logger.addHandler(ch)
+
+
 import emulica.emulation as emu
 
-EXP_RESULT = [(1, [], [(0. , 'holder1')], 0., 3.5),
-              (2, [], [(2., 'holder1')], 2., 5.5), 
-              (3, [], [(4., 'holder1')], 4., 7.0), 
+EXP_RESULT = [(1, [], [(0. , 'holder1')], 0., 3.),
+              (2, [], [(2., 'holder1')], 2., 5.), 
+              (3, [], [(4., 'holder1')], 4., 7.), 
               (4, [], [(5., 'holder1')], 5., 8.5), 
               (5, [], [(6., 'holder1')], 6., 10.), 
               (6, [], [(7., 'holder1')], 7., 11.5),
@@ -32,42 +47,42 @@ EXP_RESULT = [(1, [], [(0. , 'holder1')], 0., 3.5),
               (8, [], [(8., 'holder1')], 8., 14.5)]
               
               
-EXP_RESULT_POSITION =  [(0.5, {4.0: 1}), 
-                        (1.0, {3.0: 1}), 
-                        (1.5, {2.0: 1}), 
-                        (2, {1.0: 1, 5: 2}), 
-                        (2.5, {0: 1, 4.0: 2}), 
-                        (3.0, {0: 1, 3.0: 2}), 
-                        (3.5, {2.0: 2}), 
-                        (4.0, {1.0: 2, 4.0: 3}), 
+EXP_RESULT_POSITION =  [(0.5, {3.0: 1}), 
+                        (1.0, {2.0: 1}), 
+                        (1.5, {1.0: 1}), 
+                        (2.0, {0.0: 1}), 
+                        (2.5, {0.0: 1, 3.0: 2}), 
+                        (3.0, {0.0: 1, 2.0: 2}), 
+                        (3.5, {1.0: 2}), 
+                        (4.0, {0.0: 2}), 
                         (4.5, {0: 2, 3.0: 3}), 
-                        (5.0, {0: 2, 2.0: 3, 4.0: 4}), 
+                        (5.0, {0: 2, 2.0: 3}), 
                         (5.5, {1.0: 3, 3.0: 4}), 
-                        (6.0, {0: 3, 2.0: 4, 4.0: 5}), 
+                        (6.0, {0: 3, 2.0: 4}), 
                         (6.5, {0: 3, 1: 4, 3.0: 5}), 
-                        (7.0, {1.0: 4, 2.0: 5, 4.0: 6}), 
-                        (7.5, {0: 4, 1: 5, 3.0: 6, 4.0: 7}), 
-                        (8.0, {0: 4, 1: 5, 2: 6, 3: 7, 4: 8}), 
-                        (8.5, {1.0: 5, 2.0: 6, 3.0: 7, 4.0: 8}), 
+                        (7.0, {0: 3, 1.0: 4, 2.0: 5}), 
+                        (7.5, {0: 4, 1: 5, 3.0: 6}), 
+                        (8.0, {0: 4, 1: 5, 2: 6, 3: 7}), 
+                        (8.5, {0: 4, 1.0: 5, 2.0: 6, 3.0: 7, 4.0:8}), 
                         (9.0, {0: 5, 1: 6, 2: 7, 3: 8}), 
                         (9.5, {0: 5, 1: 6, 2: 7, 3: 8}), 
-                        (10.0, {1.0: 6, 2.0: 7, 3.0: 8}), 
+                        (10.0, {0: 5, 1.0: 6, 2.0: 7, 3.0: 8}), 
                         (10.5, {0: 6, 1: 7, 2: 8}), 
                         (11.0, {0: 6, 1: 7, 2: 8}), 
-                        (11.5, {1.0: 7, 2.0: 8}), 
+                        (11.5, {0: 6, 1.0: 7, 2.0: 8}), 
                         (12.0, {0: 7, 1: 8}), 
                         (12.5, {0: 7, 1: 8}), 
-                        (13.0, {1.0: 8}), 
+                        (13.0, {0: 7,1.0: 8}), 
                         (13.5, {0: 8}), 
                         (14.0, {0: 8}), 
-                        (14.5, {}), 
+                        (14.5, {0: 8}), 
                         (15.0, {}), 
                         (15.5, {}), 
                         (16.0, {})]
 
 pos_list = list()
 
-EMULATE_UNTIL = 16;
+EMULATE_UNTIL = 16.1;
 
 class ControlCreate:
     def run(self, model):
@@ -101,7 +116,7 @@ def get_model(stepping = False):
     model = emu.Model()
     h = emu.Holder(model, "holder1")
     h['capacity'] = 5
-    h['speed'] = 2
+    h['speed'] = 2 #go forward 1 unit every 0.5 unit of time
     obs1 = emu.PushObserver(model, "observer1", "ev1", observe_type = False, holder = h)
     obs2 = emu.PullObserver(model, "observer2", "position", holder = h)
     c = emu.CreateAct(model, "create1", h)
