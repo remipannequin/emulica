@@ -79,7 +79,9 @@ class TestCanvas(unittest.TestCase):
         canvas.set_size_request(100, 50)
         h = cls(self.model, name)
         canvas.write_pdf(name+'.pdf')
-        return_code = subprocess.call(["diff", name+'.pdf', 'data/'+name+'.pdf'])
+        subprocess.call(["pdfcrop", name+'.pdf', 'cropped.pdf'])
+        subprocess.call(["convert", 'cropped.pdf', name+'.png'])
+        return_code = subprocess.call(["diff", name+'.png', 'data/'+name+'.png'])
         self.assertEqual(return_code, 0)
         os.remove(name+'.pdf')
 
