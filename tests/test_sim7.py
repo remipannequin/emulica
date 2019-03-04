@@ -97,7 +97,7 @@ EXP_RESULT_RESOURCE = [[(0, 0, 'setup'),
                         (40, 40, 'setup'), 
                         (40, 45, 'p2'), 
                         (49, 51, 'failure'), 
-                        (51, 52, 'setup'), 
+                        (50, 52, 'setup'), 
                         (52, 56, 'p1'), 
                         (61, 63, 'setup'), 
                         (66, 68, 'failure'), 
@@ -135,7 +135,7 @@ class ControlMachine:
             yield sp.request_socket.put(rq)
             ##pièce prête
             ev = yield rp_obs2.get()
-            p = prog[ev[0].how['productType']]
+            p = prog[ev.how['productType']]
             yield machine.request_socket.put(Request("machine","setup", params={"program":p}))
             ##début process
             yield machine.request_socket.put(Request("machine","make"))
@@ -166,7 +166,7 @@ def get_model():
     machine.add_program('p1', 4)
     machine.add_program('p2', 5)
     machine.add_program('p3', 6)
-    m = SetupMatrix(machine.properties,1)
+    m = SetupMatrix(machine.properties, 1)
     m.add('p1','p3',2)
     m.add('p3','p1',3)
     machine['setup'] = m

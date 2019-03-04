@@ -79,7 +79,7 @@ class TestCanvas(unittest.TestCase):
         canvas.set_size_request(100, 50)
         h = cls(self.model, name)
         canvas.write_pdf(name+'.pdf')
-        return_code = subprocess.call(["diff", name+'.pdf', 'tests/data/'+name+'.pdf'])
+        return_code = subprocess.call(["diff", name+'.pdf', 'data/'+name+'.pdf'])
         self.assertEqual(return_code, 0)
         os.remove(name+'.pdf')
 
@@ -117,7 +117,7 @@ class TestCanvas(unittest.TestCase):
                              model.get_module('dispose1'): (250, 60)})
         canvas.set_size_request(320, 200)
         canvas.write_pdf("sim1.pdf")
-        return_code = subprocess.call(["diff", 'sim1.pdf', 'tests/data/sim1.pdf'])
+        return_code = subprocess.call(["diff", 'sim1.pdf', 'data/sim1.pdf'])
         self.assertEqual(return_code, 0)
         os.remove('sim1.pdf')
         

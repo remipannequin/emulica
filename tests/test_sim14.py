@@ -33,28 +33,28 @@ EXP_RESULT_PRODUCT = [(1, [(3, 7, 'machine', 'p1')],
                            (2, 'espaceMachine'), 
                            (7, 'transporter'), 
                            (9, 'sink')],
-                          {'mass': 0, 'length': 1}, 0, 34), 
+                          {'mass': 0, 'length': 1}, 0, 50), 
                       (2, [(13, 14, 'machine', 'p3')], 
                           [(0, 'source'),
                            (9, 'transporter'), 
                            (11, 'espaceMachine'), 
                            (14, 'transporter'), 
                            (16, 'sink')],
-                          {'mass': 1, 'length': 4}, 0, 34), 
+                          {'mass': 1, 'length': 4}, 0, 50), 
                       (3, [(19, 24, 'machine', 'p2')],
                           [(0, 'source'),
                            (16, 'transporter'), 
                            (18, 'espaceMachine'), 
                            (24, 'transporter'), 
                            (26, 'sink')],
-                          {'mass': 2, 'length': 3}, 0, 34), 
+                          {'mass': 2, 'length': 3}, 0, 50), 
                       (4, [(29, 32, 'machine', 'p3')],
                           [(0, 'source'),
                            (26, 'transporter'), 
                            (28, 'espaceMachine'), 
                            (32, 'transporter'), 
                            (34, 'sink')],
-                          {'mass': 3, 'length': 4}, 0, 34)] 
+                          {'mass': 3, 'length': 4}, 0, 50)] 
                                             
                       
 EXP_RESULT_RESOURCE = [[(0, 0, 'setup'), 
@@ -84,7 +84,7 @@ EXP_RESULT_RESOURCE = [[(0, 0, 'setup'),
 
 EMULATE_UNTIL = 50;
 
-class ControlCreate(Process):
+class ControlCreate:
     def run(self, model):
         n = 0
         i = 0
@@ -92,12 +92,12 @@ class ControlCreate(Process):
         createModule = model.modules["create"]
         while n < 4:
             m = Request("create", "create",params={'productType':pType[i], 'physical-properties': {'mass':n, 'length': 5}})
-            yield put, self, createModule.request_socket, [m]
+            yield createModule.request_socket.put(m)
             i = (i+1)%4
             n += 1
 
 
-class ControlMachine(Process):
+class ControlMachine:
     def run(self, model):
         prog = {'type1':'p1','type2':'p3','type3':'p2'}
         sp = model.modules["transporter"]
@@ -109,24 +109,22 @@ class ControlMachine(Process):
         rp_obs2 = obs2.create_report_socket()
         while True:
             ##attente de l'arrivée d'un pièce
-            yield get, self, rp_obs1, 1
-            ev = self.got[0]
+            ev = yield rp_obs1.get()
             rq = Request("transporter","move",params={'program':'load'})
-            yield put, self, sp.request_socket, [rq]
+            yield sp.request_socket.put(rq)
             ##pièce prête
-            yield get, self, rp_obs2, 1
-            ev = self.got[0]
+            ev = yield rp_obs2.get()
             p = prog[ev.how['productType']]
-            yield put, self, machine.request_socket, [Request("machine","setup", params={"program":p})]
+            yield machine.request_socket.put(Request("machine","setup", params={"program":p}))
             ##début process
-            yield put, self, machine.request_socket, [Request("machine","make")]
+            yield machine.request_socket.put(Request("machine","make"))
             ##attente fin process
             fin = False
             while not fin:
-                yield get, self, rp_machine, 1
-                fin = self.got[0].what=="idle"
+                ev = yield rp_machine.get()
+                fin = ev.what=="idle"
             ##déchargement
-            yield put, self, sp.request_socket, [Request("transporter", "move", params={"program":'unload'})]
+            yield sp.request_socket.put(Request("transporter", "move", params={"program":'unload'}))
 
 
 def get_model():

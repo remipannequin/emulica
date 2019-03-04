@@ -69,25 +69,25 @@ EXP_RESULT_RESOURCE = [[(0, 0, 'setup'),
                         (42, 47, 'p'),
                         (50, 55, 'p')]]
 
-EXP_RESULT_PRODUCT = [(1, [], [(0, 'source1'), (0, 'trans'), (2, 'assy_space'), (7, 'trans'), (8, 'sink')], 0, 56), 
-                      (2, [], [(0, 'source1'), (8, 'trans'), (10, 'assy_space'), (15, 'trans'), (16, 'sink')], 0, 56), 
-                      (3, [], [(0, 'source1'), (16, 'trans'), (18, 'assy_space'), (23, 'trans'), (24, 'sink')], 0, 56), 
-                      (4, [], [(0, 'source1'), (24, 'trans'), (26, 'assy_space'), (31, 'trans'), (32, 'sink')], 0, 56), 
-                      (5, [], [(0, 'source1'), (32, 'trans'), (34, 'assy_space'), (39, 'trans'), (40, 'sink')], 0, 56), 
-                      (6, [], [(0, 'source1'), (40, 'trans'), (42, 'assy_space'), (47, 'trans'), (48, 'sink')], 0, 56), 
-                      (7, [], [(0, 'source1'), (48, 'trans'), (50, 'assy_space'), (55, 'trans'), (56, 'sink')], 0, 56), 
-                      (8, [], [(0, 'source2'), (2, 'assy_space'), (7, 'trans'), (8, 'sink')], 0, 56), 
-                      (9, [], [(0, 'source2'), (10, 'assy_space'), (15, 'trans'), (16, 'sink')], 0, 56), 
-                      (10, [], [(0, 'source2'), (18, 'assy_space'), (23, 'trans'), (24, 'sink')], 0, 56), 
-                      (11, [], [(0, 'source2'), (26, 'assy_space'), (31, 'trans'), (32, 'sink')], 0, 56), 
-                      (12, [], [(0, 'source2'), (34, 'assy_space'), (39, 'trans'), (40, 'sink')], 0, 56), 
-                      (13, [], [(0, 'source2'), (42, 'assy_space'), (47, 'trans'), (48, 'sink')], 0, 56), 
-                      (14, [], [(0, 'source2'), (50, 'assy_space'), (55, 'trans'), (56, 'sink')], 0, 56)]
+EXP_RESULT_PRODUCT = [(1, [], [(0, 'source1'), (0, 'trans'), (2, 'assy_space'), (7, 'trans'), (8, 'sink')], 0, 100), 
+                      (2, [], [(0, 'source1'), (8, 'trans'), (10, 'assy_space'), (15, 'trans'), (16, 'sink')], 0, 100), 
+                      (3, [], [(0, 'source1'), (16, 'trans'), (18, 'assy_space'), (23, 'trans'), (24, 'sink')], 0, 100), 
+                      (4, [], [(0, 'source1'), (24, 'trans'), (26, 'assy_space'), (31, 'trans'), (32, 'sink')], 0, 100), 
+                      (5, [], [(0, 'source1'), (32, 'trans'), (34, 'assy_space'), (39, 'trans'), (40, 'sink')], 0, 100), 
+                      (6, [], [(0, 'source1'), (40, 'trans'), (42, 'assy_space'), (47, 'trans'), (48, 'sink')], 0, 100), 
+                      (7, [], [(0, 'source1'), (48, 'trans'), (50, 'assy_space'), (55, 'trans'), (56, 'sink')], 0, 100), 
+                      (8, [], [(0, 'source2'), (2, 'assy_space'), (7, 'trans'), (8, 'sink')], 0, 100), 
+                      (9, [], [(0, 'source2'), (10, 'assy_space'), (15, 'trans'), (16, 'sink')], 0, 100), 
+                      (10, [], [(0, 'source2'), (18, 'assy_space'), (23, 'trans'), (24, 'sink')], 0, 100), 
+                      (11, [], [(0, 'source2'), (26, 'assy_space'), (31, 'trans'), (32, 'sink')], 0, 100), 
+                      (12, [], [(0, 'source2'), (34, 'assy_space'), (39, 'trans'), (40, 'sink')], 0, 100), 
+                      (13, [], [(0, 'source2'), (42, 'assy_space'), (47, 'trans'), (48, 'sink')], 0, 100), 
+                      (14, [], [(0, 'source2'), (50, 'assy_space'), (55, 'trans'), (56, 'sink')], 0, 100)]
 
 EMULATE_UNTIL = 100;
 
 
-class ControlCreate(emulation.Process):
+class ControlCreate:
     def run(self, model):
         create1 = model.modules["create1"]
         create2 = model.modules["create2"]
@@ -97,12 +97,16 @@ class ControlCreate(emulation.Process):
         requests1 = [emulation.Request("create1", "create",params={'productType':'type1', 'date': d}) for d in dates1]
         dates2 = [5, 6, 7, 9, 11, 23, 35]
         requests2 = [emulation.Request("create2", "create",params={'productType':'type1', 'date': d}) for d in dates2]
-        yield emulation.put, self, create1.request_socket, requests1
-        yield emulation.get, self, rp_crea1, 7
-        yield emulation.put, self, create2.request_socket, requests2
-        yield emulation.get, self, rp_crea2, 7
+        for rq in requests1:
+            yield create1.request_socket.put(rq)
+        for i in range(7):
+            yield rp_crea1.get()
+        for rq in requests2:
+            yield create2.request_socket.put(rq)
+        for i in range(7):
+            yield rp_crea2.get()
 
-class ControlAssy(emulation.Process):
+class ControlAssy:
     def run(self, model):
         trans = model.modules["trans"]
         assy = model.modules["assy"]
@@ -116,31 +120,31 @@ class ControlAssy(emulation.Process):
         while True:
             ##attente de l'arrivée d'un pièce
             logger.info("attente d'une piece")
-            yield emulation.get, self, rp_obs1, 1
+            ev = yield rp_obs1.get()
             logger.info("pce 1 prete")
-            ev = self.got[0]
+            
             logger.info("chargement")
             rq = emulation.Request("trans","move",params={'program':'load'})
-            yield emulation.put, self, trans.request_socket, [rq]
+            yield trans.request_socket.put(rq)
             ##pièces prêtes
-            yield emulation.get, self, rp_obs2, 1
+            yield rp_obs2.get()
             logger.info("pce 2 prete")
-            yield emulation.get, self, rp_obs_assy, 1
+            yield rp_obs_assy.get()
             logger.info("pce assy chargée")
             #print self.got[0]
             #yield emulation.put, self, assy.request_socket, [emulation.Request("assy","setup", params={"program":'p'})]
             ##début process
             logger.info("process")
-            yield emulation.put, self, assy.request_socket, [emulation.Request("assy","assy", params={"program":'p'})]
+            yield assy.request_socket.put(emulation.Request("assy","assy", params={"program":'p'}))
             ##attente fin process
             fin = False
             while not fin:
-                yield emulation.get, self, rp_assy, 1
-                logger.info(self.got[0])
-                fin = self.got[0].what=="idle"
+                ev = yield rp_assy.get()
+                logger.info(ev[0])
+                fin = ev[0].what=="idle"
             ##déchargement
             logger.info("dechargement")
-            yield emulation.put, self, trans.request_socket, [emulation.Request("trans", "move", params={"program": 'unload'})]
+            yield trans.request_socket.put(emulation.Request("trans", "move", params={"program": 'unload'}))
 
 def get_model():
     model = emulation.Model()

@@ -48,7 +48,7 @@ class ControlCreate:
             yield createModule.request_socket.put(m)
             #print "send request to create actuator"
             rp = yield report.get()
-            print(rp)
+            #print(rp)
             #print "got report from create actuator"
             yield model.get_sim().timeout(10)
 
@@ -60,18 +60,17 @@ class ControlDispose:
         act_report = disposeModule.create_report_socket()
         while True:
             rp = yield report.get()
-            print("got report from observer1", rp)
-            if rp[0].how['present']:
-                print("sending request to dispose")
-                
+            #print("got report from observer1", rp)
+            if rp.how['present']:
+                #print("sending request to dispose")
                 r = emu.Request(actor="dispose1",action="dispose",date=model.current_time()+4)
-                print(r)
+                #print(r)
                 yield disposeModule.request_socket.put(r)
                 r2 = yield act_report.get()
-                print("got report from dispose act", r2)
+                #print("got report from dispose act", r2)
             else:
-                print("ignoring absence message")
-        
+                #print("ignoring absence message")
+                pass
 
 def get_model():
     model = emu.Model()

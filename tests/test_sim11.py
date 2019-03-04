@@ -27,20 +27,20 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), ".."
 
 import emulica.emulation as emu
 
-EXP_RESULT = [(1, [], [(5, 'holder1')], 5, 30),
-              (2, [], [(15, 'holder1')], 15, 30),
-              (3, [], [(30, 'holder1')], 30, 30)]
+EXP_RESULT = [(1, [], [(5, 'holder1')], 5, 100),
+              (2, [], [(15, 'holder1')], 15, 100),
+              (3, [], [(30, 'holder1')], 30, 100)]
 
 EMULATE_UNTIL = 100;
 
-class ControlCreate(emu.Process):
+class ControlCreate:
     def run(self, model):
         rq = emu.Request("create1", "create")
-        yield emu.hold, self, 5
+        yield model.get_sim().timeout(5)
         model.insert_request(rq)
-        yield emu.hold, self, 10
+        yield model.get_sim().timeout(10)
         model.insert_request(rq)
-        yield emu.hold, self, 15
+        yield model.get_sim().timeout(15)
         model.insert_request(rq)
         
 def get_model():

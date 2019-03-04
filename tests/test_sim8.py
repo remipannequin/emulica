@@ -69,31 +69,31 @@ pos_list = list()
 
 EMULATE_UNTIL = 16;
 
-class ControlCreate(emu.Process):
+class ControlCreate:
     def run(self, model):
         createModule = model.modules["create1"]
         requests = [emu.Request("create1", "create", date = t) for t in [0., 2., 4., 5., 6., 7., 7.5, 8.]]
-        yield emu.put, self, createModule.request_socket, requests
+        for r in requests:
+            yield createModule.request_socket.put(r)
                     
 
-class ControlDispose(emu.Process):
+class ControlDispose:
     def run(self, model):
         disposeModule = model.modules["dispose1"]
         observerModule = model.modules["observer1"]
         report = observerModule.create_report_socket()
         while True:
-            yield emu.get, self, report, 1
-            yield emu.put, self, disposeModule.request_socket, [emu.Request("dispose1","dispose", date = emu.now()+1)]
+            yield report.get()
+            yield disposeModule.request_socket.put(emu.Request("dispose1","dispose", date = model.current_time()+1))
 
-class ObsMonitor(emu.Process):
+class ObsMonitor:
     def run(self, model):
         del pos_list[:]
         obs = model.modules["observer2"]
         report = obs.create_report_socket()
         while True:
-            yield emu.put, self, obs.request_socket, [emu.Request("observer2","observe", date = emu.now() + 0.5)]
-            yield emu.get, self, report, 1
-            r = self.got[0]
+            yield obs.request_socket.put(emu.Request("observer2","observe", date = model.current_time() + 0.5))
+            r = yield report.get()
             pos_list.append((r.when, r.how['ID_by_position']))
             
             

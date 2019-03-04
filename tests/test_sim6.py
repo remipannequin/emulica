@@ -110,8 +110,8 @@ class TestSim6(unittest.TestCase):
         
         result = [sum([s[i][j] for i in range(replication)])/replication for j in range(len(e))]
         exp_result = [a*a/(1-a) for (a, seed) in e]
-        print result
-        print exp_result
+        #print result
+        #print exp_result
         for i in range(len(result)):
             self.assertAlmostEquals(result[i], exp_result[i], delta = exp_result[i]*0.05)
 

@@ -19,6 +19,7 @@ import sys
 import os.path
 import unittest
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
+_ = lambda x:x
 
 from emulica.properties import SetupMatrix, Registry
 from emulica import emulation

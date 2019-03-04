@@ -73,7 +73,7 @@ EXP_RESULT_RESOURCE = [[(0, 0, 'setup'),
 
 EMULATE_UNTIL = 50
 
-class ControlCreate(Process):
+class ControlCreate:
     def run(self, model):
         n = 0
         i = 0
@@ -81,20 +81,20 @@ class ControlCreate(Process):
         createModule = model.get_module("create")
         while n < 4:
             m = Request("create", "create",params={'productType':pType[i]})
-            yield put, self, createModule.request_socket, [m]
+            yield createModule.request_socket.put(m)
             i = (i+1)%3
             n += 1
 
-class ControlDispose(Process):
+class ControlDispose:
     def run(self, model):
         dispose = model.get_module('dispose')
         obs = model.get_module('obsSink')
         rp_obs = obs.create_report_socket()
         while True:
-            yield get, self, rp_obs, 1
-            yield put, self, dispose.request_socket, [Request("dispose", "dispose")]
+            yield rp_obs.get()
+            yield dispose.request_socket.put(Request("dispose", "dispose"))
 
-class ControlCell(Process):
+class ControlCell:
     def run(self, model):
         prog = {'type1':'p1','type2':'p3','type3':'p2'}
         sp = model.get_module("transporter")
@@ -106,25 +106,23 @@ class ControlCell(Process):
         rp_obs2 = obs2.create_report_socket()
         while True:
             ##attente de l'arrivée d'un pièce
-            yield get, self, rp_obs1, 1
-            ev = self.got[0]
+            ev = yield rp_obs1.get()
             rq = Request("transporter","move",params={'program':'load'})
-            yield put, self, sp.request_socket, [rq]
+            yield sp.request_socket.put(rq)
             ##pièce prête
-            yield get, self, rp_obs2, 1
-            ev = self.got[0]
+            ev = yield rp_obs2.get()
             p = prog[ev.how['productType']]
-            yield put, self, machine.request_socket, [Request("machine","setup", params={"program":p})]
-            print "delay = %s" % machine['program_table'][p].time()
+            yield machine.request_socket.put(Request("machine","setup", params={"program":p}))
+            #print "delay = %s" % machine['program_table'][p].time()
             ##début process
-            yield put, self, machine.request_socket, [Request("machine","make")]
+            yield machine.request_socket.put(Request("machine","make"))
             ##attente fin process
             fin = False
             while not fin:
-                yield get, self, rp_machine, 1
-                fin = self.got[0].what=="idle"
+                ev = yield rp_machine.get()
+                fin = ev.what=="idle"
             ##déchargement
-            yield put, self, sp.request_socket, [Request("transporter", "move", params={"program":'unload'})]
+            yield sp.request_socket.put(Request("transporter", "move", params={"program":'unload'}))
             
              
 

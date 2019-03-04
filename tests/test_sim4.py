@@ -111,8 +111,8 @@ class ControlMachine:
             yield sp.request_socket.put(rq)
             ##pièce prête
             ev = yield rp_obs2.get()
-            print ev
-            p = prog[ev[0].how['productType']]
+            #print ev
+            p = prog[ev.how['productType']]
             yield machine.request_socket.put(Request("machine","setup", params={"program":p}))
             ##début process
             yield machine.request_socket.put(Request("machine","make"))

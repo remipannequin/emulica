@@ -27,31 +27,30 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), ".."
 
 import emulica.emulation as emu
 
-EXP_REPORT_LIST = [emu.Report("create1", "create-done", date = d*10) for d in range(11)]
+EXP_REPORT_LIST = [emu.Report("create1", "create-done", date = d*10) for d in range(10)]
 EXP_REPORT_LIST.insert(1, emu.Report("observer1", "ev1", location = "holder1", date = 0))
 report_list = []
 
 EMULATE_UNTIL = 100;
 
 
-class ControlCreate(emu.Process):
+class ControlCreate:
     def run(self, model):
         n = 0
         createModule = model.modules["create1"]
         while n < 10:
             m = emu.Request("create1", "create")
-            yield emu.put, self, createModule.request_socket, [m]
-            yield emu.hold, self, 10
+            yield createModule.request_socket.put(m)
+            yield model.get_sim().timeout(10)
 
-class ReportMonitor(emu.Process):
+class ReportMonitor:
     def run(self, model):
         """PEM : create a Store, and attach it to every module in the model"""
-        queue = emu.Store()
+        queue = model.create_report_socket()
         for module in model.modules.values():
             module.attach_report_socket(queue)
         while True:
-            yield emu.get, self, queue, 1
-            report = self.got[0]
+            report = yield queue.get()
             report_list.append(report)
 
 def get_model():
@@ -80,6 +79,7 @@ class TestSim13(unittest.TestCase):
     def test_RunResults(self):
         model = get_model()
         model.emulate(until = EMULATE_UNTIL)
+        #print report_list
         self.assertEqual(report_list, EXP_REPORT_LIST)
 
 if __name__ == '__main__':    

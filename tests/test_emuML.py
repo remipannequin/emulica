@@ -128,7 +128,7 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(result_product, sim.EXP_RESULT_PRODUCT)
         self.assertEqual(result_resource, sim.EXP_RESULT_RESOURCE)
 
-    def test_config(self):
+    def test_config3(self):
         """test emuML with create, holder, pushobserver, failure"""
         import test_sim7 as sim
         sim_file = os.path.join(os.path.dirname(__file__), 'data', "sim7.xml")

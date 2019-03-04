@@ -59,7 +59,7 @@ class ControlSpace:
         report = obs1.create_report_socket()
         while True:
             ev = yield report.get()
-            print ev
+            #print ev
             rq = Request("space1","move",params={'program':'p1'})
             yield sp.request_socket.put(rq)
  
