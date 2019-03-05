@@ -34,8 +34,8 @@ class MyTestClass:
 
     def callback(self, data):
         self.i += 1
-        print GLib.get_monotonic_time()
-        print("callback called {times} times".format(times = self.i))
+        #print GLib.get_monotonic_time()
+        #print("callback called {times} times".format(times = self.i))
         if self.i == 10:
             #GLib.quit()
             return False
@@ -55,25 +55,25 @@ class MySource(GLib.Source):
 
     def prepare(self):
         """"""
-        print "calling prepare"
+        #print "calling prepare"
         now = self.get_current_time()
         if now < self.expiration:
             timeout = (self.expiration - now + 999)/1000
-            print "timeout of {0}".format(timeout)
+            #print "timeout of {0}".format(timeout)
             return (False, timeout)
         else:
-            print "no timeout"
+            #print "no timeout"
             return (True, 0)
 
     def check(self):
-        print "calling check"
+        #print "calling check"
         now = self.get_current_time()
         r = self.expiration <= now
-        print r
+        #print r
         return True
 
     def dispatch(self, callback, args):
-        print "calling dispatch"
+        #print "calling dispatch"
         r = self.callback(args)
         if not r: 
             self.destroy()
@@ -87,32 +87,32 @@ class TestGLibCustomEvent(unittest.TestCase):
         pass
     
     def test_1(self):
-        print "create main loop"
+        #print "create main loop"
         main = GLib.MainLoop()
-        print "create test objects"
+        #print "create test objects"
         t = MyTestClass()
         source = MySource(t.callback, 1000, main)
-        print "attach"
+        #print "attach"
         source.attach()
         source.set_expiration(source.get_current_time())
-        print "run main loop"
+        #print "run main loop"
         main.run()
         
     def test_TwoLoops(self):
-        print "create main loop"
+        #print "create main loop"
         main = GLib.MainLoop()
-        print "create test objects"
+        #print "create test objects"
         t1 = MyTestClass()
         source1 = MySource(t1.callback, 1000, main)
         
         t2 = MyTestClass()
         source2 = MySource(t2.callback, 2000, main)
-        print "attach"
+        #print "attach"
         source1.attach()
         source2.attach()
         source1.set_expiration(source1.get_current_time())
         source2.set_expiration(source2.get_current_time())
-        print "run main loop"
+        #print "run main loop"
         main.run()
 
 if __name__ == '__main__':    

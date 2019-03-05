@@ -25,7 +25,7 @@ from emulica import AboutEmulicaDialog
 class TestExample(unittest.TestCase):
     def setUp(self):
         self.AboutEmulicaDialog_members = [
-        'AboutDialog', 'AboutEmulicaDialog', 'logger', 'logging']
+        'AboutDialog', 'AboutEmulicaDialog', 'LOGGER', 'logging']
 
     def test_AboutEmulicaDialog_members(self):
         all_members = dir(AboutEmulicaDialog)

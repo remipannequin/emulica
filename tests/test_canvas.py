@@ -19,6 +19,7 @@ import sys
 import os.path
 import unittest
 import subprocess
+import imageio
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
 #libs
@@ -29,6 +30,8 @@ from gi.repository import GooCanvas as goo
 from emulica import emulation
 from emulica.canvas import *
 from emulica.CommandManager import CommandManager
+
+FNULL = open(os.devnull, 'w')
 
 class TestCanvas(unittest.TestCase):
     def setUp(self):
@@ -79,11 +82,17 @@ class TestCanvas(unittest.TestCase):
         canvas.set_size_request(100, 50)
         h = cls(self.model, name)
         canvas.write_pdf(name+'.pdf')
-        subprocess.call(["pdfcrop", name+'.pdf', 'cropped.pdf'])
+        
+        subprocess.call(["pdfcrop", name+'.pdf', 'cropped.pdf'], stdout=FNULL)
         subprocess.call(["convert", 'cropped.pdf', name+'.png'])
-        return_code = subprocess.call(["diff", name+'.png', 'data/'+name+'.png'])
-        self.assertEqual(return_code, 0)
         os.remove(name+'.pdf')
+        os.remove('cropped.pdf')
+        im = imageio.imread(name+'.png')
+        os.remove(name+'.png')
+        im_ref = imageio.imread('data/'+name+'.png')
+        comp = im_ref - im
+        self.assertEqual(comp.mean(), 0)
+        
 
     def testHolder(self):
         self.unitModule('holder', emulation.Holder)
@@ -119,10 +128,16 @@ class TestCanvas(unittest.TestCase):
                              model.get_module('dispose1'): (250, 60)})
         canvas.set_size_request(320, 200)
         canvas.write_pdf("sim1.pdf")
-        return_code = subprocess.call(["diff", 'sim1.pdf', 'data/sim1.pdf'])
-        self.assertEqual(return_code, 0)
+        subprocess.call(["pdfcrop", 'sim1.pdf', 'cropped.pdf'], stdout=FNULL)
+        subprocess.call(["convert", 'cropped.pdf', 'sim1.png'])
         os.remove('sim1.pdf')
-        
+        os.remove('cropped.pdf')
+        im = imageio.imread('sim1.png')
+        os.remove('sim1.png')
+        im_ref = imageio.imread('data/sim1.png')
+        comp = im_ref - im
+        self.assertEqual(comp.mean(), 0)
+
 
 if __name__ == '__main__':    
     unittest.main()

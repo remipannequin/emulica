@@ -30,11 +30,11 @@ import threading
 from emulica.emulation import *
 from emulica import controler
 
-EXP_RESULT = [(1, [], [(5, 'holder1')], 5, 30),
-              (2, [], [(15, 'holder1')], 15, 30),
-              (3, [], [(30, 'holder1')], 30, 30)]
+EXP_RESULT = [(1, [], [(5, 'holder1')], 5, 30.1),
+              (2, [], [(15, 'holder1')], 15, 30.1),
+              (3, [], [(30, 'holder1')], 30, 30.1)]
               
-EMULATE_UNTIL = 30;
+EMULATE_UNTIL = 30.1;
               
         
 def get_model():

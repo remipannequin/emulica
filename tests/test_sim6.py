@@ -73,7 +73,7 @@ def run(a, b, seed, until = 250):
     l = [(pid, p.create_time, p.dispose_time, 
           p.shape_history, p.space_history) for (pid, p) in model.products.items()]
     t = model.modules["space1"].trace
-    m = model.modules["h1"].monitor.timeAverage()
+    m = model.modules["h1"].monitor.time_average()
     return (l, t, m)
 
 class TestSim6(unittest.TestCase):
