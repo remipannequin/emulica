@@ -37,41 +37,38 @@ class TestConfig(unittest.TestCase):
     def compare_node(self, dom1, dom2):
         """test if two DOM are "equivalent" 'ie have the same tree structure, regardless of the order of siblings
         """
-        def node_cmp(n1, n2): 
+        def node_cmp(n1): 
             node_id1 = n1.nodeName
             if 'getAttribute' in dir(n1) and n1.hasAttribute('name'):
                 node_id1 += n1.getAttribute('name')
-            node_id2 = n2.nodeName
-            if 'getAttribute' in dir(n2) and n2.hasAttribute('name'):
-                node_id2 += n2.getAttribute('name')
-            return cmp(node_id1, node_id2)
+            return node_id1
             
         if not dom1.nodeType == dom2.nodeType:
-            print dom1.nodeType, dom2.nodeType
-            print dom1.toxml()
-            print dom2.toxml()
+            print(dom1.nodeType, dom2.nodeType)
+            print(dom1.toxml())
+            print(dom2.toxml())
             return False
         if not dom1.nodeName == dom2.nodeName: 
-            print dom1.nodeName, dom2.nodeName
-            print dom1.toxml()
-            print dom2.toxml()
+            print(dom1.nodeName, dom2.nodeName)
+            print(dom1.toxml())
+            print(dom2.toxml())
             return False
         if dom1.nodeValue == None:
             if not dom1.nodeValue == dom2.nodeValue:
-                print dom1.nodeValue, dom2.nodeValue
-                print dom1.toxml()
-                print dom2.toxml()
+                print(dom1.nodeValue, dom2.nodeValue)
+                print(dom1.toxml())
+                print(dom2.toxml())
                 return False
         else:
             if not dom1.nodeValue.strip() == dom2.nodeValue.strip(): 
-                print dom1.nodeValue.strip(), dom2.nodeValue.strip()
+                print (dom1.nodeValue.strip(), dom2.nodeValue.strip())
                 return False
-        l1 = sorted(dom1.childNodes, node_cmp)
-        l2 = sorted(dom2.childNodes, node_cmp)
+        l1 = sorted(dom1.childNodes, key=node_cmp)
+        l2 = sorted(dom2.childNodes, key=node_cmp)
         if not len(l1) == len(l2):
-            print "number of childs:", len(l1), len(l2)
-            print dom1.toxml()
-            print dom2.toxml()
+            print("number of childs:", len(l1), len(l2))
+            print(dom1.toxml())
+            print(dom2.toxml())
             return False
         test = True
         for i in range(len(l1)):

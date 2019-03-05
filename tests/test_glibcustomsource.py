@@ -55,7 +55,7 @@ class MySource(GLib.Source):
     def prepare(self):
         """"""
         #print "calling prepare"
-        now = self.get_current_time()
+        now = self.get_time()
         if now < self.expiration:
             timeout = (self.expiration - now + 999)/1000
             #print "timeout of {0}".format(timeout)
@@ -66,7 +66,7 @@ class MySource(GLib.Source):
 
     def check(self):
         #print "calling check"
-        now = self.get_current_time()
+        now = self.get_time()
         r = self.expiration <= now
         #print r
         return True

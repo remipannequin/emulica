@@ -23,7 +23,7 @@ from emulica.core import emuML, controler
 from gi.repository import Gtk # pylint: disable=E0611
 from gi.repository import GtkSource# pylint: disable=E0611
 
-from ModuleSelectionDialog import ModuleSelectionDialog
+from . ModuleSelectionDialog import ModuleSelectionDialog
 
 logger = logging.getLogger('emulica.emulicapp.control')
 
@@ -507,7 +507,7 @@ class EmulicaControl:
         self.buffer.remove_tag(self.tag_error, self.buffer.get_start_iter(), self.buffer.get_end_iter())
         try:
             emuML.compile_control(self.model, self.buffer.props.text)
-        except StandardError, e:
+        except Exception as e:
             if 'lineno' in dir(e):
                 lineno = max(e.lineno - 1, 0)
                 if 'offset' in dir(e) and not e.offset == None:
@@ -522,7 +522,7 @@ class EmulicaControl:
             self.main.error_message(_("{name}: {message}").format(name = e.__class__.__name__, message = str(e)))
             self.update_control_state(True, False)
             return False
-        except emuML.EmuMLError, msg:
+        except emuML.EmuMLError as msg:
             self.main.error_message(msg.message)
             self.update_control_state(True, False)
             return False

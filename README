@@ -17,11 +17,11 @@ time advance or in real-time.
 In addition to the core emulation fonctions, which can be embeded in any 
 custom application, emulica ships a graphical (gnome) application. with 
 visualisation and animation of the emulation model, comprehensive code 
-editing of the control processes, including iyntax highlight and with 
+editing of the control processes, including syntax highlight and with 
 automated code generation, and results generation, including gantt charts 
 for products and resources, holder occupation, etc...
 
-Copyright 2008, Rémi Pannequin
+Copyright 2019, Rémi Pannequin
 remi.pannequin@cran.uhp-nancy.fr
 
 

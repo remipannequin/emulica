@@ -33,7 +33,7 @@ from . EmulicaExecDialog import EmulicaExecDialog
 import sys, os, pickle, zipfile, random
 from emulica.core import emuML, controler, emulation
 
-import modelling, control, results
+from . import modelling, control, results
 
 
 
@@ -462,6 +462,7 @@ class EmulicaWindow(Window):
         #TODO: verify if submodels are readable, and propose to relocate them if nessecary
         try:
             (self.model, control) = gsfile.read()
+            control = control.decode('utf-8')
             self.filename = filename
             properties = gsfile.get_properties()
             #filter layout properties: if the  module is not in the model drop the position
@@ -497,8 +498,7 @@ class EmulicaWindow(Window):
             self.emulica_model.reset(self.model, main_layout, sub_layout)
             #init control buffer
             self.emulica_control.reset(self.model, control)
-            
-        except emuML.EmuMLError, warning:
+        except emuML.EmuMLError as warning:
             # error loading file, show message to user
             self.error_message (_("Could not open file: {filename}s\n {warning}").format(filename = filename, warning = warning))
         finally:
@@ -522,8 +522,7 @@ class EmulicaWindow(Window):
         gsfile = emuML.EmuFile(filename, 'w')
         try:
             gsfile.write(self.model, self.emulica_control.get_text(), self.props)
-        except Exception, msg:
-            print msg
+        except Exception as msg:
             self.error_message(_("Could not save file: {0}").format(filename))
         finally:
             gsfile.close()

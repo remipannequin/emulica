@@ -11,7 +11,7 @@ from gi.repository import Gtk
 from gi.repository import Gio
 from emulica.app import EmulicaWindow
 from emulica.core import set_up_logging
-from emulicaconfig import get_version
+from . emulicaconfig import get_version
 
 def parse_options():
     """Support for command line options"""

@@ -48,13 +48,13 @@ class TestHolderState(unittest.TestCase):
             instance.append(i)
         self.assertEqual(len(instance), 10)
         self.assertTrue(instance.is_first_ready())
-        self.assertEqual(instance.product_list(), range(10))
+        self.assertEqual(instance.product_list(), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
         
     def test_Pop(self):
         instance = emu.HolderState(self.h)
         for i in range(10):
             instance.append(i)
-        self.assertEqual(instance.product_list(), range(10))
+        self.assertEqual(instance.product_list(), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
         instance.pop()
         self.assertEqual(instance.product_list(), [1, 2, 3, 4, 5, 6, 7, 8, 9])
         instance.append(10)
@@ -71,7 +71,7 @@ class TestHolderState(unittest.TestCase):
         instance.update_positions()
         self.assertEqual(len(instance), 10)
         self.assertTrue(instance.is_first_ready())
-        self.assertEqual(instance.product_list(), range(10))
+        self.assertEqual(instance.product_list(), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
 
 if __name__ == '__main__':    

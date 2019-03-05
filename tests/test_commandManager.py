@@ -191,7 +191,6 @@ class TestCommandManager(unittest.TestCase):
         p1 = machine.properties['program_table']['p1']
         p3 = machine.properties['program_table']['p3']
         m = machine.properties['setup']
-        print m
         cmd.del_setup(m, 'p1', 'p3')
         self.assertEqual(m.get('p1', 'p3'), 1)
         cmd.undo()

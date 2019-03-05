@@ -107,7 +107,7 @@ class TestSim6(unittest.TestCase):
         replication = 10
         for i in range(replication):
             s.append([run(a, 1, seed+i*375, until = 20000)[2] for (a, seed) in e])
-            print i
+
         
         result = [sum([s[i][j] for i in range(replication)])/replication for j in range(len(e))]
         exp_result = [a*a/(1-a) for (a, seed) in e]

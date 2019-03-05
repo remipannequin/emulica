@@ -23,7 +23,7 @@ from gettext import gettext as _
 gettext.textdomain('emulica')
 
 import sys, os, logging
-import canvas
+from . import canvas
 from emulica.core import emuML, emulation
 from . CommandManager import CommandManager
 from . propertiesDialog import PropertiesDialog

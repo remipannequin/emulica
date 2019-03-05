@@ -38,7 +38,7 @@ import cairo
 from gi.repository import GooCanvas as Goo # pylint: disable=E0611
 
 from emulica.core import emuML
-from propertiesDialog import PropertiesDialog
+from . propertiesDialog import PropertiesDialog
 
 logger = logging.getLogger('emulica.canvas')
 
@@ -135,8 +135,8 @@ class EmulicaCanvas(Goo.Canvas):
         self.__connection_layer.remove()
         self.__connection_layer = Goo.CanvasGroup(parent = self.get_root_item())
         #add modules to the module_layer
-        modules = self.model.modules.values()
-        modules.sort(lambda m1, m2: m2.is_model() - m1.is_model())
+        modules = list(self.model.modules.values())
+        modules.sort(key=lambda m: m.is_model())
         for module in modules:
             new_widget = self.__module_layer.add_module(module)
             self.widgets[module] = new_widget
@@ -714,7 +714,7 @@ class Model(ModuleWidget, ModuleLayer):
         if attr == 'widget_bounds':
             return self.fit_size()
         else:
-            raise AttributeError, attr
+            raise AttributeError(attr)
 
 
 class Holder(ModuleWidget):
@@ -729,14 +729,14 @@ class Holder(ModuleWidget):
                                               center_y = self.__height/2,
                                               radius_x = 4,
                                               radius_y = 4,
-                                              fill_color = 'dark green',              
-                                              line_width = 0)       
+                                              fill_color = 'dark green',
+                                              line_width = 0)
         self.__output_port = Goo.CanvasEllipse(parent = self,
                                                center_x = self.__width,
                                                center_y = self.__height/2,
                                                radius_x = 4,
                                                radius_y = 4,
-                                               fill_color = 'dark green',              
+                                               fill_color = 'dark green',
                                                line_width = 0) 
         self.__rect = Goo.CanvasRect(parent = self,
                                      x = 0,
