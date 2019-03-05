@@ -33,6 +33,22 @@ Reference Documents:
     
     file_format
     
+
+API documentation:
+
+.. toctree::
+    :maxdepth: 3
+    
+    emulica.core.controler
+    
+    emulica.core.emuML
+    
+    emulica.core.emulation
+    
+    emulica.core.plot
+    
+    emulica.core.properties
+    
 Indices and tables
 ==================
 
