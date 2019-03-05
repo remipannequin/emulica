@@ -20,12 +20,12 @@ This simple model based on sim1 tests the insert_request() method of emulation.M
 """
 
 
-import sys
-import os.path
 import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
-import emulica.emulation as emu
+import util
+util.set_path()
+
+import emulica.core.emulation as emu
 
 EXP_RESULT = [(1, [], [(5, 'holder1')], 5, 100),
               (2, [], [(15, 'holder1')], 15, 100),

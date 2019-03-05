@@ -17,13 +17,13 @@
 
 """Submodel: model properties: linking model properties and module parameters."""
 
-import sys
-import os.path
 import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
-from emulica.emulation import *
-from emulica.properties import SetupMatrix, ProgramTable
+import util
+util.set_path()
+
+from emulica.core.emulation import *
+from emulica.core.properties import SetupMatrix, ProgramTable
 
 EXP_RESULT_PRODUCT = [(1, [(3, 9, 'cell.machine', 'p1')], [(0, 'cell.source'),
                                                            (0, 'cell.transporter'),

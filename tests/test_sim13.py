@@ -20,12 +20,12 @@ In this model, we test if the same report socket can be created and attached to 
 """
 
 
-import sys
-import os.path
 import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
-import emulica.emulation as emu
+import util
+util.set_path()
+
+import emulica.core.emulation as emu
 
 EXP_REPORT_LIST = [emu.Report("create1", "create-done", date = d*10) for d in range(10)]
 EXP_REPORT_LIST.insert(1, emu.Report("observer1", "ev1", location = "holder1", date = 0))

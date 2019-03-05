@@ -19,12 +19,12 @@
 Create -> holder -> space -> holder
 """
 
-import sys
-import os.path
 import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
-from emulica.emulation import *
+import util
+util.set_path()
+
+from emulica.core.emulation import *
 
 EXP_RESULT_PRODUCT = [(1, [], [(0, 'h1'), (0, 'space1'), (2, 'h2')], 0, 41),
                       (2, [], [(10, 'h1'), (10, 'space1'), (12, 'h2')], 10, 41),

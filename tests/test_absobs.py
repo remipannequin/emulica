@@ -15,14 +15,12 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-
-
-import sys
-import os.path
 import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
-import emulica.emulation as emu
+import util
+util.set_path()
+
+import emulica.core.emulation as emu
 
 EXP_RESULT = [(1, [], [(0, 'holder1')], 0, 4),
               (2, [], [(10, 'holder1')], 10, 14), 

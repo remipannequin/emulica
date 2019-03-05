@@ -19,13 +19,14 @@
 """This model tests the random number generation features.
 """
 
-import sys
-import os.path
-import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
-from emulica import emulation as emu
-from emulica.emulation import Report, Request
+import unittest
+
+import util
+util.set_path()
+
+from emulica.core import emulation as emu
+from emulica.core.emulation import Report, Request
 
 EMULATE_UNTIL = 250;
 

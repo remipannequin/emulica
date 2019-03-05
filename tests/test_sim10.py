@@ -22,13 +22,12 @@ two type of products are created, and then assembled, and finally put in invento
 """
 
 
-import sys
-import os.path
 import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
+import util
+util.set_path()
 
-from emulica import emulation
+from emulica.core import emulation
 import logging
 logger = logging.getLogger('test_sim10')
 

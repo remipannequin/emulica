@@ -19,16 +19,15 @@ This simple model based on sim1 tests the insert_request(): test of out-of-simul
 """
 
 
-import sys
-import os.path
 import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
+import util
+util.set_path()
 
 import time
 import threading
-from emulica.emulation import *
-from emulica import controler
+from emulica.core.emulation import *
+from emulica.core import controler
 
 EXP_RESULT = [(1, [], [(5, 'holder1')], 5, 30.1),
               (2, [], [(15, 'holder1')], 15, 30.1),

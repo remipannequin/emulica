@@ -18,13 +18,13 @@
 
 """In this model, the create actuator is controled so that the level of product in the queue stay constant"""
 
-import sys
-import os.path
+
 import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
-import sys
-sys.path.insert(0, "../src/")
-from emulica.emulation import *
+
+import util
+util.set_path()
+
+from emulica.core.emulation import *
 
 
 EXP_RESULT_PRODUCT = [(1, [], [(0, 'holder1')], 0, 1), 

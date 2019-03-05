@@ -15,21 +15,23 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-import sys
+
 import os.path
 import unittest
 import subprocess
 import imageio
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
+
+import util
+util.set_path()
 
 #libs
 from gi.repository import GooCanvas as goo
 #from gi.repository import Gtk as gtk
 
 #import classes required to run the test
-from emulica import emulation
-from emulica.canvas import *
-from emulica.CommandManager import CommandManager
+from emulica.core import emulation
+from emulica.app.canvas import *
+from emulica.app.CommandManager import CommandManager
 
 FNULL = open(os.devnull, 'w')
 

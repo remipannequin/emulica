@@ -15,10 +15,11 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-import sys
-import os.path
+
 import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
+
+import util
+util.set_path()
 
 """
 Real time / Hybrid time tests. Model based on sim1.
@@ -27,8 +28,8 @@ Real time / Hybrid time tests. Model based on sim1.
 
 import time
 import threading
-import emulica.emulation as emu
-from emulica import controler
+import emulica.core.emulation as emu
+from emulica.core import controler
 import logging
 import test_sim1 as sim1
 

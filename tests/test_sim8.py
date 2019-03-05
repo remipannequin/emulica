@@ -15,12 +15,12 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-import sys
-import os.path
+
 import logging
 import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
+import util
+util.set_path()
 
 #logger = logging.getLogger('emulica.emulation')
 #logger.setLevel(logging.DEBUG)
@@ -35,7 +35,7 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), ".."
 #logger.addHandler(ch)
 
 
-import emulica.emulation as emu
+import emulica.core.emulation as emu
 
 EXP_RESULT = [(1, [], [(0. , 'holder1')], 0., 3.),
               (2, [], [(2., 'holder1')], 2., 5.), 

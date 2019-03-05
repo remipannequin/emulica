@@ -15,12 +15,13 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-import sys
-import os.path
-import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
-from emulica import controler
+import unittest
+
+import util
+util.set_path()
+
+from emulica.core import controler
 import test_sim12
 
 class TestServer(unittest.TestCase):

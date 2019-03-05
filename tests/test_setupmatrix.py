@@ -15,14 +15,16 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-import sys
-import os.path
+
 import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
+
+import util
+util.set_path()
+
 _ = lambda x:x
 
-from emulica.properties import SetupMatrix, Registry
-from emulica import emulation
+from emulica.core.properties import SetupMatrix, Registry
+from emulica.core import emulation
 
 
 

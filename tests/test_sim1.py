@@ -17,12 +17,13 @@
 
 
 
-import sys
-import os.path
-import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
 
-import emulica.emulation as emu
+import unittest
+
+import util
+util.set_path()
+
+import emulica.core.emulation as emu
 
 EXP_RESULT = [(1, [], [(0, 'holder1')], 0, 4),
               (2, [], [(10, 'holder1')], 10, 14), 

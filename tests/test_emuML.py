@@ -15,13 +15,14 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
-import sys
-import os.path
+
 import unittest
-sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), "..")))
+import os
+import util
+util.set_path()
 
 from xml.dom import minidom
-from emulica import emuML, emulation
+from emulica.core import emuML, emulation
 
 class TestConfig(unittest.TestCase):
 

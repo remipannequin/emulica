@@ -1,1 +1,1 @@
-GSETTINGS_SCHEMA_DIR=./data/glib-2.0/schemas/ ./bin/emulica
+GSETTINGS_SCHEMA_DIR=./data/glib-2.0/schemas/ ./emulica
