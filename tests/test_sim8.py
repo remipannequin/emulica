@@ -19,8 +19,16 @@
 import logging
 import unittest
 
+import logging
+from emulica.core import set_up_logging
+set_up_logging(logging.ERROR)
+
 import util
 util.set_path()
+
+import logging
+from emulica.core import set_up_logging
+set_up_logging(logging.ERROR)
 
 #logger = logging.getLogger('emulica.emulation')
 #logger.setLevel(logging.DEBUG)

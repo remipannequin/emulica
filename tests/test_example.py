@@ -23,8 +23,13 @@ util.set_path()
 
 from emulica.app import AboutEmulicaDialog
 
+import logging
+from emulica.core import set_up_logging
+set_up_logging(logging.ERROR)
+
 class TestExample(unittest.TestCase):
     def setUp(self):
+        print(self.id())
         self.AboutEmulicaDialog_members = [
         'AboutDialog', 'AboutEmulicaDialog', 'LOGGER', 'logging']
 

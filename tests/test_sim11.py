@@ -19,6 +19,9 @@
 This simple model based on sim1 tests the insert_request() method of emulation.Model
 """
 
+import logging
+from emulica.core import set_up_logging
+set_up_logging(logging.ERROR)
 
 import unittest
 
@@ -52,7 +55,9 @@ def get_model():
     
     
 class TestSim11(unittest.TestCase):
-        
+    def setUp(self):
+        print(self.id())
+
     def test_ModelCreate(self):
         get_model()
 

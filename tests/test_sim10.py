@@ -21,6 +21,9 @@ In this test model, we use assemble actuators...
 two type of products are created, and then assembled, and finally put in inventory
 """
 
+import logging
+from emulica.core import set_up_logging
+set_up_logging(logging.ERROR)
 
 import unittest
 
@@ -168,6 +171,8 @@ def get_model():
 
 
 class TestSim10(unittest.TestCase):
+    def setUp(self):
+        print(self.id())
         
     def test_ModelCreate(self):
         get_model()

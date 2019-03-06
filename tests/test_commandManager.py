@@ -24,12 +24,16 @@ util.set_path()
 from emulica.core import emulation, properties
 from emulica.app.CommandManager import CommandManager
 
+import logging
+from emulica.core import set_up_logging
+set_up_logging(logging.ERROR)
 
 class TestCommandManager(unittest.TestCase):
     
     def setUp(self):
         import test_sim14 as sim
         self.model = sim.get_model()
+        print(self.id())
         
     def test_Init(self):
         cmd = CommandManager()

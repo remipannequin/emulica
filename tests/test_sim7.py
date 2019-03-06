@@ -17,6 +17,9 @@
 
 import unittest
 
+import logging
+from emulica.core import set_up_logging
+set_up_logging(logging.ERROR)
 
 import util
 util.set_path()
@@ -180,6 +183,8 @@ def register_control(model):
 
 
 class TestSim7(unittest.TestCase):
+    def setUp(self):
+        print(self.id())
         
     def test_ModelCreate(self):
         get_model()

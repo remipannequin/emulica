@@ -18,62 +18,36 @@
 
 import unittest
 
+import util
+util.set_path()
+
 import logging
 from emulica.core import set_up_logging
 set_up_logging(logging.ERROR)
 
-import util
-util.set_path()
-
-"""
-Real time / Hybrid time tests. Model based on sim1.
-"""
-
-
-import time
-import threading
-import emulica.core.emulation as emu
 from emulica.core import controler
-import logging
-import test_sim1 as sim1
+import test_sim12
 
-class TestSim9(unittest.TestCase):
+class TestServer(unittest.TestCase):
+    
     def setUp(self):
+        self.model = test_sim12.get_model()
         print(self.id())
-
+    
+    def todotest_Create(self):
+        serv = controler.EmulationServer(self.model, 51000)
+        
     def todotest_Start(self):
-        model = sim1.get_model()
-        sim1.register_control(model)
-        finished = threading.Condition()
-        def release_condition(model):
-            finished.acquire()
-            finished.notify()
-            finished.release()
-        
-        timer = controler.TimeControler(model, real_time = True, rt_factor = 10, until = sim1.EMULATE_UNTIL)
-        timer.add_callback(release_condition, controler.EVENT_FINISH)
-        timer.start()
-        #attente de 20s et *pause* de la simulation
-        time.sleep(2)
-        timer.pause()
-        #attente 10s et reprise
-        time.sleep(1)
-        timer.resume()
-        #attente de fin de simulation...
-        if not timer.finished:
-            finished.acquire()
-            finished.wait()
-            finished.release()
-        
+        serv = controler.EmulationServer(self.model, 51001)
+        serv.start()
+        #temporisation ?
         result = [(pid, 
                    p.shape_history, 
                    p.space_history, 
                    p.create_time, 
-                   p.dispose_time) for (pid, p) in model.products.items()]
+                   p.dispose_time) for (pid, p) in self.model.products.items()]
         self.assertEqual(result, EXP_RESULT)
-
-
+        
 if __name__ == '__main__':    
     unittest.main()
-
-
+        

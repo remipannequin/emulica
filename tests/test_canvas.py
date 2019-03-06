@@ -24,6 +24,10 @@ import imageio
 import util
 util.set_path()
 
+import logging
+from emulica.core import set_up_logging
+set_up_logging(logging.ERROR)
+
 #libs
 from gi.repository import GooCanvas as goo
 #from gi.repository import Gtk as gtk
@@ -37,7 +41,7 @@ FNULL = open(os.devnull, 'w')
 
 class TestCanvas(unittest.TestCase):
     def setUp(self):
-        
+        print(self.id())
         self.model = emulation.Model()
         self.cmd = CommandManager()
         

@@ -18,6 +18,10 @@
 """Test for the product physical charateristics. 
 """
 
+import logging
+from emulica.core import set_up_logging
+set_up_logging(logging.ERROR)
+
 import unittest
 
 import util
@@ -158,7 +162,10 @@ def register_control(model):
     return model
 
 class TestSim14(unittest.TestCase):
-        
+    
+    def setUp(self):
+        print(self.id())
+    
     def test_ModelCreate(self):
         get_model()
 

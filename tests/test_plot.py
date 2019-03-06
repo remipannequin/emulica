@@ -26,6 +26,10 @@ import util
 import os
 util.set_path()
 
+import logging
+from emulica.core import set_up_logging
+set_up_logging(logging.ERROR)
+
 import emulica.core.emulation as emu
 import emulica.core.plot as plot
 

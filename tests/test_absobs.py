@@ -16,11 +16,15 @@
 ### END LICENSE
 
 import unittest
+import logging
 
 import util
 util.set_path()
 
+from emulica.core import set_up_logging
 import emulica.core.emulation as emu
+
+set_up_logging(logging.ERROR)
 
 EXP_RESULT = [(1, [], [(0, 'holder1')], 0, 4),
               (2, [], [(10, 'holder1')], 10, 14), 
@@ -103,6 +107,9 @@ class TestSimAbsObs(unittest.TestCase):
         model.register_control(ControlCreate)
         model.register_control(ControlDispose)
     """
+    
+    def setUp(self):
+        print(self.id())
     
     def test_Start(self):
         model = get_model()

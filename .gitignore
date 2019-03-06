@@ -7,3 +7,5 @@
 /doc/manual/favicon.png
 /build
 /tests/*.png
+/tests/*.emu
+/tests/.coverage

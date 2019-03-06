@@ -18,6 +18,9 @@
 This simple model based on sim1 tests the insert_request(): test of out-of-simulation request insertion
 """
 
+import logging
+from emulica.core import set_up_logging
+set_up_logging(logging.ERROR)
 
 import unittest
 

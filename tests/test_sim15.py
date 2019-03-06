@@ -15,6 +15,9 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
+import logging
+from emulica.core import set_up_logging
+set_up_logging(logging.ERROR)
 
 import unittest
 
@@ -168,7 +171,8 @@ class TestSim15(unittest.TestCase):
     a create actuator put some product in a holder. These product trigger 
     a dispose actuator thanks to a product observer on the holder.
     """
-
+    def setUp(self):
+        print(self.id())
         
     def test_ModelCreate(self):
         get_model()
