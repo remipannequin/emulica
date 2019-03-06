@@ -15,6 +15,20 @@
 # with this program.  If not, see <http://www.gnu.org/licenses/>.
 ### END LICENSE
 
+import logging
+
+logger = logging.getLogger('emulica.emulation')
+logger.setLevel(logging.ERROR)
+# create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+# create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# add formatter to ch
+ch.setFormatter(formatter)
+# add ch to logger
+logger.addHandler(ch)
+
 
 import unittest
 
@@ -30,7 +44,10 @@ from emulica.core import emulation
 
 class TestSetupMatrix(unittest.TestCase):
     
+    
+    
     def setUp(self):
+        print(self.id())
         self.model = emulation.Model()
         self.p = emulation.Product(self.model)
 

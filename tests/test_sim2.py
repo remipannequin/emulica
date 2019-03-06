@@ -90,7 +90,9 @@ def initialize_control(model):
   
 
 class TestSim2(unittest.TestCase):
-        
+    def setUp(self):
+        print(self.id())
+    
     def test_ModelCreate(self):
         get_model()
 

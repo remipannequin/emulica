@@ -105,6 +105,9 @@ class TestSim1(unittest.TestCase):
         model.register_control(ControlDispose)
     """
     
+    def setUp(self):
+        print(self.id())
+    
     def test_Start(self):
         model = get_model()
         model.emulate(until = EMULATE_UNTIL)

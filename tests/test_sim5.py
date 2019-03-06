@@ -162,7 +162,10 @@ def get_model():
     
     
 class TestSim5(unittest.TestCase):
-        
+    
+    def setUp(self):
+        print(self.id())
+    
     def test_ModelCreate(self):
         get_model()
 

@@ -78,6 +78,9 @@ def run(a, b, seed, until = 250):
     return (l, t, m)
 
 class TestSim6(unittest.TestCase):
+            
+    def setUp(self):
+        print(self.id())
         
     def test_ModelCreate(self):
         get_model(0.7, 1)

@@ -155,7 +155,10 @@ def register_control(model):
     return model
 
 class TestSim4(unittest.TestCase):
-        
+    
+    def setUp(self):
+        print(self.id())
+    
     def test_ModelCreate(self):
         get_model()
 

@@ -44,7 +44,9 @@ def get_model():
     return model
 
 class TestSim12(unittest.TestCase):
-        
+    def setUp(self):
+        print(self.id())
+    
     def test_ModelCreate(self):
         get_model()
 

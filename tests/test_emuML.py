@@ -24,7 +24,24 @@ util.set_path()
 from xml.dom import minidom
 from emulica.core import emuML, emulation
 
+import logging
+
+logger = logging.getLogger('emulica.emuML')
+logger.setLevel(logging.ERROR)
+# create console handler and set level to debug
+ch = logging.StreamHandler()
+ch.setLevel(logging.ERROR)
+# create formatter
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+# add formatter to ch
+ch.setFormatter(formatter)
+# add ch to logger
+logger.addHandler(ch)
+
 class TestConfig(unittest.TestCase):
+
+    def setUp(self):
+        print(self.id())
 
     def compare_dom(self, s1, s2):
         """Util for emuML tests"""    
@@ -225,11 +242,62 @@ class TestConfig(unittest.TestCase):
         result_resource = [m3.get_module("cell.transporter").trace, m3.get_module("cell.machine").trace]
         self.assertEqual(result, sim.EXP_RESULT_PRODUCT)
         self.assertEqual(result_resource, sim.EXP_RESULT_RESOURCE)
+
+    def test_exceptions(self):
+        self.assertRaises(emuML.EmuMLError, emuML.EmuFile, 'test', '?')
+        self.assertRaises(emuML.EmuMLError, emuML.EmuFile, 'data/bad_no_model.emu', 'r')
+        self.assertRaises(emuML.EmuMLError, emuML.EmuFile, 'data/bad_no_emu.emu', 'r')
+        self.assertRaises(emuML.EmuMLError, emuML.EmuFile, 'data/bad_no_props.emu', 'r')
+        self.assertRaises(FileNotFoundError, emuML.EmuFile, 'data/sim15_bad_submodel.emu', 'r')
+        
+        f_out = emuML.EmuFile('test.emu', 'w')
+        self.assertRaises(emuML.EmuMLError, f_out.read)
         
         
+        f_in = emuML.EmuFile('data/sim15.emu', 'r')
+        self.assertRaises(emuML.EmuMLError, f_in.write, None, None, None)
+        f_in.close()
+        
+    def test_submodels(self):
+        f_in = emuML.EmuFile('data/sim15.emu', 'r')
+        self.assertTrue(f_in is not None)
+        
+        (model, control) = f_in.read()
+        self.assertTrue(model is not None)
+        self.assertTrue(control is not None)
+        
+        props = f_in.get_properties()
+        self.assertTrue('main' in props)
+        self.assertTrue('cell' in props)
+        
+        f_out = emuML.EmuFile('test.emu', 'w')
+        model.inputs['prop_test'] = ('ObsSink', 'identify')
+        f_out.write(model, control, props)
+        
+    def test_renaming(self):
+        m2 = emuML.load(os.path.join(os.path.dirname(__file__), 'data', "sim1_renaming.xml"))
+        self.assertTrue('mod' in m2.modules)
+        self.assertTrue('PushObserver2' in m2.modules)
+        self.assertTrue('CreateAct3' in m2.modules)
     
-    
-    
+    def test_parse_messages(self):
+        rq = emulation.Request('who', 'what')
+        rq.when = 2.8
+        rq.how['param_str'] = 'value'
+        s = emuML.write_request(rq)
+        self.compare_dom(s, """<request><who>who</who><what>what</what><when>2.8</when><where>who</where><how><element name="param_str">value</element></how></request>""")
+        rq2 = emuML.parse_request(s)
+        self.assertEqual(rq, rq2)
+        
+        rp = emulation.Report('who', 'what')
+        rp.when = 2.8
+        rp.how['param_str'] = 'value'
+        s = emuML.write_report(rp)
+        self.compare_dom(s, """<report><who>who</who><what>what</what><when>2.8</when><where>who</where><how><element name="param_str">value</element></how></report>""")
+        rp2 = emuML.parse_report(s)
+        self.assertEqual(rp, rp2)
+        
+        
 if __name__ == '__main__':
     unittest.main()
 

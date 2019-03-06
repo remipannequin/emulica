@@ -155,6 +155,8 @@ def initialize_control(model):
     model.register_control(ControlMachine)
 
 class TestSim3(unittest.TestCase):
+    def setUp(self):
+        print(self.id())
         
     def test_ModelCreate(self):
         get_model()
