@@ -7,6 +7,8 @@ gi.require_version('GooCanvas', '2.0')
 
 import optparse
 from locale import gettext as _
+import logging
+
 from gi.repository import Gtk
 from gi.repository import Gio
 from emulica.app import EmulicaWindow
@@ -18,10 +20,13 @@ def parse_options():
     parser = optparse.OptionParser(version="%%prog %s" % get_version())
     parser.add_option(
         "-v", "--verbose", action="count", dest="verbose",
-        help=_("Show debug messages (-vv debugs emulica_lib also)"))
+        help=_("Show debug messages"))
     (options, args) = parser.parse_args()
-
-    set_up_logging(options)
+    if options.verbose:
+        level = logging.DEBUG
+    else:
+        level = logging.WARNING
+    set_up_logging(level)
 
 def on_activate(app, data = None):
     window = EmulicaWindow.EmulicaWindow()
