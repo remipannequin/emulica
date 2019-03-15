@@ -3,8 +3,8 @@
 
 import unittest
 
-#import util
-#util.set_path()
+import util
+util.set_path()
 
 import logging
 from emulica.core import set_up_logging
@@ -33,7 +33,7 @@ class Control2:
     def run(self, model):
         mt = model.modules["mt"]
         while True:
-            ev = yield mt.report_socket.get()
+            ev = yield mt.request_socket.get()
             print("Control: got {} at {}".format(ev, model.current_time()))
 
 
